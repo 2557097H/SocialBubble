@@ -3,12 +3,26 @@ import { StyleSheet, Text, View } from 'react-native';
 //imports LoginScreen from the screens folder
 import LoginScreen from './screens/LoginScreen';
 import ChatScreen from './screens/ChatScreen'
+import Details from './screens/Details'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  // when the app is open simply calls the login screen
-  // later this can be changed to display the home page if the user is loged in
-  // else the login screen
   return(
-    <ChatScreen/>
+    //Stack navigation that allows the user to navigate between login and details page
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+        />
+        <Stack.Screen
+          name="Details"
+          component={Details}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
