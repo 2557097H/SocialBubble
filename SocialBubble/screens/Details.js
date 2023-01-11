@@ -5,15 +5,15 @@ import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput,
 //details page where the user enters their personal details. Just a prototype.
 //DOB field is just text input rather than date selector
 //The form is no functional atm
-export default function FirstScreen() {
+export default function FirstScreen({navigation}) {
         return (
           //Keyboard avoiding view so when entering details the keyboard doesn't cover the fields
           <KeyboardAvoidingView
           style={styles.container}
-          behavior="padding"
+          //behavior="padding"
           >
             <View style={styles.titleContainer}> 
-              <Text style={styles.title}>Social Bubble</Text>
+              <Text style={styles.title}>Personal Details</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput
@@ -35,33 +35,45 @@ export default function FirstScreen() {
               style={styles.input}
               />
             </View>
+
+            <View style={styles.buttonContainer}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("Login")}
+            >
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
+
+            </View>
           </KeyboardAvoidingView>
+
+
         );
       }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 0,
+      flex: 1,
       //backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
     },
 
     titleContainer: {
-      flex: 0,
-      marginBottom: 100,
-      marginTop: 100,
+      marginBottom: 25,
     },
 
     title: {
-      color: 'dodgerblue',
+      color: 'grey',
       fontSize: 30,
-      alignItems: 'center',
-      justifyContent: 'center',
+      //alignItems: 'center',
+      //justifyContent: 'center',
     },
 
     inputContainer: {
-      width: '80%'
+      width: '80%',
+      //marginTop: 150,
+      //alignContent: 'flex-start',
     },
 
     input: {
@@ -70,7 +82,26 @@ const styles = StyleSheet.create({
       paddingVertical: 10,
       borderRadius: 10,
       marginTop: 10,
-    
-
     },
+
+    buttonContainer:{
+      marginTop: 15,
+      width: "60%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    button: {
+      width: "80%",
+      backgroundColor: "dodgerblue",
+      padding: 5,
+      borderRadius: 10,
+      alignItems: "center",
+    },
+
+    buttonText: {
+      color: "white",
+      fontSize: 20,
+
+    }
   });
