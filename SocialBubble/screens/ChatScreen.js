@@ -95,10 +95,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 25,
     flex:1,
-    
    
-   
-    
   },
   
   groupIcon:{
