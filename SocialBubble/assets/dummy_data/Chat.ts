@@ -57,6 +57,31 @@ export default {
 			id: 'u1',
 			name: 'John',
 		},
+	}, {
+		id: 'm11',
+		content: 'Hey David',
+		
+		user: {
+			id: 'u1',
+			name: 'John',
+		},
+	}, {
+		id: 'm12',
+		content: 'Hey David',
+		
+		user: {
+			id: 'u1',
+			name: 'John',
+		},
+	}, {
+		id: 'm13',
+		content: 'Hey David',
+		
+		user: {
+			id: 'u1',
+			name: 'John',
+		},
+		
 	
 	}]
 }

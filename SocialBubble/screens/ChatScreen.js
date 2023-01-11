@@ -30,7 +30,7 @@ function LoginScreen(props) {
   
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
   <KeyboardAvoidingView
-    behavior={Platform.OS === "android" ? "padding" : "height"}
+    //behavior={Platform.OS === "android" ? "padding" : "height"}
     style={styles.container}>
 
     <View style = {styles.title}>
@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
 
   },
   title: {
-    flex:1,
+    
     width: windowWidth,
     backgroundColor: "blue",
-    padding:10,
+    padding:20,
     marginTop:25,
     alignItems: 'center',
     flexDirection: 'row',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
     fontSize: 25,
-    flex:1,
+    
    
   },
   
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
    marginRight: 40,
   },
   scroll:{
-    marginTop: 20,
+    //marginTop: 80,
 
   }
   
