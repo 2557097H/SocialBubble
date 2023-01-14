@@ -13,23 +13,12 @@ export default function PreferencesScreen({navigation}) {
           //behavior="padding"
           >
             <View style={styles.titleContainer}> 
-              <Text style={styles.title}>Preferences</Text>
+              <Text style={styles.title}>Interests</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput
-              placeholder = "First Name"
-              //value={ }
-              //onChangeText={text => }
-              style={styles.input}
-              />
-              <TextInput
-              placeholder = "Surname"
-              //value={ }
-              //onChangeText={text => }
-              style={styles.input}
-              />
-              <TextInput
-              placeholder = "Date of Birth"
+              placeholder = "Enter Your Interests"
+              multiline = {true}
               //value={ }
               //onChangeText={text => }
               style={styles.input}
@@ -78,10 +67,12 @@ const styles = StyleSheet.create({
 
     input: {
       backgroundColor: "white",
+      //textAlignVertical: "top",
       paddingHorizontal: 15,
       paddingVertical: 10,
       borderRadius: 10,
       marginTop: 10,
+      //height: 200,
     },
 
     buttonContainer:{

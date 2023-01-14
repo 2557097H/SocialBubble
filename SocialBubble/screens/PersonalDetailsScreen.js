@@ -17,13 +17,7 @@ export default function PersonalDetailsScreen({navigation}) {
             </View>
             <View style={styles.inputContainer}>
               <TextInput
-              placeholder = "First Name"
-              //value={ }
-              //onChangeText={text => }
-              style={styles.input}
-              />
-              <TextInput
-              placeholder = "Surname"
+              placeholder = "Name"
               //value={ }
               //onChangeText={text => }
               style={styles.input}
@@ -34,6 +28,38 @@ export default function PersonalDetailsScreen({navigation}) {
               //onChangeText={text => }
               style={styles.input}
               />
+              <TextInput
+              placeholder = "Occupation"
+              //value={ }
+              //onChangeText={text => }
+              style={styles.input}
+              />
+              <TextInput
+              placeholder = "Email"
+              //value={ }
+              //onChangeText={text => }
+              style={styles.input}
+              />
+              <TextInput
+              placeholder = "Confirm Email"
+              //value={ }
+              //onChangeText={text => }
+              style={styles.input}
+              />
+              <TextInput
+              placeholder = "Password"
+              secureTextEntry
+              //value={ }
+              //onChangeText={text => }
+              style={styles.input}
+              />    
+              <TextInput 
+              placeholder = "Confirm Password"
+              secureTextEntry
+              //value={ }
+              //onChangeText={text => }
+              style={styles.input}
+              />                       
             </View>
 
             <View style={styles.buttonContainer}>
