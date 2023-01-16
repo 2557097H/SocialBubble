@@ -23,13 +23,20 @@ Creating an android app using Expo
 ## Acknowledgements
 
 Group Members:
+
 Calum Giffin - 2407426G
+
 Euan Halliday - 2557097H
+
 Kyle Coughlan - 2604461C
+
 Mark Kerr - 2572964K
+
 Parsa Tavakoli Hedayatpour - 2555801T
+
 Julian Lee - 2600433L
 
 Coach:
+
 Grant Simpson
 
