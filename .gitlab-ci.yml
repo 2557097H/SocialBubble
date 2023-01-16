@@ -1,0 +1,20 @@
+image: node:alpine
+
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - .npm
+
+stages:
+    - test
+
+before_script:
+    - cd SocialBubble
+    - npm ci --cache .npm
+    - npx expo install jest-expo jest
+
+eas-build:
+    stage: test
+    script:
+        - npm run test
+
