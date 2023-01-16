@@ -86,8 +86,6 @@ const styles = StyleSheet.create({
     marginTop:25,
     alignItems: 'center',
     flexDirection: 'row',
-    
-
   },
 
   titleText:{

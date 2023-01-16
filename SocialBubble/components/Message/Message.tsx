@@ -21,7 +21,15 @@ const Message = ({ message }) => {
                 color: isItMe ? "white" : "black",
             }
             ]}>{message.content}</Text>
+      
+        <View style = {styles.time}>
+            <Text style = {[styles.timeText,{
+                color: isItMe ? "yellow" : "green",
+
+            }]}> Time </Text>
         </View>
+        </View>
+        
     )
 }
 
@@ -38,6 +46,19 @@ const styles = StyleSheet.create({
         color: "white",
      
       },
+
+    time: {
+
+        flexDirection: "row",
+        alignItems: "flex-end",
+        justifyContent: "flex-end"
+        
+    }
+    ,
+    timeText: {
+        color: "grey",
+        fontSize: 12,
+    }
 
 
 });
