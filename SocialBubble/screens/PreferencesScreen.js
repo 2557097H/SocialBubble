@@ -5,7 +5,7 @@ import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput,
 //details page where the user enters their personal details. Just a prototype.
 //DOB field is just text input rather than date selector
 //The form is no functional atm
-export default function FirstScreen({navigation}) {
+export default function PreferencesScreen({navigation}) {
         return (
           //Keyboard avoiding view so when entering details the keyboard doesn't cover the fields
           <KeyboardAvoidingView
@@ -13,7 +13,7 @@ export default function FirstScreen({navigation}) {
           //behavior="padding"
           >
             <View style={styles.titleContainer}> 
-              <Text style={styles.title}>Personal Details</Text>
+              <Text style={styles.title}>Preferences</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     },
 
     buttonText: {
-      color: "white",
+      color: "black",
       fontSize: 20,
 
     }
