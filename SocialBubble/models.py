@@ -14,7 +14,7 @@ class OuterBubble(db.Model):
     
 class InnerBubble(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    outer_bubble_id = db.Column(db.Integer, db.ForeignKey('outerbubble.id'),
+    outer_bubble_id = db.Column(db.Integer, db.ForeignKey('outer_bubble.id'),
                                 nullable=False)
     users = db.relationship('User', backref='innerbubble', lazy=True)
     chatlines = db.relationship('ChatLine', backref='innerbubble', lazy=True)
@@ -33,8 +33,8 @@ class User(db.Model):
     profession = db.Column(db.String(40), nullable=False)
     sex = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String, nullable=False)
-    outer_bubble_id = db.Column(db.Integer, db.ForeignKey('outerbubble.id'))
-    inner_bubble_id = db.Column(db.Integer, db.ForeignKey('innerbubble.id'))
+    outer_bubble_id = db.Column(db.Integer, db.ForeignKey('outer_bubble.id'))
+    inner_bubble_id = db.Column(db.Integer, db.ForeignKey('inner_bubble.id'))
     
     def __init__(self, first_name):
         self.first_name = first_name 
@@ -49,9 +49,9 @@ class Friends(db.Model):
     
 class ChatLine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    outer_bubble_id = db.Column(db.Integer, db.ForeignKey('outerbubble.id'),
+    outer_bubble_id = db.Column(db.Integer, db.ForeignKey('outer_bubble.id'),
                                 nullable=False)
-    inner_bubble_id = db.Column(db.Integer, db.ForeignKey('innerbubble.id'),
+    inner_bubble_id = db.Column(db.Integer, db.ForeignKey('inner_bubble.id'),
                                 nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -61,19 +61,19 @@ class ChatLine(db.Model):
     
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    chatline_id = db.Column(db.Integer, db.ForeignKey('chatline.id'))
-    chatline = db.relationship("ChatLine", backref="chatline")
+    chatline_id = db.Column(db.Integer, db.ForeignKey('chat_line.id'))
+    chatline = db.relationship("ChatLine", backref="chat_line")
     message = db.Column(db.String(200), nullable=True)
     
     def __init__(self, id):
         self.id=id
     
-# class Interests(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     interest_name = db.Column(db.String, nullable=False)
+class Interests(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    interest_name = db.Column(db.String, nullable=False)
     
-#     def __init__(self, id):
-#         self.id=id
+    def __init__(self, id):
+        self.id=id
     
     
     
