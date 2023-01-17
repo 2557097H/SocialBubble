@@ -1,16 +1,16 @@
-import React from 'react';
+import {React, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,} from 'react-native';
+import { StyleSheet, Text, View, Dimensions} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Login from './Screens/LoginScreen'
-import Home from './Screens/HomeScreen'
-import Settings from './Screens/SettingsScreen'
-import BubbleChat from './Screens/ChatScreen'
+import Login from './LoginScreen'
+import Home from './HomeScreen'
+import Settings from './SettingsScreen'
+import BubbleChat from './ChatScreen'
 
 const Tab = createBottomTabNavigator();
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen(props) {
         return (
             <View style = {styles.container}>
             <View style = {styles.title}>
@@ -31,6 +31,9 @@ export default function HomeScreen({ navigation }) {
         );
 
       }
+      
+
+const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container:{
