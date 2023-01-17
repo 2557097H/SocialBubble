@@ -178,10 +178,6 @@ const styles = StyleSheet.create({
       height: 30,
       backgroundColor: "transparent",
     }
-<<<<<<< HEAD
   });
 
 export default LoginScreen;
-=======
-  });
->>>>>>> a0e0ffa (Created a basic frontend for the login/signup page where when the button is clicked it takes the user toa page where they can type in their details. Everything is just a frontend and there is no functionality)
