@@ -12,19 +12,19 @@ const Message = ({ message }) => {
     return(
         <View style = {[
             styles.container, {
-            backgroundColor: isItMe ? "blue": "lightgrey",
+            backgroundColor: isItMe ? "#9BD9F4": "lightgrey",
             marginLeft: isItMe ? 'auto': 10,
             marginRight: isItMe? 10 : 'auto',
         }
         ]}>
             <Text style = {[styles.chatBubble,{
-                color: isItMe ? "white" : "black",
+                color: isItMe ? "black" : "black",
             }
             ]}>{message.content}</Text>
       
         <View style = {styles.time}>
             <Text style = {[styles.timeText,{
-                color: isItMe ? "yellow" : "green",
+                color: isItMe ? "green" : "green",
 
             }]}> Time </Text>
         </View>

@@ -6,13 +6,15 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import FinishedButton from '../components/FinishedButton';
 
 //Basically the original App.js file
-function PasswordChangedScreen(props) {
+const PasswordChangedScreen = ({navigation}) => {
         return (
           <View style={{backgroundColor: '#ADD8E6'}}>
             <View style={styles.container}>
             <Text style={styles.titles}>Password Changed! </Text>
 
-              <FinishedButton text='Done' />
+              <Button 
+              title='Done' 
+              onPress={() => navigation.navigate('Home')} />
 
             </View>
           </View>

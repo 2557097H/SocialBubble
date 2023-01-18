@@ -66,6 +66,7 @@ function LoginScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex:1,
+    marginTop: 20,
     backgroundColor: "#fff",
     
   },
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
   title: {
     
     width: windowWidth,
-    backgroundColor: "blue",
+    backgroundColor: "#9BD9F4",
     padding:20,
     alignItems: 'center',
     flexDirection: 'row',

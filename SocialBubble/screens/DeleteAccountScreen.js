@@ -6,7 +6,7 @@ import FinishedButton from '../components/FinishedButton';
 
 
 //Basically the original App.js file
-function DeleteAccountScreen(props) {
+const DeleteAccountScreen = ({navigation}) => {
         return (
           <View style={styles.container}>
 
@@ -16,7 +16,10 @@ function DeleteAccountScreen(props) {
              style={styles.passwordBox}
             />
 
-            <FinishedButton text="Delete"/>
+            <Button 
+              title='Delete' 
+              onPress={() => navigation.navigate('AccountDeleted')} />
+
             <Text style={{marginLeft:20, fontSize: 10, color: 'red'}}>
               incorrect password
             </Text>
@@ -29,6 +32,7 @@ function DeleteAccountScreen(props) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      marginTop: 20,
       backgroundColor: '#ADD8E6',
     },
     titles:{

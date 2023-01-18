@@ -82,7 +82,7 @@ export default function LoginScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      //backgroundColor: 'lightblue',
+      marginTop: 20,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     },
 
     buttonText: {
-      color: "white",
+      color: "black",
       fontSize: 20,
     },
 

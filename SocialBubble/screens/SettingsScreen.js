@@ -3,9 +3,6 @@ import { View, Text, StyleSheet, Button, ImageBackground } from 'react-native';
 
 const SettingsScreen = ({ navigation }) => {
   return (
-    //<View style.titles>
-
-    //</View>
     <View style={styles.container}>
       <Text style={styles.titles}>Settings</Text>
       <View style={styles.button} >
@@ -17,13 +14,13 @@ const SettingsScreen = ({ navigation }) => {
       <View style={styles.button} >
       <Button
         title="Change Password"
-        //onPress={() => navigation.navigate('ChangePassword')}
+        onPress={() => navigation.navigate('PasswordChanged')}
       />
       </View>
       <View style={styles.button} >
       <Button
         title="Delete Account"
-        //onPress={() => navigation.navigate('ChangePassword')}
+        onPress={() => navigation.navigate('DeleteAccount')}
       />
       </View>
     </View>
@@ -31,7 +28,8 @@ const SettingsScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  button: {
+  button: { 
+    color: "grey",
     borderRadius:30,
     paddingVertical:10,
     paddingHorizontal: 20,
@@ -48,7 +46,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#ADD8E6',
+    marginTop: 50,
+    backgroundColor: '#9BD9F4',
   },
 });
 
