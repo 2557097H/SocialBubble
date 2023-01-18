@@ -12,7 +12,13 @@ Creating an android app using Expo
 
 ## Documentation
 
+* Run app with npm start
+
+* Scan QR code to open the app in Expo Go or open it in a web browser
+
 ## Outside Resources
+
+[Testing with Jest](https://docs.expo.dev/guides/testing-with-jest/)
 
 ## Technologies
 
