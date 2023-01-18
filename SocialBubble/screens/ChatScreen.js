@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     width: windowWidth,
     backgroundColor: "blue",
     padding:20,
-    marginTop:25,
     alignItems: 'center',
     flexDirection: 'row',
   },
