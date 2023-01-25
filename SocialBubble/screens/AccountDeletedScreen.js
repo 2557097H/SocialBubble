@@ -13,7 +13,7 @@ const AccountDeletedScreen = ({navigation}) => {
              <Text style={styles.titles}>Account Deleted! </Text>
              <Button 
               title='Done' 
-              onPress={() => navigation.navigate('Home')} />
+              onPress={() => navigation.navigate('Login')} />
 
             </View>
           </View>

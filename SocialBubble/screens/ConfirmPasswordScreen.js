@@ -6,7 +6,7 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import FinishedButton from '../components/FinishedButton';
 
 //Basically the original App.js file
-function ConfirmPasswordScreen({ navigation }) {
+const ConfirmPasswordScreen = ({navigation}) => {
         return (
           <View style={styles.container}>
 
@@ -27,7 +27,10 @@ function ConfirmPasswordScreen({ navigation }) {
              placeholder="  Confrim New Password"
             />
 
-            <FinishedButton text="RESET"/>
+        <Button
+        title="Reset Password"
+        onPress={() => navigation.navigate('PasswordChanged')}
+      />
 
             <Text style={{marginLeft:20, fontSize: 10, color: 'red'}}>
               New passwords don't match

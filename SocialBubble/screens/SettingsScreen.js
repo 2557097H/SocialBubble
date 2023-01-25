@@ -31,7 +31,7 @@ const SettingsScreen = ({ navigation }) => {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   titles:{
     fontWeight:"bold",
     fontSize:35,
-    color: "Grey",
+    color: "black",
     paddingHorizontal:45,
     paddingTop:70,
     paddingBottom:30,
