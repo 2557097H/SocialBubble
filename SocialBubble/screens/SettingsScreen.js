@@ -1,34 +1,45 @@
 import React from 'react';
+import { View, Text, StyleSheet, Button, ImageBackground, TouchableOpacity } from 'react-native';
 
 const SettingsScreen = ({ navigation }) => {
   return (
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.buttonText}>Logout</Text>
-      </TouchableOpacity>
+    <View
+      style={styles.container}
+    >
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("PasswordChanged")}
-      >
-        <Text style={styles.buttonText}>Change Password</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("ConfirmPassword")}
+        >
+          <Text style={styles.buttonText}>Change Password</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("DeleteAccount")}
-      >
-        <Text style={styles.buttonText}>Delete Account</Text>
-      </TouchableOpacity>
-      
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("DeleteAccount")}
+        >
+          <Text style={styles.buttonText}>Delete Account</Text>
+        </TouchableOpacity>
+        
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   button: {
     width: "80%",
     backgroundColor: "lightgrey",

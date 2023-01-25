@@ -6,7 +6,7 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import FinishedButton from '../components/FinishedButton';
 
 //Basically the original App.js file
-function ConfirmPasswordScreen(props) {
+function ConfirmPasswordScreen({ navigation }) {
         return (
           <View style={styles.container}>
 
