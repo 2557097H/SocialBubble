@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
       width: "60%",
       justifyContent: "flex-end",
       alignItems: "center",
-      marginTop: 150,
+      marginTop: 45,
     },
 
     socialButton: {
