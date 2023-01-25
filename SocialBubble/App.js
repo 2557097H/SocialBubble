@@ -21,19 +21,21 @@ export default function App() {
     screenOptions={{
     headerShown: false
     }}>
+            <Tab.Screen name ="Login" component={LoginScreen}
+            options={{
+              tabBarLabel: 'Login',
+              tabBarStyle: { display: 'none' },
+              tabBarButton: () => null,
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="login" color={color} size={size} />
+              ),
+            }}
+            />
             <Tab.Screen name ="Home" component={HomeScreen} 
             options={{
               tabBarLabel: 'Home',
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="home" color={color} size={size} />
-              ),
-            }}
-            />
-            <Tab.Screen name ="Login" component={LoginScreen}
-            options={{
-              tabBarLabel: 'Login',
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="login" color={color} size={size} />
               ),
             }}
             />
@@ -56,12 +58,14 @@ export default function App() {
             <Tab.Screen name ="Preferences" component={PreferencesScreen}
             options={{
               tabBarButton: () => null,
+              tabBarStyle: { display: 'none' },
               tabBarVisible: false, // if you don't want to see the tab bar
             }}
             />
             <Tab.Screen name ="Details" component={PersonalDetailsScreen}
             options={{
               tabBarButton: () => null,
+              tabBarStyle: { display: 'none' },
               tabBarVisible: false, // if you don't want to see the tab bar
             }}
             />

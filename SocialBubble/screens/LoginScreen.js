@@ -4,7 +4,8 @@ import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput,
 
 //details page where the user enters their personal details. Just a prototype.
 //DOB field is just text input rather than date selector
-//The form is no functional atm
+//The form is no functional at
+
 export default function LoginScreen({navigation}) {
         return (
           //Keyboard avoiding view so when entering details the keyboard doesn't cover the fields

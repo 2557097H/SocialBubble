@@ -8,7 +8,7 @@ const SettingsScreen = ({ navigation }) => {
       <View style={styles.button} >
       <Button
         title="Logout"
-        //onPress={() => navigation.navigate('ChangePassword')}
+        onPress={() => navigation.navigate('Login')}
       />
       </View>
       <View style={styles.button} >
