@@ -1,39 +1,52 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Button, ImageBackground, TouchableOpacity } from 'react-native';
 
 const SettingsScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.titles}>Settings</Text>
-      <View style={styles.button}>
-      <Button
-        title="Logout"
-        onPress={() => navigation.navigate('Login')}
-      />
-      </View>
-      <View style={styles.button} >
-      <Button
-        title="Change Password"
-        onPress={() => navigation.navigate('ConfirmPassword')}
-      />
-      </View>
-      <View style={styles.button} >
-      <Button
-        title="Delete Account"
-        onPress={() => navigation.navigate('DeleteAccount')}
-      />
+    <View
+      style={styles.container}
+    >
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("ConfirmPassword")}
+        >
+          <Text style={styles.buttonText}>Change Password</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("DeleteAccount")}
+        >
+          <Text style={styles.buttonText}>Delete Account</Text>
+        </TouchableOpacity>
+        
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  button: { 
-    color: "grey",
-    borderRadius:30,
-    paddingVertical:10,
-    paddingHorizontal: 20,
-
+  container: {
+    flex: 1,
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    width: "80%",
+    backgroundColor: "lightgrey",
+    padding: 5,
+    borderRadius: 10,
+    margin: 5,
+    alignItems: "center",
   },
   titles:{
     fontWeight:"bold",
@@ -44,10 +57,16 @@ const styles = StyleSheet.create({
     paddingBottom:30,
     
   },
-  container: {
+  
+  buttonContainer:{
     flex: 1,
-    marginTop: 50,
-    backgroundColor: '#9BD9F4',
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: "black",
+    fontSize: 20,
   },
 });
 
