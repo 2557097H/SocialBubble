@@ -2,9 +2,8 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, Image, ScrollView} from 'react-native';
 
-//details page where the user enters their personal details. Just a prototype.
+//details page where the user enters their personal details.
 //DOB field is just text input rather than date selector
-//The form is no functional at
 
 export default function LoginScreen({navigation}) {
         return (

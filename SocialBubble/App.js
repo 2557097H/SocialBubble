@@ -60,21 +60,21 @@ export default function App() {
             options={{
               tabBarButton: () => null,
               tabBarStyle: { display: 'none' },
-              tabBarVisible: false, // if you don't want to see the tab bar
+              tabBarVisible: false, 
             }}
             />
             <Tab.Screen name ="Details" component={PersonalDetailsScreen}
             options={{
               tabBarButton: () => null,
               tabBarStyle: { display: 'none' },
-              tabBarVisible: false, // if you don't want to see the tab bar
+              tabBarVisible: false, 
             }}
             />
             <Tab.Screen name ="PasswordChanged" component={PasswordChangedScreen}
             options={{
               tabBarButton: () => null,
               tabBarStyle:{display: 'none'},
-              tabBarVisible: false, // if you don't want to see the tab bar
+              tabBarVisible: false, 
             }}
             />
             <Tab.Screen name ="ConfirmPassword" component={ConfirmPasswordScreen}
@@ -88,14 +88,14 @@ export default function App() {
             options={{
               tabBarButton: () => null,
               tabBarStyle: { display: 'none' },
-              tabBarVisible: false, // if you don't want to see the tab bar
+              tabBarVisible: false, 
             }}
             />   
             <Tab.Screen name ="AccountDeleted" component={AccountDeletedScreen}
             options={{
               tabBarButton: () => null,
               tabBarStyle: { display: 'none' },
-              tabBarVisible: false, // if you don't want to see the tab bar
+              tabBarVisible: false, 
             }}
             />   
         </Tab.Navigator>

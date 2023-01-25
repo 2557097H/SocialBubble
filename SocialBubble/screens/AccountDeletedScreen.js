@@ -2,10 +2,6 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 
-//component imports
-import FinishedButton from '../components/FinishedButton';
-
-//Basically the original App.js file
 const AccountDeletedScreen = ({navigation}) => {
         return (
           <View style={{backgroundColor: '#ADD8E6'}}>

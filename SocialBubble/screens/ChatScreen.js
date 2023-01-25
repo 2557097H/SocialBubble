@@ -30,7 +30,6 @@ function LoginScreen(props) {
   
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
   <KeyboardAvoidingView
-    //behavior={Platform.OS === "android" ? "padding" : "height"}
     style={styles.container}>
 
     <View style = {styles.title}>

@@ -2,15 +2,10 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
 
-//details page where the user enters their personal details. Just a prototype.
-//DOB field is just text input rather than date selector
-//The form is no functional atm
 export default function PreferencesScreen({navigation}) {
         return (
-          //Keyboard avoiding view so when entering details the keyboard doesn't cover the fields
           <KeyboardAvoidingView
           style={styles.container}
-          //behavior="padding"
           >
             <View style={styles.titleContainer}> 
               <Text style={styles.title}>Interests</Text>
@@ -19,8 +14,6 @@ export default function PreferencesScreen({navigation}) {
               <TextInput
               placeholder = "Enter Your Interests"
               multiline = {true}
-              //value={ }
-              //onChangeText={text => }
               style={styles.input}
               />
             </View>
@@ -43,7 +36,6 @@ export default function PreferencesScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      //backgroundColor: '#fff',
       marginTop: 20,
       alignItems: 'center',
       justifyContent: 'center',
@@ -56,24 +48,18 @@ const styles = StyleSheet.create({
     title: {
       color: 'grey',
       fontSize: 30,
-      //alignItems: 'center',
-      //justifyContent: 'center',
     },
 
     inputContainer: {
       width: '80%',
-      //marginTop: 150,
-      //alignContent: 'flex-start',
     },
 
     input: {
       backgroundColor: "white",
-      //textAlignVertical: "top",
       paddingHorizontal: 15,
       paddingVertical: 10,
       borderRadius: 10,
       marginTop: 10,
-      //height: 200,
     },
 
     buttonContainer:{
