@@ -8,11 +8,8 @@ import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput,
 
 export default function LoginScreen({navigation}) {
         return (
-          //Keyboard avoiding view so when entering details the keyboard doesn't cover the fields
-          <ScrollView>
           <KeyboardAvoidingView
           style={styles.container}
-          //behavior="padding"
           >
         
             <Image 
@@ -21,14 +18,10 @@ export default function LoginScreen({navigation}) {
             <View style={styles.inputContainer}>
               <TextInput
               placeholder = "Your Email"
-              //value={ }
-              //onChangeText={text => }
               style={styles.input}
               />
               <TextInput
               placeholder = "Your Password"
-              //value={ }
-              //onChangeText={text => }
               style={styles.input}
               />
             </View>
@@ -75,7 +68,6 @@ export default function LoginScreen({navigation}) {
 
             
           </KeyboardAvoidingView>
-          </ScrollView>
 
         );
       }
@@ -94,20 +86,16 @@ const styles = StyleSheet.create({
 
     titleContainer: {
       marginBottom: 25,
-      //marginTop: 200,
     },
 
     title: {
       color: 'grey',
       fontSize: 30,
-      //alignItems: 'center',
-      //justifyContent: 'center',
     },
 
     inputContainer: {
       width: '80%',
       marginTop: 30,
-      //alignContent: 'flex-start',
     },
 
     input: {
@@ -127,6 +115,7 @@ const styles = StyleSheet.create({
 
     button: {
       width: "80%",
+      height: 40,
       backgroundColor: "lightgrey",
       padding: 5,
       borderRadius: 10,
@@ -135,6 +124,7 @@ const styles = StyleSheet.create({
     },
 
     buttonText: {
+      padding: "1%",
       color: "black",
       fontSize: 20,
     },
@@ -145,6 +135,7 @@ const styles = StyleSheet.create({
       justifyContent: "flex-end",
       alignItems: "center",
       marginTop: 45,
+      marginBottom: 20,
     },
 
     socialButton: {
