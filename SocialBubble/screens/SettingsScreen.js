@@ -5,7 +5,7 @@ const SettingsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titles}>Settings</Text>
-      <View style={styles.button} >
+      <View style={styles.button}>
       <Button
         title="Logout"
         onPress={() => navigation.navigate('Login')}
@@ -14,7 +14,7 @@ const SettingsScreen = ({ navigation }) => {
       <View style={styles.button} >
       <Button
         title="Change Password"
-        onPress={() => navigation.navigate('PasswordChanged')}
+        onPress={() => navigation.navigate('ConfirmPassword')}
       />
       </View>
       <View style={styles.button} >
@@ -25,7 +25,7 @@ const SettingsScreen = ({ navigation }) => {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   button: { 
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   titles:{
     fontWeight:"bold",
     fontSize:35,
-    color: "Grey",
+    color: "black",
     paddingHorizontal:45,
     paddingTop:70,
     paddingBottom:30,

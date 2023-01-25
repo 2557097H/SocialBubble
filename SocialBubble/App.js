@@ -8,6 +8,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import PersonalDetailsScreen from './screens/PersonalDetailsScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
 import PasswordChangedScreen from './screens/PasswordChangedScreen';
+import ConfirmPasswordScreen from './screens/ConfirmPasswordScreen';
 import DeleteAccountScreen from './screens/DeleteAccountScreen';
 import AccountDeletedScreen from './screens/AccountDeletedScreen';
 const Tab = createBottomTabNavigator();
@@ -72,18 +73,28 @@ export default function App() {
             <Tab.Screen name ="PasswordChanged" component={PasswordChangedScreen}
             options={{
               tabBarButton: () => null,
+              tabBarStyle:{display: 'none'},
               tabBarVisible: false, // if you don't want to see the tab bar
+            }}
+            />
+            <Tab.Screen name ="ConfirmPassword" component={ConfirmPasswordScreen}
+            options={{
+              tabBarLabel: 'ChangePassword',
+              tabBarVisible: false,
+              tabBarButton: () => null,
             }}
             />
             <Tab.Screen name ="DeleteAccount" component={DeleteAccountScreen}
             options={{
               tabBarButton: () => null,
+              tabBarStyle: { display: 'none' },
               tabBarVisible: false, // if you don't want to see the tab bar
             }}
             />   
             <Tab.Screen name ="AccountDeleted" component={AccountDeletedScreen}
             options={{
               tabBarButton: () => null,
+              tabBarStyle: { display: 'none' },
               tabBarVisible: false, // if you don't want to see the tab bar
             }}
             />   
