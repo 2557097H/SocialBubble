@@ -31,6 +31,7 @@ class User(db.Model):
     friends = db.relationship('Friends', backref='user', lazy=True)
     interests = db.Column(db.String(100), nullable=False)
     profession = db.Column(db.String(40), nullable=False)
+    date_of_birth = db.Column(db.String(8), nullable=False)
     sex = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String, nullable=False)
     outer_bubble_id = db.Column(db.Integer, db.ForeignKey('outer_bubble.id'))

@@ -17,12 +17,28 @@ export default function PreferencesScreen({navigation}) {
             </View>
             <View style={styles.inputContainer}>
               <TextInput
-              placeholder = "Enter Your Interests"
+              placeholder = "Occupation"
+              //value={ }
+              //onChangeText={text => }
+              style={styles.input}
+              />
+
+            <TextInput
+              placeholder = "Sex"
+              //value={ }
+              //onChangeText={text => }
+              style={styles.input}
+              />
+
+            <TextInput
+              placeholder = "Interests"
               multiline = {true}
               //value={ }
               //onChangeText={text => }
               style={styles.input}
               />
+
+  
             </View>
 
             <View style={styles.buttonContainer}>

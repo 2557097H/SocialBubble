@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
-
+import { createUserAPI } from '../api/createUser';
+import { createTestUserAPI } from '../api/testUser';
 //details page where the user enters their personal details. Just a prototype.
 //DOB field is just text input rather than date selector
 //The form is no functional atm
-export default function PersonalDetailsScreen({navigation}) {
+const PersonalDetailsScreen = () => {
+
+      const[email, setEmail] = useState('')
+      const[date_of_birth, setDOB] = useState('')
+      const[occupation, setOccupation] = useState('')
+      const[name, setName] = useState('')
+      const[confirmEmail, setConfirmEmail] = useState('')
+      const[password, setPassword] = useState('')
+      const[confirmPassword, setConfirmPassword] = useState('')
+
+      const submitUser = () => {
+        console.log("this works")
+        if(!email || !date_of_birth || !occupation || !name || !confirmEmail || !password || !confirmPassword) {
+          alert("Some information is missing, please re-enter")
+          return;
+        }
+        if(email != confirmEmail){
+          alert("emails don't match")
+          return;
+        }
+        if(password != confirmPassword){
+          alert("passwords don't match")
+          return;
+        }
+        //Hash password and compare comfirmemailsandpasswords
+        console.log("about to call API..")
+        //api call here
+        createTestUserAPI(email, date_of_birth, occupation, name, password)
+      }
+
         return (
           //Keyboard avoiding view so when entering details the keyboard doesn't cover the fields
           <KeyboardAvoidingView
@@ -18,46 +48,46 @@ export default function PersonalDetailsScreen({navigation}) {
             <View style={styles.inputContainer}>
               <TextInput
               placeholder = "Name"
-              //value={ }
-              //onChangeText={text => }
+              value={name}
+              onChangeText={text => setName(text)}
               style={styles.input}
               />
               <TextInput
-              placeholder = "Date of Birth"
-              //value={ }
-              //onChangeText={text => }
+              placeholder = "Date_of_Birth"
+              value={date_of_birth}
+              onChangeText={text => setDOB(text)}
               style={styles.input}
               />
               <TextInput
               placeholder = "Occupation"
-              //value={ }
-              //onChangeText={text => }
+              value={occupation}
+              onChangeText={text => setOccupation(text)}
               style={styles.input}
               />
               <TextInput
               placeholder = "Email"
-              //value={ }
-              //onChangeText={text => }
+              value={email}
+              onChangeText={text => setEmail(text)}
               style={styles.input}
               />
               <TextInput
               placeholder = "Confirm Email"
-              //value={ }
-              //onChangeText={text => }
+              value={confirmEmail}
+              onChangeText={text => setConfirmEmail(text)}
               style={styles.input}
               />
               <TextInput
               placeholder = "Password"
               secureTextEntry
-              //value={ }
-              //onChangeText={text => }
+              value={password}
+              onChangeText={text => setPassword(text)}
               style={styles.input}
               />    
               <TextInput 
               placeholder = "Confirm Password"
               secureTextEntry
-              //value={ }
-              //onChangeText={text => }
+              value={confirmPassword}
+              onChangeText={text => setConfirmPassword(text)}
               style={styles.input}
               />                       
             </View>
@@ -65,7 +95,7 @@ export default function PersonalDetailsScreen({navigation}) {
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Preferences")}
+                onPress = {submitUser}
             >
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
@@ -77,6 +107,8 @@ export default function PersonalDetailsScreen({navigation}) {
         );
       }
 
+
+      export default PersonalDetailsScreen
 const styles = StyleSheet.create({
     container: {
       flex: 1,

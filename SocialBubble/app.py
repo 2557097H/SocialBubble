@@ -1,22 +1,26 @@
 from flask import Flask 
 from models import User, OuterBubble, InnerBubble, Friends, ChatLine, Message
-from dependencies import db
+from dependencies import db, config
 from population_script import test_message, test_chatline, test_friends, test_innerbubble, test_outerbubble, test_users
 
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///socialbubble.db"
 
-db.init_app(app)
+#config can either be Development for a local sqlalchemy database or Production for the remote firebase
 
-with app.app_context():
-    
-    print("Creating database...")
-    
-    db.create_all()
-    
-    print("Database created")
-    
+if config == 'Development':
+
+    db.init_app(app)
+
+    with app.app_context():
+
+        print("Creating database...")
+        
+        db.create_all()
+        
+        print("Database created")
+
     #Populate Database (bugged)
 
     # for message in test_message:
