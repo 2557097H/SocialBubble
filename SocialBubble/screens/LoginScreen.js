@@ -28,7 +28,7 @@ export default function LoginScreen({navigation}) {
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Details")}
+                onPress={() => navigation.navigate("Home")}
             >
               <Text style={styles.buttonText}>Sign In</Text>
             </TouchableOpacity>
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     button: {
       width: "80%",
       height: 40,
-      backgroundColor: "lightgrey",
+      backgroundColor: "#9BD9F4",
       padding: 5,
       borderRadius: 10,
       margin: 5,

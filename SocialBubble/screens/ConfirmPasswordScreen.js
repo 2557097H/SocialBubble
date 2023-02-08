@@ -1,39 +1,40 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 
 const ConfirmPasswordScreen = ({navigation}) => {
         return (
-          <View style={styles.container}>
+          <KeyboardAvoidingView
+          style={styles.container}
+          >
+            <View style={styles.titlesContainer}>
+                <Text style={styles.titles}>Change Password</Text>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+              placeholder = "Password"
+              style={styles.input}
+              />
+              <TextInput
+              placeholder = "New Password"
+              style={styles.input}
+              />
+              <TextInput
+              placeholder = "Confirm New Password"
+              style={styles.input}
+              />                     
+            </View>
+            <View style={styles.buttonContainer}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("PasswordChanged")}
+            >
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
 
-            <Text style={styles.titles}>Reset Password</Text>
+            </View>
 
-            <TextInput
-                         style={styles.passwordBox}
-             placeholder="  Old Password"
-            />
-
-            <TextInput
-                         style={styles.passwordBox}
-             placeholder="  New Password"
-            />
-
-            <TextInput
-             style={styles.passwordBox}
-             placeholder="  Confrim New Password"
-            />
-
-        <Button
-        title="Reset Password"
-        onPress={() => navigation.navigate('PasswordChanged')}
-      />
-
-            <Text style={{marginLeft:20, fontSize: 10, color: 'red'}}>
-              New passwords don't match
-            </Text>
-
-            <StatusBar style="auto" />
-          </View>
+          </KeyboardAvoidingView>
         );
       }
 
@@ -41,22 +42,49 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       marginTop: 20,
-      backgroundColor: '#ADD8E6',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    passwordBox:{
-      height:40,
-      marginHorizontal:20,
-      marginVertical:10,
-      borderWidth:1,
-      borderColor:'grey',
+    titleContainer: {
+      marginBottom: 25,
+    },
+    
+    inputContainer: {
+      width: '80%',
+    },   
+    input: {
+      backgroundColor: "white",
+      paddingHorizontal: 15,
+      paddingVertical: 10,
+      borderRadius: 10,
+      marginTop: 10,
+    },
+
+    button: {
+      marginTop: 20,
+      width: "80%",
+      backgroundColor: "#9BD9F4",
+      padding: 5,
+      borderRadius: 10,
+      alignItems: "center",
+    },
+
+    buttonText: {
+      color: "black",
+      fontSize: 20,
+
+    }
+    ,
+    buttonContainer:{
+      width: "80%",
+      alignItems: "center",
+      paddingHorizontal: 15,
+      borderRadius: 10,
+      marginTop: 10,
     },
     titles:{
-      fontWeight:"bold",
-      fontSize:25,
-      color: "Grey",
-      paddingHorizontal:20,
-      paddingTop:70,
-      paddingBottom:15,
+      color: 'grey',
+      fontSize: 30,
     },
   });
 
