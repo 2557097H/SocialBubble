@@ -9,8 +9,8 @@ const DeleteAccountScreen = ({navigation}) => {
     <KeyboardAvoidingView
     style={styles.container}
     >
-      <View style={styles.titlesContainer}>
-          <Text style={styles.titles}>Enter the password to Delete Account</Text>
+      <View style={styles.titleContainer}>
+          <Text style={styles.titles}>Enter password to delete:</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   titleContainer: {
-    marginBottom: 25,
+    marginBottom: 5,
   },
   
   inputContainer: {
