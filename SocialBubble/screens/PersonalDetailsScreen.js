@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
-import { createUserAPI } from '../api/createUser';
-import { createTestUserAPI } from '../api/testUser';
 //details page where the user enters their personal details. Just a prototype.
 //DOB field is just text input rather than date selector
 //The form is no functional atm
@@ -47,7 +45,8 @@ const PersonalDetailsScreen = () => {
             </View>
             <View style={styles.inputContainer}>
               <TextInput
-              placeholder = "Name"
+              data-testid="Name"
+              placeholder ="Name"
               value={name}
               onChangeText={text => setName(text)}
               style={styles.input}
