@@ -10,6 +10,7 @@ stages:
 
 before_script:
     - cd SocialBubble
+    - npm install
     - npm ci --cache .npm
     - npx expo install react-native-safe-area-context
     - npx expo install jest-expo jest
