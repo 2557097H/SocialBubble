@@ -21,7 +21,7 @@ export default function LoginScreen({navigation}) {
               />
               <TextInput
               placeholder = "Your Password"
-              style={styles.input}
+              style={styles.input}sss
               />
             </View>
 
@@ -29,6 +29,7 @@ export default function LoginScreen({navigation}) {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => navigation.navigate("Details")}
+                
             >
               <Text style={styles.buttonText}>Sign In</Text>
             </TouchableOpacity>

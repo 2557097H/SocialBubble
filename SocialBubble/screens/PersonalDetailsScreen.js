@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
-
+import {auth} from '../firebase';
+import PreferencesScreen from './PreferencesScreen';
+ 
 export default function PersonalDetailsScreen({navigation}) {
+
+        const [email, setEmail] = useState("")
+        const [password, setPassword] = useState("")
+
+        const handleSignUp=() => {
+            auth 
+            .createUserWithEmailAndPassword(email,password)
+            .then(userCredentials => {
+                const user = userCredentials.user; 
+                console.log(user.email);
+            })
+            .catch(error=>alert(error.message))
+            
+        };
+
+
         return (
           <KeyboardAvoidingView
           style={styles.container}
@@ -26,6 +44,8 @@ export default function PersonalDetailsScreen({navigation}) {
               <TextInput
               placeholder = "Email"
               style={styles.input}
+              value={email}
+              onChangeText={text=>setEmail(text)}
               />
               <TextInput
               placeholder = "Confirm Email"
@@ -35,6 +55,8 @@ export default function PersonalDetailsScreen({navigation}) {
               placeholder = "Password"
               secureTextEntry
               style={styles.input}
+              value={password}
+              onChangeText={text=>setPassword(text)}
               />    
               <TextInput 
               placeholder = "Confirm Password"
@@ -46,7 +68,10 @@ export default function PersonalDetailsScreen({navigation}) {
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Preferences")}
+                onPress={() => {
+                  handleSignUp();
+                  navigation.navigate("Preferences");
+                }}
             >
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
