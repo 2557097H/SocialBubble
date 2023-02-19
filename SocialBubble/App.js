@@ -1,6 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import LoginScreen from './screens/LoginScreen';
 import ChatScreen from './screens/ChatScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -15,7 +17,18 @@ import AccountDeletedScreen from './screens/AccountDeletedScreen';
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+const firebaseConfig = {
+  apiKey: "AIzaSyCQGbg_k9aE5FxsPHB9FenzAONu4_yNfWE",
+  authDomain: "socialbubble-ff070.firebaseapp.com",
+  projectId: "socialbubble-ff070",
+  storageBucket: "socialbubble-ff070.appspot.com",
+  messagingSenderId: "426846827737",
+  appId: "1:426846827737:web:58cdaded0ed89d490afac8",
+  measurementId: "G-1EQTFQNESR"
+};
 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 

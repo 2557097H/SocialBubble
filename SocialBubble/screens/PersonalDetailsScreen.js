@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
-import {auth} from '../firebase';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import PreferencesScreen from './PreferencesScreen';
  
 export default function PersonalDetailsScreen({navigation}) {
@@ -10,10 +10,10 @@ export default function PersonalDetailsScreen({navigation}) {
         const [password, setPassword] = useState("")
 
         const handleSignUp=() => {
-            auth 
-            .createUserWithEmailAndPassword(email,password)
-            .then(userCredentials => {
-                const user = userCredentials.user; 
+          const auth = getAuth()
+          createUserWithEmailAndPassword(auth,email,password)
+            .then((userCredential) => {
+                const user = userCredential.user; 
                 console.log(user.email);
             })
             .catch(error=>alert(error.message))
