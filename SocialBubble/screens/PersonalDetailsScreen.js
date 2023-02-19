@@ -2,22 +2,31 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set } from 'firebase/database';
 import PreferencesScreen from './PreferencesScreen';
  
 export default function PersonalDetailsScreen({navigation}) {
 
         const [email, setEmail] = useState("")
         const [password, setPassword] = useState("")
+        const [name, setName] = useState("")
+        const [dateOfBirth, setDateOfBirth] = useState("")
+        const [occupation, setOccupation] = useState("")
 
+        const auth = getAuth();
+        const db = getDatabase();
         const handleSignUp=() => {
-          const auth = getAuth()
           createUserWithEmailAndPassword(auth,email,password)
             .then((userCredential) => {
-                const user = userCredential.user; 
+                const user = userCredential.user;
                 console.log(user.email);
+                set(ref(db, 'users/' + user.uid), {
+                  Name: name,
+                  DateOfBirth: dateOfBirth,
+                  Occupation: occupation
+                });
             })
             .catch(error=>alert(error.message))
-            
         };
 
 
@@ -32,14 +41,17 @@ export default function PersonalDetailsScreen({navigation}) {
               <TextInput
               placeholder = "Name"
               style={styles.input}
+              onChangeText={text=>setName(text)}
               />
               <TextInput
               placeholder = "Date of Birth"
               style={styles.input}
+              onChangeText={text=>setDateOfBirth(text)}
               />
               <TextInput
               placeholder = "Occupation"
               style={styles.input}
+              onChangeText={text=>setOccupation(text)}
               />
               <TextInput
               placeholder = "Email"
