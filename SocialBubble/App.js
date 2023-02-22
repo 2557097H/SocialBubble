@@ -1,13 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-<<<<<<< HEAD
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-=======
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
->>>>>>> 6fdff98 (profile and lobby pages)
 import LoginScreen from './screens/LoginScreen';
 import ChatScreen from './screens/ChatScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -18,15 +15,11 @@ import PasswordChangedScreen from './screens/PasswordChangedScreen';
 import ConfirmPasswordScreen from './screens/ConfirmPasswordScreen';
 import DeleteAccountScreen from './screens/DeleteAccountScreen';
 import AccountDeletedScreen from './screens/AccountDeletedScreen';
-<<<<<<< HEAD
-=======
 
 import ProfileScreen from './screens/ProfileScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
 import OtherUsersProfileScreen from './screens/OtherUsersProfileScreen';
-const Tab = createBottomTabNavigator();
->>>>>>> 6fdff98 (profile and lobby pages)
 
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
