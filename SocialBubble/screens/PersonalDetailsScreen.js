@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
-
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import PreferencesScreen from './PreferencesScreen';
+ 
 export default function PersonalDetailsScreen({navigation}) {
+
+        const [email, setEmail] = useState("")
+        const [password, setPassword] = useState("")
+
+        const handleSignUp=() => {
+          const auth = getAuth()
+          createUserWithEmailAndPassword(auth,email,password)
+            .then((userCredential) => {
+                const user = userCredential.user; 
+                console.log(user.email);
+                navigation.navigate("Preferences");
+
+            })
+            .catch(error=>alert(error.message))   
+        };
+
+
         return (
           <KeyboardAvoidingView
           style={styles.container}
@@ -26,6 +45,8 @@ export default function PersonalDetailsScreen({navigation}) {
               <TextInput
               placeholder = "Email"
               style={styles.input}
+              value={email}
+              onChangeText={text=>setEmail(text)}
               />
               <TextInput
               placeholder = "Confirm Email"
@@ -35,6 +56,8 @@ export default function PersonalDetailsScreen({navigation}) {
               placeholder = "Password"
               secureTextEntry
               style={styles.input}
+              value={password}
+              onChangeText={text=>setPassword(text)}
               />    
               <TextInput 
               placeholder = "Confirm Password"
@@ -46,7 +69,9 @@ export default function PersonalDetailsScreen({navigation}) {
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Preferences")}
+                onPress={() => {
+                  handleSignUp();
+                }}
             >
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>

@@ -1,7 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, ImageBackground, TouchableOpacity } from 'react-native';
+import { getAuth, signOut} from "firebase/auth";
+
 
 const SettingsScreen = ({ navigation }) => {
+
+  const auth = getAuth()
+  const handleSignOut=() => {
+    signOut(auth)
+      .then(() => {
+        navigation.navigate("Login");
+      })
+      .catch(error=>alert(error.message))   
+  };
+
+
   return (
     <View
       style={styles.container}
@@ -13,7 +26,9 @@ const SettingsScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Login")}
+          onPress={() => {
+            handleSignOut();
+          }}
         >
           <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
