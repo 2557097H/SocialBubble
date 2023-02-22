@@ -14,14 +14,16 @@ const EditProfileScreen = ({navigation}) => {
         {/*nickname name of the profile*/}
         <View style={styles.titlesContainer}>
           <Text style={styles.subTitles}>Edit nickname: </Text>
-          <TextInput
+          <TextInput multiline={true}
             style={{
+            placeholderTextColor: 'grey',
+            multiline: true,
             height: 40,
             borderColor: 'gray',
             borderWidth: 1,
             borderRadius:8,
            }}
-            defaultValue= {" " + " Jedi Master Yoda"}
+            placeholder= {" " + " Jedi Master Yoda"}
             />
         </View>
 
@@ -56,13 +58,15 @@ const EditProfileScreen = ({navigation}) => {
                About me:
           </Text>
           <TextInput
+            multiline={true}
+            placeholderTextColor="grey"
             style={{
             height: "85%",
-            borderColor: 'gray',
             borderWidth: 1,
             borderRadius:8,
+            textAlignVertical: 'top',
            }}
-            defaultValue= {" " + "Current Profile"}
+            placeholder = {" " + "Current Profile"}
             />
         </View>
           
