@@ -19,6 +19,10 @@ const SettingsScreen = ({ navigation }) => {
     <View
       style={styles.container}
     >
+      <View style={styles.titlesContainer}>
+        <Text style={styles.titles}>Settings</Text>
+      </View>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -57,28 +61,23 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "80%",
-    backgroundColor: "lightgrey",
+    backgroundColor: "#9BD9F4", 
     padding: 5,
     borderRadius: 10,
     margin: 5,
     alignItems: "center",
   },
   titles:{
-    fontWeight:"bold",
-    fontSize:35,
-    color: "black",
-    paddingHorizontal:45,
-    paddingTop:70,
-    paddingBottom:30,
-    
+    color: 'grey',
+    fontSize: 30,
   },
-  
   buttonContainer:{
     width: "80%",
-    flex: 1,
-    marginTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 10,
   },
   buttonText: {
     color: "black",
