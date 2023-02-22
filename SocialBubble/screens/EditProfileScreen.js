@@ -22,8 +22,9 @@ const EditProfileScreen = ({navigation}) => {
             borderColor: 'gray',
             borderWidth: 1,
             borderRadius:8,
+            paddingHorizontal: 5,
            }}
-            placeholder= {" " + " Jedi Master Yoda"}
+            placeholder= {"Jedi Master Yoda"}
             />
         </View>
 
@@ -65,8 +66,9 @@ const EditProfileScreen = ({navigation}) => {
             borderWidth: 1,
             borderRadius:8,
             textAlignVertical: 'top',
+            padding: 10,
            }}
-            placeholder = {" " + "Current Profile"}
+            placeholder = {"Current Profile"}
             />
         </View>
           
