@@ -1,6 +1,16 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
+import DropDown from '../components/Dropdown';
+
+const interests = [
+  { label: 'Sports', value: '1' },
+  { label: 'Gaming', value: '2' },
+  { label: 'Art', value: '3' },
+  { label: 'Music', value: '4' },
+  { label: 'Travel', value: '5' },
+  { label: 'Cooking', value: '6' },
+];
 
 export default function PreferencesScreen({navigation}) {
         return (
@@ -11,10 +21,8 @@ export default function PreferencesScreen({navigation}) {
               <Text style={styles.title}>Interests</Text>
             </View>
             <View style={styles.inputContainer}>
-              <TextInput
-              placeholder = "Enter Your Interests"
-              multiline = {true}
-              style={styles.input}
+              <DropDown
+              data={interests}
               />
             </View>
 
