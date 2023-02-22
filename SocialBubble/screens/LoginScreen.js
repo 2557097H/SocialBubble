@@ -1,11 +1,38 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, Image, ScrollView} from 'react-native';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 //details page where the user enters their personal details.
 //DOB field is just text input rather than date selector
 
 export default function LoginScreen({navigation}) {
+
+        const [email, setEmail] = useState("")
+        const [password, setPassword] = useState("")
+
+
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+          if(user) {
+            const uid = user.uid;
+            console.log(uid,"Signedin")
+            navigation.navigate("Home")
+          }else{
+            console.log("No user")
+          }
+        })
+
+        const handleLogIn=() => {
+          signInWithEmailAndPassword(auth,email,password)
+            .then((userCredential) => {
+                const user = userCredential.user; 
+                console.log(user.email);
+                navigation.navigate("Home");
+            })
+            .catch(error=>alert(error.message))   
+        };
+
         return (
           <KeyboardAvoidingView
           style={styles.container}
@@ -18,18 +45,24 @@ export default function LoginScreen({navigation}) {
               <TextInput
               placeholder = "Your Email"
               style={styles.input}
+              value={email}
+              onChangeText={text=>setEmail(text)}
               />
               <TextInput
               placeholder = "Your Password"
-              style={styles.input}sss
+              secureTextEntry
+              style={styles.input}
+              value={password}
+              onChangeText={text=>setPassword(text)}
               />
             </View>
 
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Details")}
-                
+                onPress={() => {
+                  handleLogIn();
+                }}
             >
               <Text style={styles.buttonText}>Sign In</Text>
             </TouchableOpacity>

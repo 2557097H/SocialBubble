@@ -15,9 +15,10 @@ export default function PersonalDetailsScreen({navigation}) {
             .then((userCredential) => {
                 const user = userCredential.user; 
                 console.log(user.email);
+                navigation.navigate("Preferences");
+
             })
-            .catch(error=>alert(error.message))
-            
+            .catch(error=>alert(error.message))   
         };
 
 
@@ -70,7 +71,6 @@ export default function PersonalDetailsScreen({navigation}) {
                 style={styles.button}
                 onPress={() => {
                   handleSignUp();
-                  navigation.navigate("Preferences");
                 }}
             >
               <Text style={styles.buttonText}>Next</Text>
