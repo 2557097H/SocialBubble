@@ -3,8 +3,12 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+<<<<<<< HEAD
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
+=======
+import { getDatabase } from "firebase/database";
+>>>>>>> fb2fbac6f4f841f9833bb0c16695770ede9772da
 import LoginScreen from './screens/LoginScreen';
 import ChatScreen from './screens/ChatScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -36,6 +40,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const database = getDatabase(app);
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
