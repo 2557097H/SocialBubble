@@ -1,4 +1,4 @@
-import {React,useId,useState} from 'react';
+import {React,useId,useState, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Image, TouchableOpacity, StyleSheet, Text, View, FlatList, Dimensions, Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback, TextInput, AsyncStorage } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -30,10 +30,8 @@ const SendMessage = async(senderId, receiverId, message) => {
   try{
     return await Firebase
       .database()
-      .ref("users"+ senderId)
-      child(inner)
-      child(chatline)
-      child(message)
+      .ref("messages"+ senderId)
+      child(receiverId)
       .push({
         senderId : senderId,
         recieverId : receiverId,
@@ -50,10 +48,8 @@ const ReceiveMessage = async(senderId, receiverId, message) => {
   try{
     return await Firebase
       .database()
-      .ref("users"+ senderId)
-      child(inner)
-      child(chatline)
-      child(message)
+      .ref("messages"+ receiverId)
+      child(senderId)
       .push({
         senderId : senderId,
         recieverId : receiverId,
@@ -107,20 +103,17 @@ export const ReceiveMessage = async(senderId, receiverId, message) => {
 
 function ChatScreen(props) {
 
-  state = {
-    message: "",
-    senderId: '',
-    receiverId: ''
-  }
+  const [state, setState] = useState(
+   ""
+  );
 
-  async function componentDidMount(){
+  useEffect(() => {
     const auth = getAuth();
     const user = auth.currentUser;
     const senderId = user;
     const receiverId = "Hz6ha0zlMANIMIwfwsg2X3f7bDS2";
-    this.setState({senderId: senderId, receiverId: receiverId})
-
-  }
+    setState(prevState => ({ ...prevState, senderId: senderId, receiverId: receiverId }));
+  }, []);
 
   
   
@@ -131,7 +124,7 @@ function ChatScreen(props) {
       
   
   
-  const [input, setInput] = useState("");
+  const [input, setInput2] = useState("");
   const [output, setOutput] = useState("");
   
  
@@ -159,6 +152,7 @@ function ChatScreen(props) {
 
   const sendPressed = () =>{
     if(input){
+        setState({message: input})
         sendMessage();}
     else{
         console.warn("No text in message");
@@ -191,7 +185,7 @@ function ChatScreen(props) {
                 <SimpleLineIcons name ="emotsmile" size={24} color="grey" style ={styles.inputEmotes} />
                 <TextInput
                 value = {input} 
-                onChangeText = {(text) => this.setState({message: text})}
+                onChangeText = {(text) => setInput2(text)} 
                 placeholder = "type your message..." 
                 style = {styles.input}> 
 
