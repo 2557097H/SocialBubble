@@ -1,29 +1,103 @@
-import {React,useState} from 'react';
+import {React,useId,useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Image, StyleSheet, Text, View, FlatList, Dimensions, Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, Image, StyleSheet, Text, View, FlatList, Dimensions, Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback, AsyncStorage } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Message from '../components/Message';
 import MessageInput from '../components/MessageInput';
 import Chat from '../assets/dummy_data/Chat';
-import { FontAwesome } from '@expo/vector-icons'; 
+import { FontAwesome } from '@expo/vector-icons';
+import { ReactNativeAsyncStorage } from 'firebase/auth'; 
+import LoginScreen from './LoginScreen';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+
 
 
 
 const windowWidth = Dimensions.get('window').width;
 
-function LoginScreen(props) {
+export const SendMessage = async(senderId, receiverId, message) => {
+  try{
+    return await Firebase
+      .database()
+      .ref("messages/"+ senderId)
+      child(receiverId)
+      .push({
+        senderId : senderId,
+        recieverId : receiverId,
+        message: message
 
+      });
+  } catch(error){
+    return error;
+
+  }
+}
+
+export const ReceiveMessage = async(senderId, receiverId, message) => {
+  try{
+    return await Firebase
+      .database()
+      .ref("messages/"+ receiverId)
+      child(senderId)
+      .push({
+        senderId : senderId,
+        receiverId : receiverId,
+        message: message
+
+      });
+  } catch(error){
+    return error;
+
+  }
+}
+
+
+
+
+
+
+function ChatScreen(props) {
+
+  state = {
+    message: "",
+    senderId: '',
+    recieverId: ''
+  }
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+  
+
+  
+  
+      
+  
+  
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   
+ 
 
   
- 
-  const sendMessage = () => {
+ /*
+  sendMessage = async() => {
     Keyboard.dismiss();
-    setOutput(input);
-    setInput("");
-  };
+    if(this.state.message){
+      SendMessage(senderId,receiverId,this.state.message).
+        then(()=>{
+          this.setState({message: ''})
+        }).catch((err) => {
+          alert(err)
+       })
+       RecieveMessage(senderId,receiverId,this.state.message).
+        then(()=>{
+          this.setState({message: ''})
+        }).catch((err) => {
+          alert(err)
+       })
+    }
+
+  };*/
   
   return(
 
@@ -35,7 +109,7 @@ function LoginScreen(props) {
     <View style = {styles.title}>
     <IonIcon style = {styles.backIcon} name="arrow-back-sharp" size={24} color="white" />
     <FontAwesome style = {styles.groupIcon} name="group" size={24} color="white" />
-    <Text style = {styles.titleText}>Inner Bubble</Text>
+    <Text style = {styles.titleText}>bubble</Text>
     </View>
    
     <FlatList style = {styles.scroll}
@@ -110,4 +184,4 @@ const styles = StyleSheet.create({
   
 });
 
-export default LoginScreen;
+export default ChatScreen;
