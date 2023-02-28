@@ -15,11 +15,12 @@ const MessageInput = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   
+  
   const sendMessage = () => {
     Keyboard.dismiss();
     setOutput(input);
     setInput("");
-  };
+  }; 
 
   const sendPressed = () =>{
     if(input){
