@@ -79,7 +79,7 @@ function ChatScreen(props) {
  
 
   
- /*
+ 
   sendMessage = async() => {
     Keyboard.dismiss();
     if(this.state.message){
@@ -97,7 +97,7 @@ function ChatScreen(props) {
        })
     }
 
-  };*/
+  };
   
   return(
 
