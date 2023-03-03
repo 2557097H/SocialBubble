@@ -13,7 +13,7 @@ before_script:
     - npm install
     - npm ci --cache .npm
     - npx expo install react-native-safe-area-context
-    - npm expo install jest-expo jest
+    - npm install jest-expo --save-dev
     - npm i jest-environment-jsdom --save-dev
 
 eas-build:
