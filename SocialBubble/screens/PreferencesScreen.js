@@ -3,16 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
 import DropDown from '../components/Dropdown';
 
-const interests = [
-  { label: 'Sports', value: '1' },
-  { label: 'Gaming', value: '2' },
-  { label: 'Art', value: '3' },
-  { label: 'Music', value: '4' },
-  { label: 'Travel', value: '5' },
-  { label: 'Cooking', value: '6' },
-];
-
 export default function PreferencesScreen({navigation}) {
+
+  //const [interests, setInterests] = useState("")
+  
         return (
           <KeyboardAvoidingView
           style={styles.container}
@@ -21,15 +15,15 @@ export default function PreferencesScreen({navigation}) {
               <Text style={styles.title}>Interests</Text>
             </View>
             <View style={styles.inputContainer}>
-              <DropDown
-              data={interests}
-              />
+              <DropDown/>
             </View>
 
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  navigation.navigate("Home");
+                }}
             >
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>

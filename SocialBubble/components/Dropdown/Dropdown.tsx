@@ -3,19 +3,41 @@ import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
 import { MultiSelect } from 'react-native-element-dropdown';
 import MultiSelectComponent from 'react-native-element-dropdown/lib/typescript/components/MultiSelect';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { getDatabase, ref, child, get, set, push, update } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
-
-const interests = [
-    { label: 'Sports', value: '1' },
-    { label: 'Gaming', value: '2' },
-    { label: 'Art', value: '3' },
-    { label: 'Music', value: '4' },
-    { label: 'Travel', value: '5' },
-    { label: 'Cooking', value: '6' },
-  ];
+var interestsRef = null;
+var interests = [];
 
 const DropdownComponent = () => {
-    const [selected, setSelected] = useState([]);
+  const dbRef = ref(getDatabase());
+  get(child(dbRef, 'interests/')).then((snapshot) => {
+    if (snapshot.exists()){
+      if (interestsRef==null){
+        interestsRef = snapshot.val();
+        for (let i = 0; i < interestsRef.length; i++){
+        interests.push({label: interestsRef[i], value: i.toString()});
+        };
+      }
+    }else{
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+
+const db = getDatabase();
+const auth = getAuth();
+
+const handleInterests=(selection) => {
+  const user = auth.currentUser;
+  console.log(selection);
+  update(ref(db, 'users/' + user.uid), {
+    Interests: selection
+  });
+};
+
+const [selected, setSelected] = useState([]);
 
     return (
       <View style={styles.container}>
@@ -29,14 +51,21 @@ const DropdownComponent = () => {
           labelField="label"
           valueField="value"
           placeholder="Select Interests"
+          search
+          searchPlaceholder='Search...'
           value={selected}
           onChange={item => {
+            handleInterests(item);
             setSelected(item);
           }}
           
           
           renderSelectedItem={(item, unSelect) => (
-            <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+            <TouchableOpacity
+              onPress={() => {
+                unSelect && unSelect(item);
+                handleInterests(item);
+              }}>
               <View style={styles.selectedStyle}>
                 <Text style={styles.textSelectedStyle}>{item.label}</Text>
                 <AntDesign color="black" name="delete" size={17} />
@@ -47,7 +76,7 @@ const DropdownComponent = () => {
       </View>
     );
   };
-
+  
   export default DropdownComponent;
 
   const styles = StyleSheet.create({

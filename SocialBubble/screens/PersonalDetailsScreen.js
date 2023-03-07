@@ -17,8 +17,8 @@ export default function PersonalDetailsScreen({navigation}) {
         const db = getDatabase();
         const handleSignUp=() => {
           createUserWithEmailAndPassword(auth,email,password)
-            .then((userCredential) => {
-                const user = userCredential.user;
+            .then(() => {
+                const user = auth.currentUser;
                 console.log(user.email);
                 set(ref(db, 'users/' + user.uid), {
                   Name: name,
