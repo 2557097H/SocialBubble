@@ -1,8 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, ImageBackground, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { EmailAuthCredential, EmailAuthProvider, getAuth, reauthenticateWithCredential, sendPasswordResetEmail, updatePassword, ImageBackground} from "firebase/auth";
+import { EmailAuthCredential, EmailAuthProvider, getAuth, reauthenticateWithCredential, sendPasswordResetEmail, updatePassword} from "firebase/auth";
 
 const ConfirmPasswordScreen = ({navigation}) => {
       const [email, setEmail] = useState("")
