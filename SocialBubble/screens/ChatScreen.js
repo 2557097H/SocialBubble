@@ -9,10 +9,11 @@ import { FontAwesome } from '@expo/vector-icons';
 import { ReactNativeAsyncStorage } from 'firebase/auth'; 
 import LoginScreen from './LoginScreen';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { child, getDatabase, set, update, ref, push } from "firebase/database";
+import { child, getDatabase, set, update, ref, push, get } from "firebase/database";
 import {SimpleLineIcons} from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
+
 
 
 
@@ -46,6 +47,7 @@ function ChatScreen(props) {
   
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
+  var exists;
   
  
 
@@ -82,22 +84,45 @@ function ChatScreen(props) {
     }
 
     
-    const SendFirstMessage = (message, senderId, receiverId) => {
+    const SendMessage = (message, senderId, receiverId) => {
+
+      const dbRef = ref(getDatabase());
+
+      //Check thst user exists
+      get(child(dbRef, `bubble/messages/${senderId}/`)).then((snapshot) => {
+      if (snapshot.exists()){
+        console.log("exists!");
+        exists = 1;
+        
+        
+  }
+  else {
+    console.log("Not exists!");
+    exists = 0;
+  }
+
+
+});
+
+      if(exists == 0){
 
     
       console.log(user.email);
-      set(ref(db, 'messages/' + user.uid), {
+      set(ref(db, 'bubble/messages/' + user.uid), {
           message: message,
-          senderId: senderId,
-          receiverId: receiverId})} 
+          senderId: senderId,})} 
 
-      const SendMessage = (message, senderId, receiverId) => {
 
-    
-            console.log(user.email);
-            push(ref(db, 'messages/' + user.uid), {
-                message: message,})} 
-  
+      else{
+
+        push(ref(db, 'bubble/messages/' + user.uid + '/message/'), {
+          message: message,})} 
+
+
+      }
+      
+
+            
   return(
 
   
@@ -249,6 +274,3 @@ input: {
 });
 
 export default ChatScreen;
-
-
-
