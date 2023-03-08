@@ -1,10 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity, ImageBackground} from 'react-native';
-
+import { EmailAuthProvider, getAuth, reauthenticateWithCredential, deleteUser} from "firebase/auth";
 
 
 const DeleteAccountScreen = ({navigation}) => {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const deletesAccount=() => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const cred = EmailAuthProvider.credential(email,password)
+    reauthenticateWithCredential(user, cred)
+      .then(() => {
+        deleteUser(user).then(() => {
+          navigation.navigate("AccountDeleted")
+        }).catch((error) => {
+          //insert error message
+        });
+      }) 
+  }
+
   return (
     <ImageBackground
               style={styles.backgroundImage}
@@ -14,18 +31,33 @@ const DeleteAccountScreen = ({navigation}) => {
     style={styles.container}
     >
       <View style={styles.titleContainer}>
-          <Text style={styles.titles}>Enter password to delete:</Text>
+          <Text style={styles.titles}>Confirm Login Details</Text>
       </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+        placeholder = "Email"
+        style={styles.input}
+        value={email}
+        onChangeText={text=>setEmail(text)}
+        />
+      </View> 
       <View style={styles.inputContainer}>
         <TextInput
         placeholder = "Password"
         style={styles.input}
+        value={password}
+        onChangeText={text=>setPassword(text)}
+        secureTextEntry
         />
       </View>  
       <View style={styles.buttonContainer}>
       <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("AccountDeleted")}
+          onPress={
+            () => {
+              deletesAccount();
+            }}
+            //() => navigation.navigate("AccountDeleted")}
       >
         <Text style={styles.buttonText}>Delete</Text>
       </TouchableOpacity>

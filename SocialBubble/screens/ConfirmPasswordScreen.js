@@ -10,7 +10,7 @@ const ConfirmPasswordScreen = ({navigation}) => {
       const [newPassword, setNewPassword] = useState("")
 
 
-        const sendsPasswordEmail=() => {
+        const changesPassword=() => {
           const auth = getAuth();
           const user = auth.currentUser;
           const cred = EmailAuthProvider.credential(email,password)
@@ -50,12 +50,14 @@ const ConfirmPasswordScreen = ({navigation}) => {
               style={styles.input}
               value={password}
               onChangeText={text=>setPassword(text)}
+              secureTextEntry
               />
               <TextInput
               placeholder = "New Password"
               style={styles.input}
               value={newPassword}
               onChangeText={text=>setNewPassword(text)}
+              secureTextEntry
               />    
             </View>
             <View style={styles.buttonContainer}>
@@ -63,7 +65,7 @@ const ConfirmPasswordScreen = ({navigation}) => {
                 style={styles.button}
                 //onPress={() => navigation.navigate("PasswordChanged")}
                 onPress={() => {
-                  sendsPasswordEmail();
+                  changesPassword();
                 }}
             >
               <Text style={styles.buttonText}>Change Password</Text>
