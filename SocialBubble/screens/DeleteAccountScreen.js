@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity, ImageBackground} from 'react-native';
 import { EmailAuthProvider, getAuth, reauthenticateWithCredential, deleteUser} from "firebase/auth";
-
-
 
 
 const DeleteAccountScreen = ({navigation}) => {
@@ -25,6 +23,10 @@ const DeleteAccountScreen = ({navigation}) => {
   }
 
   return (
+    <ImageBackground
+              style={styles.backgroundImage}
+              source={require('../assets/sb-nologo.png')}
+    >
     <KeyboardAvoidingView
     style={styles.container}
     >
@@ -63,10 +65,15 @@ const DeleteAccountScreen = ({navigation}) => {
       </View>
 
     </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
   container: {
     flex: 1,
     marginTop: 20,

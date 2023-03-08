@@ -1,11 +1,15 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons'; 
 
 const EditProfileScreen = ({navigation}) => {
   return (
+    <ImageBackground
+    style={styles.backgroundImage}
+    source={require('../assets/sb-nologo.png')}
+  >
     <KeyboardAvoidingView
     style={styles.container}
     >
@@ -91,10 +95,15 @@ const EditProfileScreen = ({navigation}) => {
       </View>
 
     </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
   container: {
     flex: 1,
     marginTop: 20,

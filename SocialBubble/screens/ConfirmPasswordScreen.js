@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, ImageBackground, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { EmailAuthCredential, EmailAuthProvider, getAuth, reauthenticateWithCredential, sendPasswordResetEmail, updatePassword} from "firebase/auth";
 
@@ -24,9 +24,17 @@ const ConfirmPasswordScreen = ({navigation}) => {
         }
 
         return (
+          <ImageBackground
+              style={styles.backgroundImage}
+              source={require('../assets/sb-nologo.png')}
+            >
           <KeyboardAvoidingView
           style={styles.container}
           >
+
+
+
+
             <View style={styles.titlesContainer}>
                 <Text style={styles.titles}>Change Password</Text>
             </View>
@@ -64,12 +72,19 @@ const ConfirmPasswordScreen = ({navigation}) => {
             </TouchableOpacity>
 
             </View>
+            
 
           </KeyboardAvoidingView>
+
+          </ImageBackground>
         );
       }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
     container: {
       flex: 1,
       marginTop: 20,

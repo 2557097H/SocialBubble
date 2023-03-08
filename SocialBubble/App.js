@@ -48,7 +48,12 @@ export default function App() {
     <NavigationContainer>
     <Tab.Navigator 
     screenOptions={{
-    headerShown: false
+    headerShown: false,
+    tabBarStyle: {
+      height: 60,
+      paddingHorizontal: 5,
+      backgroundColor: '#cfedf7',
+  },
     }}>
             <Tab.Screen name ="Login" component={LoginScreen}
             options={{
