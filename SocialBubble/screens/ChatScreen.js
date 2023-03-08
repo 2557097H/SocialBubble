@@ -9,7 +9,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { ReactNativeAsyncStorage } from 'firebase/auth'; 
 import LoginScreen from './LoginScreen';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { child, getDatabase } from "firebase/database";
+import { child, getDatabase, set, update, ref, push } from "firebase/database";
 import {SimpleLineIcons} from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
@@ -18,84 +18,7 @@ import { Feather } from '@expo/vector-icons';
 
 
 
-const windowWidth = Dimensions.get('window').width;    
-
-
-
-
-
-
-
-const SendMessage = async(senderId, receiverId, message) => {
-  try{
-    return await Firebase
-      .database()
-      .ref("messages"+ senderId)
-      child(receiverId)
-      .push({
-        senderId : senderId,
-        recieverId : receiverId,
-        message: message
-
-      });
-  } catch(error){
-    return error;
-
-  }
-}
-
-const ReceiveMessage = async(senderId, receiverId, message) => {
-  try{
-    return await Firebase
-      .database()
-      .ref("messages"+ receiverId)
-      child(senderId)
-      .push({
-        senderId : senderId,
-        recieverId : receiverId,
-        message: message
-
-      });
-  } catch(error){
-    return error;
-
-  }
-}
-
-
-/*
-export const SendMessage = async(senderId, receiverId, message) => {
-  try{
-    return await chatlineRef
-      .child(senderId)
-      .child(receiverId)
-      .push({
-        senderId : senderId,
-        receiverId : receiverId,
-        message: message
-      });
-  } catch(error){
-    return error;
-
-  }
-}
-
-export const ReceiveMessage = async(senderId, receiverId, message) => {
-  try{
-    return await chatlineRef
-      .child(senderId)
-      .child(receiverId)
-      .push({
-        senderId : senderId,
-        receiverId : receiverId,
-        message: message
-      });
-  } catch(error){
-    return error;
-
-  }
-}
-*/
+const windowWidth = Dimensions.get('window').width; 
 
 
 
@@ -103,17 +26,14 @@ export const ReceiveMessage = async(senderId, receiverId, message) => {
 
 function ChatScreen(props) {
 
-  const [state, setState] = useState(
-   ""
-  );
-
-  useEffect(() => {
+    const db = getDatabase();
     const auth = getAuth();
     const user = auth.currentUser;
     const senderId = user;
     const receiverId = "Hz6ha0zlMANIMIwfwsg2X3f7bDS2";
-    setState(prevState => ({ ...prevState, senderId: senderId, receiverId: receiverId }));
-  }, []);
+   
+    
+  
 
   
   
@@ -124,13 +44,13 @@ function ChatScreen(props) {
       
   
   
-  const [input, setInput2] = useState("");
+  const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   
  
 
   
- 
+ /*
   const sendMessage = async() => {
     Keyboard.dismiss();
     if(this.state.message){
@@ -148,16 +68,35 @@ function ChatScreen(props) {
        })
     }
 
-  };
+  };*/
+  
 
   const sendPressed = () =>{
+
     if(input){
-        setState({message: input})
-        sendMessage();}
+        const message = input;
+        SendMessage(message, user.uid, receiverId);}
     else{
         console.warn("No text in message");
     }
     }
+
+    
+    const SendFirstMessage = (message, senderId, receiverId) => {
+
+    
+      console.log(user.email);
+      set(ref(db, 'messages/' + user.uid), {
+          message: message,
+          senderId: senderId,
+          receiverId: receiverId})} 
+
+      const SendMessage = (message, senderId, receiverId) => {
+
+    
+            console.log(user.email);
+            push(ref(db, 'messages/' + user.uid), {
+                message: message,})} 
   
   return(
 
@@ -185,7 +124,7 @@ function ChatScreen(props) {
                 <SimpleLineIcons name ="emotsmile" size={24} color="grey" style ={styles.inputEmotes} />
                 <TextInput
                 value = {input} 
-                onChangeText = {(text) => setInput2(text)} 
+                onChangeText = {(text) => setInput(text)} 
                 placeholder = "type your message..." 
                 style = {styles.input}> 
 
