@@ -1,8 +1,15 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image  } from 'react-native';
+import { getAuth } from "firebase/auth"
 
 const ProfileScreen = ({navigation}) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const email = user.email;
+  const displayName = user.displayName;
+
+
   return (
               <ImageBackground
               style={styles.backgroundImage}
@@ -15,8 +22,8 @@ const ProfileScreen = ({navigation}) => {
         
         {/*nickname name of the profile*/}
         <View style={styles.titlesContainer}>
-          <Text style={styles.titles}>Jedi Master Yoda</Text>
-          <Text style={styles.subTitles}>@littlegreenfriend</Text>
+          <Text style={styles.titles}>{displayName}</Text>
+          <Text style={styles.subTitles}>@{displayName}</Text>
         </View>
 
         {/*profile picture of the profile*/}

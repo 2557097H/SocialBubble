@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground} from 'react-native';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
+import { getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
 import PreferencesScreen from './PreferencesScreen';
  
 export default function PersonalDetailsScreen({navigation}) {
 
         const [email, setEmail] = useState("")
         const [password, setPassword] = useState("")
+        const [name, setName] = useState("")
 
         const handleSignUp=() => {
           const auth = getAuth()
@@ -15,8 +16,11 @@ export default function PersonalDetailsScreen({navigation}) {
             .then((userCredential) => {
                 const user = userCredential.user; 
                 console.log(user.email);
-                navigation.navigate("Preferences");
-
+                updateProfile(auth.currentUser, {
+                  displayName: name
+                }).then(() => {
+                  navigation.navigate("Preferences");
+                }).catch(error=>alert(error.message))
             })
             .catch(error=>alert(error.message))   
         };
@@ -36,6 +40,8 @@ export default function PersonalDetailsScreen({navigation}) {
               <TextInput
               placeholder = "Name"
               style={styles.input}
+              value={name}
+              onChangeText={text=>setName(text)}
               />
               <TextInput
               placeholder = "Date of Birth"

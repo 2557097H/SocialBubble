@@ -1,8 +1,28 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { EmailAuthCredential, EmailAuthProvider, getAuth, reauthenticateWithCredential, sendPasswordResetEmail, updatePassword} from "firebase/auth";
 
 const ConfirmPasswordScreen = ({navigation}) => {
+      const [email, setEmail] = useState("")
+      const [password, setPassword] = useState("")
+      const [newPassword, setNewPassword] = useState("")
+
+
+        const sendsPasswordEmail=() => {
+          const auth = getAuth();
+          const user = auth.currentUser;
+          const cred = EmailAuthProvider.credential(email,password)
+          reauthenticateWithCredential(user, cred)
+            .then(() => {
+              updatePassword(user, newPassword)
+                .then(() => {
+                  navigation.navigate("PasswordChanged")
+                })
+            }) 
+        }
+
         return (
           <ImageBackground
               style={styles.backgroundImage}
@@ -20,24 +40,33 @@ const ConfirmPasswordScreen = ({navigation}) => {
             </View>
             <View style={styles.inputContainer}>
               <TextInput
-              placeholder = "Password"
+              placeholder = "Email"
               style={styles.input}
+              value={email}
+              onChangeText={text=>setEmail(text)}
+              />
+              <TextInput
+              placeholder = "Current Password"
+              style={styles.input}
+              value={password}
+              onChangeText={text=>setPassword(text)}
               />
               <TextInput
               placeholder = "New Password"
               style={styles.input}
-              />
-              <TextInput
-              placeholder = "Confirm New Password"
-              style={styles.input}
-              />                     
+              value={newPassword}
+              onChangeText={text=>setNewPassword(text)}
+              />    
             </View>
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("PasswordChanged")}
+                //onPress={() => navigation.navigate("PasswordChanged")}
+                onPress={() => {
+                  sendsPasswordEmail();
+                }}
             >
-              <Text style={styles.buttonText}>Next</Text>
+              <Text style={styles.buttonText}>Change Password</Text>
             </TouchableOpacity>
 
             </View>
