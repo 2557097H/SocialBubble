@@ -18,6 +18,11 @@ const ConfirmPasswordScreen = ({navigation}) => {
             .then(() => {
               updatePassword(user, newPassword)
                 .then(() => {
+                  
+                  /* Clear inputs so that if the page is revisited in the same session the form is empty */
+                  this.emailInput.clear();
+                  this.currentPasswordInput.clear();
+                  this.newPasswordInput.clear();
                   navigation.navigate("PasswordChanged")
                 })
             }) 
@@ -47,12 +52,14 @@ const ConfirmPasswordScreen = ({navigation}) => {
               onChangeText={text=>setEmail(text)}
               />
               <TextInput
+              ref={input => {this.currentPasswordInput = input}}
               placeholder = "Current Password"
               style={styles.input}
               value={password}
               onChangeText={text=>setPassword(text)}
               />
               <TextInput
+              ref={input => {this.newPasswordInput = input}}
               placeholder = "New Password"
               style={styles.input}
               value={newPassword}

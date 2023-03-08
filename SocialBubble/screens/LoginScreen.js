@@ -31,9 +31,9 @@ export default function LoginScreen({navigation}) {
             .then((userCredential) => {
                 const user = userCredential.user; 
                 console.log(user.email);
+                /* Clear inputs so that if the page is revisited in the same session the form is empty */
                 this.emailInput.clear();
                 this.passwordInput.clear();
-                console.log("Ran")
                 navigation.navigate("Home");
             })
             .catch(error=>alert(error.message))   
