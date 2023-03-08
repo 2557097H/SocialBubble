@@ -18,6 +18,9 @@ export default function LoginScreen({navigation}) {
             const uid = user.uid;
             console.log(uid,"Signedin")
             navigation.navigate("Home")
+            this.emailInput.clear();
+            this.passwordInput.clear();
+            
           }else{
             console.log("No user")
           }
@@ -28,6 +31,9 @@ export default function LoginScreen({navigation}) {
             .then((userCredential) => {
                 const user = userCredential.user; 
                 console.log(user.email);
+                this.emailInput.clear();
+                this.passwordInput.clear();
+                console.log("Ran")
                 navigation.navigate("Home");
             })
             .catch(error=>alert(error.message))   
@@ -45,12 +51,14 @@ export default function LoginScreen({navigation}) {
             <View style={styles.inputContainer}>
               <View style={styles.gap}/>
               <TextInput
+              ref={input => {this.emailInput = input}}
               placeholder = "Your Email"
               style={styles.input}
               value={email}
               onChangeText={text=>setEmail(text)}
               />
               <TextInput
+              ref={input => {this.passwordInput = input}}
               placeholder = "Your Password"
               secureTextEntry
               style={styles.input}
