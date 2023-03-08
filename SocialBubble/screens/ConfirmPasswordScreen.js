@@ -24,9 +24,17 @@ const ConfirmPasswordScreen = ({navigation}) => {
         }
 
         return (
+          <ImageBackground
+              style={styles.backgroundImage}
+              source={require('../assets/sb-nologo.png')}
+            >
           <KeyboardAvoidingView
           style={styles.container}
           >
+
+
+
+
             <View style={styles.titlesContainer}>
                 <Text style={styles.titles}>Change Password</Text>
             </View>
@@ -62,12 +70,19 @@ const ConfirmPasswordScreen = ({navigation}) => {
             </TouchableOpacity>
 
             </View>
+            
 
           </KeyboardAvoidingView>
+
+          </ImageBackground>
         );
       }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
     container: {
       flex: 1,
       marginTop: 20,
