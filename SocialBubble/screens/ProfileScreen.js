@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground  } from 'react-native';
 import { getAuth } from "firebase/auth"
 
 const ProfileScreen = ({navigation}) => {
