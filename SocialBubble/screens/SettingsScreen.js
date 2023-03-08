@@ -16,6 +16,12 @@ const SettingsScreen = ({ navigation }) => {
 
 
   return (
+    <ImageBackground
+          style={styles.backgroundImage}
+          source={require('../assets/sb-nologo.png')}
+          >
+
+
     <View
       style={styles.container}
     >
@@ -49,10 +55,15 @@ const SettingsScreen = ({ navigation }) => {
         
       </View>
     </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
   container: {
     flex: 1,
     marginTop: 20,

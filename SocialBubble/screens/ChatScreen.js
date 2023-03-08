@@ -1,6 +1,6 @@
 import {React,useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Image, StyleSheet, Text, View, FlatList, Dimensions, Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, Image, StyleSheet, Text, View, FlatList, Dimensions, Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Message from '../components/Message';
 import MessageInput from '../components/MessageInput';
@@ -11,7 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const windowWidth = Dimensions.get('window').width;
 
-function LoginScreen(props) {
+function ChatScreen(props) {
 
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -26,88 +26,86 @@ function LoginScreen(props) {
   };
   
   return(
+    <ImageBackground
+              style={styles.backgroundImage}
+              source={require('../assets/sb-nologo.png')}
+    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-  
-<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
   <KeyboardAvoidingView
-    style={styles.container}>
+    style={styles.container}
+    >
+      <View style={styles.titlesContainer}>
+        
+        {/*title for chat*/}
+        <View style={styles.titlesContainer}>
+          <Text style={styles.titles}>Bubble Chat</Text>
+        </View>
 
-    <View style = {styles.title}>
-    <IonIcon style = {styles.backIcon} name="arrow-back-sharp" size={24} color="white" />
-    <FontAwesome style = {styles.groupIcon} name="group" size={24} color="white" />
-    <Text style = {styles.titleText}>Inner Bubble</Text>
-    </View>
-   
-    <FlatList style = {styles.scroll}
-    data = {Chat.messages}
-    renderItem = {({item}) => <Message message = {item}></Message>}
-    inverted>
-    </FlatList>   
-    
+        <View style={styles.chat_container}>
+        <FlatList style = {styles.scroll}
+          data = {Chat.messages}
+          renderItem = {({item}) => <Message message = {item}></Message>}
+          inverted/>
+        </View>
+          
+        {/*back and edit buttons of the profile*/}
+        <View style={styles.input_container}>
+        <MessageInput>
+        </MessageInput>
+        </View>
+      </View>
 
-    <View style = {styles.box}>
-    <MessageInput>
-    </MessageInput>
-    </View>
-    
+    </KeyboardAvoidingView>
 
-    
 
- 
-
-  </KeyboardAvoidingView>
 </TouchableWithoutFeedback>
-    
-    
+</ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  backgroundImage:{
     flex:1,
+    resizeMode:'cover',
+  },
+
+  container: {
+    flex: 1,
     marginTop: 20,
-    backgroundColor: "#fff",
-    
-  },
-  box: {
-    width: windowWidth,
-    backgroundColor: "white",
-    borderColor: "grey",
-    borderWidth: 2,
-    padding: 10,
-
-
-  },
-  title: {
-    
-    width: windowWidth,
-    backgroundColor: "#9BD9F4",
-    padding:20,
     alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: 'center',
   },
 
-  titleText:{
-    color: "white",
-    fontWeight: "600",
-    fontSize: 25,
-    
-   
+  titlesContainer:{
+    paddingHorizontal: 20,
+    marginTop: 15,
+    alignContent: 'center',
+    alignItems:'center',
+    flex: 1,
+    paddingBottom:10,
   },
-  
-  groupIcon:{
-    marginHorizontal: 15,
-    },
-  backIcon: {
-   marginRight: 40,
+  titles:{
+    color: 'grey',
+    fontSize: 30,
+    alignContent: 'center',
+  },
+  chat_container:{
+    color: 'white',
+    width:330,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding:6,
+    flex: 15,
   },
   scroll:{
-    //marginTop: 80,
-
-  }
-  
-
-  
+    backgroundColor: "white",
+  },
+  input_container:{
+      width: 350,
+      alignContent: 'center',
+      flex: 1.8,
+  },
 });
 
-export default LoginScreen;
+export default ChatScreen;

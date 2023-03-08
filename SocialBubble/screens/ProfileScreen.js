@@ -1,9 +1,13 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground  } from 'react-native';
 
 const ProfileScreen = ({navigation}) => {
   return (
+              <ImageBackground
+              style={styles.backgroundImage}
+              source={require('../assets/sb-nologo.png')}
+            >
     <KeyboardAvoidingView
     style={styles.container}
     >
@@ -56,10 +60,16 @@ const ProfileScreen = ({navigation}) => {
       </View>
 
     </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+    backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
+  
   container: {
     flex: 1,
     marginTop: 20,
@@ -84,9 +94,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     alignContent: 'center',
   },
-
-
-
   profilePictureContainer:{
     color: 'white',
     backgroundColor: 'white',

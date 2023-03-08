@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
+import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground} from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import PreferencesScreen from './PreferencesScreen';
  
@@ -22,7 +22,10 @@ export default function PersonalDetailsScreen({navigation}) {
         };
 
 
-        return (
+        return (<ImageBackground
+          style={styles.backgroundImage}
+          source={require('../assets/sb-nologo.png')}
+          >
           <KeyboardAvoidingView
           style={styles.container}
           >
@@ -78,12 +81,17 @@ export default function PersonalDetailsScreen({navigation}) {
 
             </View>
           </KeyboardAvoidingView>
+          </ImageBackground>
 
 
         );
       }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
     container: {
       flex: 1,
       marginTop: 20,
