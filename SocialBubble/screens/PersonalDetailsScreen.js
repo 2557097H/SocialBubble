@@ -19,6 +19,16 @@ export default function PersonalDetailsScreen({navigation}) {
                 updateProfile(auth.currentUser, {
                   displayName: name
                 }).then(() => {
+                  
+                  /* Clear inputs so that if the page is revisited in the same session they are gone */
+                  this.nameInput.clear();
+                  this.dobInput.clear();
+                  this.occupationInput.clear();
+                  this.emailInput.clear();
+                  this.confirmEmailInput.clear();
+                  this.passwordInput.clear();
+                  this.confirmPasswordInput.clear();
+
                   navigation.navigate("Preferences");
                 }).catch(error=>alert(error.message))
             })
@@ -38,30 +48,36 @@ export default function PersonalDetailsScreen({navigation}) {
             </View>
             <View style={styles.inputContainer}>
               <TextInput
+              ref={input => {this.nameInput = input}}
               placeholder = "Name"
               style={styles.input}
               value={name}
               onChangeText={text=>setName(text)}
               />
               <TextInput
+              ref={input => {this.dobInput = input}}
               placeholder = "Date of Birth"
               style={styles.input}
               />
               <TextInput
+              ref={input => {this.occupationInput = input}}
               placeholder = "Occupation"
               style={styles.input}
               />
               <TextInput
+              ref={input => {this.emailInput = input}}
               placeholder = "Email"
               style={styles.input}
               value={email}
               onChangeText={text=>setEmail(text)}
               />
               <TextInput
+              ref={input => {this.confirmEmailInput = input}}
               placeholder = "Confirm Email"
               style={styles.input}
               />
               <TextInput
+              ref={input => {this.passwordInput = input}}
               placeholder = "Password"
               secureTextEntry
               style={styles.input}
@@ -69,6 +85,7 @@ export default function PersonalDetailsScreen({navigation}) {
               onChangeText={text=>setPassword(text)}
               />    
               <TextInput 
+              ref={input => {this.confirmPasswordInput = input}}
               placeholder = "Confirm Password"
               secureTextEntry
               style={styles.input}
