@@ -6,29 +6,62 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {SimpleLineIcons} from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { child, getDatabase, set, update, ref, push, get } from "firebase/database";
 
 
 
-const MessageInput = () => { 
+const MessageInput = ({input, setInput}) => { 
 
 
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
   
+    const db = getDatabase();
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const senderId = user;
+    const receiverId = "Hz6ha0zlMANIMIwfwsg2X3f7bDS2";
+    const [output, setOutput] = useState("");
+    var exists;
   
-  const sendMessage = () => {
-    Keyboard.dismiss();
-    setOutput(input);
-    setInput("");
-  }; 
-
-  const sendPressed = () =>{
-    if(input){
-        sendMessage();}
+    const sendPressed = () =>{
+    if(input){ 
+        const message = input;
+        SendMessage(message, user.uid, receiverId);}
     else{
         console.warn("No text in message");
     }
     }
+
+    
+    const SendMessage = (message, senderId, receiverId) => {
+
+      const dbRef = ref(getDatabase());
+      //Check thst user exists
+      get(child(dbRef, `bubble/messages/${senderId}/`)).then((snapshot) => {
+      if (snapshot.exists()){
+        console.log("Messages exist");
+        exists = 1;
+  }
+  else {
+    console.log("Messages don't exist");
+    exists = 0;
+  }
+
+
+});
+
+      if(exists == 0){
+        console.log(user.email);
+        set(ref(db, 'bubble/messages/' + user.uid), {
+          message: message,
+          senderId: senderId,})} 
+      else{
+
+        push(ref(db, 'bubble/messages/' + user.uid + '/message/'), {
+          message: message,})} 
+
+
+      }
 
 
     return(

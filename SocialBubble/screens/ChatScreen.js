@@ -1,6 +1,6 @@
 import {React,useId,useState, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Image, TouchableOpacity, StyleSheet, Text, View, FlatList, Dimensions, Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback, TextInput, AsyncStorage } from 'react-native';
+import { ScrollView, Image, TouchableOpacity, StyleSheet, Text, View, FlatList, Dimensions, ImageBackground,  Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback, TextInput, AsyncStorage } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Message from '../components/Message';
 import MessageInput from '../components/MessageInput';
@@ -8,8 +8,6 @@ import Chat from '../assets/dummy_data/Chat';
 import { FontAwesome } from '@expo/vector-icons';
 import { ReactNativeAsyncStorage } from 'firebase/auth'; 
 import LoginScreen from './LoginScreen';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { child, getDatabase, set, update, ref, push, get } from "firebase/database";
 import {SimpleLineIcons} from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
@@ -27,250 +25,95 @@ const windowWidth = Dimensions.get('window').width;
 
 function ChatScreen(props) {
 
-    const db = getDatabase();
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const senderId = user;
-    const receiverId = "Hz6ha0zlMANIMIwfwsg2X3f7bDS2";
-   
+    const [input, setInput] = useState("");
+    const [output, setOutput] = useState("");
     
-  
-
-  
-  
-  
-
-  
-  
-      
-  
-  
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  var exists;
-  
- 
-
-  
- /*
-  const sendMessage = async() => {
-    Keyboard.dismiss();
-    if(this.state.message){
-      SendMessage(this.state.senderId,this.state.receiverId,this.state.message).
-        then(()=>{
-          this.setState({message: ''})
-        }).catch((err) => {
-          alert(err)
-       })
-       ReceiveMessage(this.state.senderId,this.state.receiverId,this.state.message).
-        then(()=>{
-          this.setState({message: ''})
-        }).catch((err) => {
-          alert(err)
-       })
-    }
-
-  };*/
-  
-
-  const sendPressed = () =>{
-
-    if(input){
-        const message = input;
-        SendMessage(message, user.uid, receiverId);}
-    else{
-        console.warn("No text in message");
-    }
-    }
-
-    
-    const SendMessage = (message, senderId, receiverId) => {
-
-      const dbRef = ref(getDatabase());
-
-      //Check thst user exists
-      get(child(dbRef, `bubble/messages/${senderId}/`)).then((snapshot) => {
-      if (snapshot.exists()){
-        console.log("exists!");
-        exists = 1;
-        
-        
-  }
-  else {
-    console.log("Not exists!");
-    exists = 0;
-  }
-
-
-});
-
-      if(exists == 0){
-
-    
-      console.log(user.email);
-      set(ref(db, 'bubble/messages/' + user.uid), {
-          message: message,
-          senderId: senderId,})} 
-
-
-      else{
-
-        push(ref(db, 'bubble/messages/' + user.uid + '/message/'), {
-          message: message,})} 
-
-
-      }
-      
 
             
   return(
 
   
-<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+<ImageBackground
+              style={styles.backgroundImage}
+              source={require('../assets/sb-nologo.png')}
+    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
   <KeyboardAvoidingView
-    style={styles.container}>
-
-    <View style = {styles.title}>
-    <IonIcon style = {styles.backIcon} name="arrow-back-sharp" size={24} color="white" />
-    <FontAwesome style = {styles.groupIcon} name="group" size={24} color="white" />
-    <Text style = {styles.titleText}>Bubble</Text>
-    </View>
-   
-    <FlatList style = {styles.scroll}
-    data = {Chat.messages}
-    renderItem = {({item}) => <Message message = {item}></Message>}
-    inverted>
-    </FlatList>   
-    
-
-    <View style = {styles.box}>
-    <View style = {styles.container2} >
-            <View style = {styles.containerInput}>
-                <SimpleLineIcons name ="emotsmile" size={24} color="grey" style ={styles.inputEmotes} />
-                <TextInput
-                value = {input} 
-                onChangeText = {(text) => setInput(text)} 
-                placeholder = "type your message..." 
-                style = {styles.input}> 
-
-                </TextInput>
-                <Feather name="mic" size={24} color="grey" style ={styles.inputEmotes}/>
-                <AntDesign name="camerao" size={24} color="grey" style ={styles.inputEmotes}/>
-                
-
-            </View>
-
-            <View style = {styles.containerButton}>
-            <TouchableOpacity 
-            onPress = {sendPressed}
-            activeOpacity = {0.5}
-            >
-            <IonIcon  name = "send" size = {26} color="blue" ></IonIcon>
-            </TouchableOpacity>
-            
-            </View>
-            
+    style={styles.container}
+    >
+      <View style={styles.titlesContainer}>
+        
+        {/*title for chat*/}
+        <View style={styles.titlesContainer}>
+          <Text style={styles.titles}>Bubble Chat</Text>
         </View>
-    </View>
-    
 
-    
+        <View style={styles.chat_container}>
+        <FlatList style = {styles.scroll}
+          data = {Chat.messages}
+          renderItem = {({item}) => <Message message = {item}></Message>}
+          inverted/>
+        </View>
+          
+        {/*back and edit buttons of the profile*/}
+        <View style={styles.input_container}>
+        <MessageInput input = {input} setInput = {setInput}>
+        </MessageInput>
+        </View>
+      </View>
 
- 
+    </KeyboardAvoidingView>
 
-  </KeyboardAvoidingView>
+
 </TouchableWithoutFeedback>
-    
-    
+</ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  backgroundImage:{
     flex:1,
+    resizeMode:'cover',
+  },
+
+  container: {
+    flex: 1,
     marginTop: 20,
-    backgroundColor: "#fff",
-    
-  },
-  box: {
-    width: windowWidth,
-    backgroundColor: "white",
-    borderColor: "grey",
-    borderWidth: 2,
-    padding: 10,
-
-  },
-  title: {
-    
-    width: windowWidth,
-    backgroundColor: "#9BD9F4",
-    padding:20,
     alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: 'center',
   },
 
-  titleText:{
-    color: "white",
-    fontWeight: "600",
-    fontSize: 25,
-    
-   
+  titlesContainer:{
+    paddingHorizontal: 20,
+    marginTop: 15,
+    alignContent: 'center',
+    alignItems:'center',
+    flex: 1,
+    paddingBottom:10,
   },
-  
-  groupIcon:{
-    marginHorizontal: 15,
-    },
-  backIcon: {
-   marginRight: 40,
+  titles:{
+    color: 'grey',
+    fontSize: 30,
+    alignContent: 'center',
+  },
+  chat_container:{
+    color: 'white',
+    width:330,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding:6,
+    flex: 15,
   },
   scroll:{
-    //marginTop: 80,
-
+    backgroundColor: "white",
   },
-  
-
-  
-  container2:{
-    flexDirection: "row",
-    padding: 10,
-    
-
-},
-containerButton:{
-    marginRight: 10,
-    marginTop: 8,
-
-    
-
-},
-containerInput:{
-    
-    flex: 1,
-    backgroundColor: "white", 
-    marginRight: 25, 
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor:"grey",
-    alignItems: 'center',
-    flexDirection: 'row',
-    padding:5,
-
-
-},
-
-inputEmotes: {
-    
-    marginHorizontal: 5,
-    
-},
-input: {
-    flex: 1,
-    marginLeft: 5,
-
-}
-
-
-
+  input_container:{
+      width: 350,
+      alignContent: 'center',
+      flex: 1.8,
+  },
 });
 
 export default ChatScreen;
+
