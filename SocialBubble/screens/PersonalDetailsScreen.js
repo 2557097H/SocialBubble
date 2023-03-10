@@ -16,11 +16,7 @@ export default function PersonalDetailsScreen({navigation}) {
 
 
         const handleSignUp=() => {
-          console.log("This is the value of the name input" + this.nameInput.);
-          if(this.nameInput == null){
-            alert("Please fill in all fields!");
-            console.log("Please fill in all fields");
-          }
+          console.log(email);
 
           const auth = getAuth()
           createUserWithEmailAndPassword(auth,email,password)
@@ -106,6 +102,8 @@ export default function PersonalDetailsScreen({navigation}) {
               placeholder = "Confirm Password"
               secureTextEntry
               style={styles.input}
+              value={confirmPassword}
+              onChangeText={text=>setConfirmPassword(text)}
               />                       
             </View>
 
