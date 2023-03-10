@@ -6,11 +6,22 @@ import PreferencesScreen from './PreferencesScreen';
  
 export default function PersonalDetailsScreen({navigation}) {
 
-        const [email, setEmail] = useState("")
-        const [password, setPassword] = useState("")
-        const [name, setName] = useState("")
+        const [email, setEmail] = useState("");
+        const [password, setPassword] = useState("");
+        const [name, setName] = useState("");
+        const [dob, setDOB] = useState("");
+        const [occupation, setOccupation] = useState("");
+        const [confirmEmail, setConfirmEmail] = useState("");
+        const [confirmPassword, setConfirmPassword] = useState("");
+
 
         const handleSignUp=() => {
+          console.log("This is the value of the name input" + this.nameInput.);
+          if(this.nameInput == null){
+            alert("Please fill in all fields!");
+            console.log("Please fill in all fields");
+          }
+
           const auth = getAuth()
           createUserWithEmailAndPassword(auth,email,password)
             .then((userCredential) => {
@@ -57,12 +68,16 @@ export default function PersonalDetailsScreen({navigation}) {
               <TextInput
               ref={input => {this.dobInput = input}}
               placeholder = "Date of Birth"
+              value={dob}
               style={styles.input}
+              onChangeText={text=>setDOB(text)}
               />
               <TextInput
               ref={input => {this.occupationInput = input}}
               placeholder = "Occupation"
+              value={occupation}
               style={styles.input}
+              onChangeText={text=>setOccupation(text)}
               />
               <TextInput
               ref={input => {this.emailInput = input}}
@@ -75,6 +90,8 @@ export default function PersonalDetailsScreen({navigation}) {
               ref={input => {this.confirmEmailInput = input}}
               placeholder = "Confirm Email"
               style={styles.input}
+              value={confirmEmail}
+              onChangeText={text=>setConfirmEmail(text)}
               />
               <TextInput
               ref={input => {this.passwordInput = input}}
