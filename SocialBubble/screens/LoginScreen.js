@@ -11,6 +11,14 @@ export default function LoginScreen({navigation}) {
         const [email, setEmail] = useState("")
         const [password, setPassword] = useState("")
 
+        const checkFields=()=>{
+          if ((email == null) || (password == null)){
+            alert("Please fill in all fields");
+          }else{
+            handleLogIn();
+          }
+        }
+
 
         const auth = getAuth()
         onAuthStateChanged(auth, (user) => {
@@ -71,7 +79,7 @@ export default function LoginScreen({navigation}) {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  handleLogIn();
+                  checkFields();
                 }}
             >
               <Text style={styles.buttonText}>Sign In</Text>
