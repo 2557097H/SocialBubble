@@ -8,8 +8,8 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebas
 
 export default function LoginScreen({navigation}) {
 
-        const [email, setEmail] = useState("")
-        const [password, setPassword] = useState("")
+        const [email, setEmail] = useState(null)
+        const [password, setPassword] = useState(null)
 
         const checkFields=()=>{
           if ((email == null) || (password == null)){
