@@ -5,9 +5,22 @@ import { useState } from 'react';
 import { EmailAuthCredential, EmailAuthProvider, getAuth, reauthenticateWithCredential, sendPasswordResetEmail, updatePassword} from "firebase/auth";
 
 const ConfirmPasswordScreen = ({navigation}) => {
-      const [email, setEmail] = useState("")
-      const [password, setPassword] = useState("")
-      const [newPassword, setNewPassword] = useState("")
+      const [email, setEmail] = useState(null);
+      const [password, setPassword] = useState(null);
+      const [newPassword, setNewPassword] = useState(null);
+
+
+        const checkFields=()=>{
+          if((email == null) || (password == null) || (newPassword == null)){
+            alert("Please fill in all fields!");
+          
+          }else if(password == newPassword){
+            alert("New password cannot be the same as the old password");
+          }else{
+            changesPassword();
+            
+          }
+        }
 
 
         const changesPassword=() => {
@@ -18,7 +31,6 @@ const ConfirmPasswordScreen = ({navigation}) => {
             .then(() => {
               updatePassword(user, newPassword)
                 .then(() => {
-                  
                   /* Clear inputs so that if the page is revisited in the same session the form is empty */
                   this.emailInput.clear();
                   this.currentPasswordInput.clear();
@@ -73,7 +85,7 @@ const ConfirmPasswordScreen = ({navigation}) => {
                 style={styles.button}
                 //onPress={() => navigation.navigate("PasswordChanged")}
                 onPress={() => {
-                  changesPassword();
+                  checkFields();
                 }}
             >
               <Text style={styles.buttonText}>Change Password</Text>

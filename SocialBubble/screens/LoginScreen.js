@@ -8,8 +8,16 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebas
 
 export default function LoginScreen({navigation}) {
 
-        const [email, setEmail] = useState("")
-        const [password, setPassword] = useState("")
+        const [email, setEmail] = useState(null)
+        const [password, setPassword] = useState(null)
+
+        const checkFields=()=>{
+          if ((email == null) || (password == null)){
+            alert("Please fill in all fields");
+          }else{
+            handleLogIn();
+          }
+        }
 
 
         const auth = getAuth()
@@ -71,7 +79,7 @@ export default function LoginScreen({navigation}) {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  handleLogIn();
+                  checkFields();
                 }}
             >
               <Text style={styles.buttonText}>Sign In</Text>

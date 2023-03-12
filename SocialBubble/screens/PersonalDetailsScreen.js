@@ -6,11 +6,40 @@ import PreferencesScreen from './PreferencesScreen';
  
 export default function PersonalDetailsScreen({navigation}) {
 
-        const [email, setEmail] = useState("")
-        const [password, setPassword] = useState("")
-        const [name, setName] = useState("")
+        /* Regex below taken from  https://stackoverflow.com/questions/15491894/regex-to-validate-date-formats-dd-mm-yyyy-dd-mm-yyyy-dd-mm-yyyy-dd-mmm-yyyy */
+        let validDOB = new RegExp(
+         /(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)/,
+         "g"
+        );
+
+        const [email, setEmail] = useState(null);
+        const [password, setPassword] = useState(null);
+        const [name, setName] = useState(null);
+        const [dob, setDOB] = useState(null);
+        const [occupation, setOccupation] = useState(null);
+        const [confirmEmail, setConfirmEmail] = useState(null);
+        const [confirmPassword, setConfirmPassword] = useState(null);
+
+        const checkFields=()=>{
+          console.log(dob);
+          if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null)){
+            alert("Please fill in all fields");
+          } else if (email != confirmEmail){
+            alert("Emails do not match!");
+          } else if (password != confirmPassword){
+            alert("Passwords do not match!");
+          } else if (!validDOB.test(dob)){
+            alert("Date of birth invalid. Please use format dd/mm/yyyy")
+          }else{
+            handleSignUp();
+          }
+
+        } 
+
 
         const handleSignUp=() => {
+          console.log(email);
+
           const auth = getAuth()
           createUserWithEmailAndPassword(auth,email,password)
             .then((userCredential) => {
@@ -56,13 +85,17 @@ export default function PersonalDetailsScreen({navigation}) {
               />
               <TextInput
               ref={input => {this.dobInput = input}}
-              placeholder = "Date of Birth"
+              placeholder = "Date of Birth (dd/mm/yyyy)"
+              value={dob}
               style={styles.input}
+              onChangeText={text=>setDOB(text)}
               />
               <TextInput
               ref={input => {this.occupationInput = input}}
               placeholder = "Occupation"
+              value={occupation}
               style={styles.input}
+              onChangeText={text=>setOccupation(text)}
               />
               <TextInput
               ref={input => {this.emailInput = input}}
@@ -75,6 +108,8 @@ export default function PersonalDetailsScreen({navigation}) {
               ref={input => {this.confirmEmailInput = input}}
               placeholder = "Confirm Email"
               style={styles.input}
+              value={confirmEmail}
+              onChangeText={text=>setConfirmEmail(text)}
               />
               <TextInput
               ref={input => {this.passwordInput = input}}
@@ -89,6 +124,8 @@ export default function PersonalDetailsScreen({navigation}) {
               placeholder = "Confirm Password"
               secureTextEntry
               style={styles.input}
+              value={confirmPassword}
+              onChangeText={text=>setConfirmPassword(text)}
               />                       
             </View>
 
@@ -96,7 +133,7 @@ export default function PersonalDetailsScreen({navigation}) {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  handleSignUp();
+                  checkFields();
                 }}
             >
               <Text style={styles.buttonText}>Next</Text>
