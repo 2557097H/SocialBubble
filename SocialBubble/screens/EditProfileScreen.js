@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState}  from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import { getAuth, updateProfile } from "firebase/auth"
 
 const EditProfileScreen = ({navigation}) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const email = user.email;
+  const displayName = user.displayName;
+  const [name, setName] = useState("")  
+  
+
+  const changeName=() => {
+    updateProfile(user, {
+      displayName: name
+    }).then(() => {
+      navigation.navigate("Profile")
+      user.reload()
+    })
+    .catch(error=>alert(error.message))
+  };
+
+
+
   return (
     <ImageBackground
     style={styles.backgroundImage}
@@ -28,7 +48,9 @@ const EditProfileScreen = ({navigation}) => {
             borderRadius:8,
             paddingHorizontal: 5,
            }}
-            placeholder= {"Jedi Master Yoda"}
+            value={name}
+            onChangeText={text=>setName(text)}
+            placeholder= {displayName}
             />
         </View>
 
@@ -88,7 +110,9 @@ const EditProfileScreen = ({navigation}) => {
           </View>
           <TouchableOpacity 
           style={styles.button}
-          onPress={() => navigation.navigate("Profile")}>
+          onPress={() => {
+            changeName();
+          }}>
             <Text style={styles.buttonText}> Save </Text>
           </TouchableOpacity>
         </View>
