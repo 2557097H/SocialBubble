@@ -32,7 +32,8 @@ function ChatScreen(props) {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([]);
     const [innerId, setInnerId] = useState("");
-    var messagesRef = null;
+    const messagesRef = null;
+    
     
     
 
@@ -48,38 +49,43 @@ function ChatScreen(props) {
     
     const messageIds = [];
     
+    
     console.log("Obtaining inner id");
     useEffect(() => {
+      // Obtain inner ID
       get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
         if (snapshot.exists()){
-            console.log("User is in an inner bubble");
-            setInnerId(snapshot.val());}});
-
-    messagesRef = ref(db, `bubble/${innerId}/messages/`)
-    onValue(messagesRef, (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const childData = childSnapshot.val();
-        console.log(childSnapshot.key);
-        if (!messageIds.includes(childSnapshot.key)) {
-          // If not, add the message to the messages array
-          messages.push({
-            message: childData.message,
-            user: childData.senderId
-          });
-    
-          // Add the message ID to the list
-          messageIds.push(childSnapshot.key);
+          console.log("User is in an inner bubble");
+          setInnerId(snapshot.val());
         }
-        
-      }
-      );
-    }, {
-      onlyOnce: true
-    });
-  });
+      });
+    }, []);
 
-      
+    useEffect(() => {
+      // Listen for new messages
+      const messagesRef = ref(db, `bubble/${innerId}/messages/`);
+      onValue(messagesRef, (snapshot) => {
+        const newMessages = [];
+        snapshot.forEach((childSnapshot) => {
+          const childData = childSnapshot.val();
+          
+          
+          
+          if (!messages.some(message => message.key === childSnapshot.key)) {
+            // If the message ID is not in the messages array, add the message to the newMessages array
+            newMessages.push({
+              key: childSnapshot.key,
+              message: childData.message,
+              user: childData.senderId
+            });
+          }
+        });
+        // Update the messages state with the new messages
+        setMessages([...messages, ...newMessages]);
+      });
+    }, [messagesRef]);
 
+    
   console.log(messages);      
   return(
 
@@ -101,10 +107,12 @@ function ChatScreen(props) {
         </View>
 
         <View style={styles.chat_container}>
-        <FlatList style = {styles.scroll}
-          data = {messages}
-          renderItem = {({item}) => <Message message = {item.message}></Message>}
-          inverted/>
+        <FlatList
+  data={messages}
+  renderItem={({ item }) => <Message message={item.message} />}
+  keyExtractor={(item) => item.key}
+  inverted
+/>
         </View>
           
         {/*back and edit buttons of the profile*/}
