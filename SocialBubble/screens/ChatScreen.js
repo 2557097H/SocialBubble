@@ -27,9 +27,48 @@ function ChatScreen(props) {
 
     const [input, setInput] = useState("");
     const [output, setOutput] = useState("");
+
+    const db = getDatabase();
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const senderId = user;
+    console.log(senderId);
+    const dbRef = ref(getDatabase());
+/*
+      get(child(dbRef, `users/${senderId}/innerId/`)).then((snapshot) => {
+      if (snapshot.exists()){
+          console.log("Obtaining inner id");
+          const innerId = snapshot.val();
+          useEffect (() =>{
+
+            var messagesRef = null;
+            var messages = [];
+          
+            
+            get(child(dbRef, `bubble/${innerId}/messages/`)).then((snapshot) => {
+            if (snapshot.exists()){
+                if (messagesRef==null){
+                    messagesRef = snapshot.val();
+                    for (let i = 0; i < messagesRef.length; i++){
+                        messages.push(messagesRef[i]);
+                    };
+                }
+            }
+            else{
+                console.log("No data available");
+            }
+          }).catch((error) => {
+          console.error(error);
+          });
+        });}
+      else{
+        console.log("User does not have innerId");
+      }});
+    
+    
     
 
-            
+      console.log(messagesRef);  */    
   return(
 
   
@@ -69,7 +108,7 @@ function ChatScreen(props) {
 </TouchableWithoutFeedback>
 </ImageBackground>
   );
-}
+  }
 
 const styles = StyleSheet.create({
   backgroundImage:{
