@@ -5,9 +5,19 @@ import Chat from '../../assets/dummy_data/Chat';
 
 const myID = 'u2';
 
+
+/*
+<View style = {styles.time}>
+            <Text style = {[styles.timeText,{
+                color: isItMe ? "green" : "green",
+
+            }]}> Time </Text>
+        </View>
+*/
+
 const Message = ({ message }) => {
 
-    const isItMe = message.user.id == myID;
+    const isItMe = true;
 
     return(
         <View style = {[
@@ -20,14 +30,9 @@ const Message = ({ message }) => {
             <Text style = {[styles.chatBubble,{
                 color: isItMe ? "black" : "black",
             }
-            ]}>{message.content}</Text>
+            ]}>{message}</Text>
       
-        <View style = {styles.time}>
-            <Text style = {[styles.timeText,{
-                color: isItMe ? "green" : "green",
-
-            }]}> Time </Text>
-        </View>
+        
         </View>
         
     )

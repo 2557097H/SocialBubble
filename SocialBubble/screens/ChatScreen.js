@@ -12,7 +12,7 @@ import {SimpleLineIcons} from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { child, getDatabase, set, update, ref, push, get, onValue } from "firebase/database";
+import { child, getDatabase, set, update, ref, push, get, onValue, onChildAdded, onChildChanged } from "firebase/database";
 
 
 
@@ -40,31 +40,46 @@ function ChatScreen(props) {
     const auth = getAuth();
     const user = auth.currentUser;
     const senderId = user.uid;
-    console.log(senderId);
     const dbRef = ref(getDatabase());
     
     
   
     
-    const innerIdRef = ref(db, `users/${senderId}/innerId`);
-
+    
+    const messageIds = [];
+    
     console.log("Obtaining inner id");
     useEffect(() => {
-     onValue(innerIdRef, (snapshot) => {
-      setInnerId(snapshot.val());
-    });
+      get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
+        if (snapshot.exists()){
+            console.log("User is in an inner bubble");
+            setInnerId(snapshot.val());}});
+
     messagesRef = ref(db, `bubble/${innerId}/messages/`)
     onValue(messagesRef, (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const childData = childSnapshot.val();
-
-        messages.push({message:childData.message,
-        user: childData.senderId});
+        console.log(childSnapshot.key);
+        if (!messageIds.includes(childSnapshot.key)) {
+          // If not, add the message to the messages array
+          messages.push({
+            message: childData.message,
+            user: childData.senderId
+          });
+    
+          // Add the message ID to the list
+          messageIds.push(childSnapshot.key);
+        }
         
-      });});
+      }
+      );
+    }, {
+      onlyOnce: true
+    });
   });
 
       
+
   console.log(messages);      
   return(
 
@@ -87,8 +102,8 @@ function ChatScreen(props) {
 
         <View style={styles.chat_container}>
         <FlatList style = {styles.scroll}
-          data = {Chat.messages}
-          renderItem = {({item}) => <Message message = {item}></Message>}
+          data = {messages}
+          renderItem = {({item}) => <Message message = {item.message}></Message>}
           inverted/>
         </View>
           
