@@ -1,4 +1,4 @@
-import {React,useId,useState, useEffect} from 'react';
+import {React,useId,useState, useEffect, Component} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Image, TouchableOpacity, StyleSheet, Text, View, FlatList, Dimensions, ImageBackground,  Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback, TextInput, AsyncStorage } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -11,6 +11,8 @@ import LoginScreen from './LoginScreen';
 import {SimpleLineIcons} from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { child, getDatabase, set, update, ref, push, get, onValue } from "firebase/database";
 
 
 
@@ -25,50 +27,45 @@ const windowWidth = Dimensions.get('window').width;
 
 function ChatScreen(props) {
 
+  
+
     const [input, setInput] = useState("");
-    const [output, setOutput] = useState("");
+    const [messages, setMessages] = useState([]);
+    const [innerId, setInnerId] = useState("");
+    var messagesRef = null;
+    
+    
 
     const db = getDatabase();
     const auth = getAuth();
     const user = auth.currentUser;
-    const senderId = user;
+    const senderId = user.uid;
     console.log(senderId);
     const dbRef = ref(getDatabase());
-/*
-      get(child(dbRef, `users/${senderId}/innerId/`)).then((snapshot) => {
-      if (snapshot.exists()){
-          console.log("Obtaining inner id");
-          const innerId = snapshot.val();
-          useEffect (() =>{
+    
+    
+  
+    
+    const innerIdRef = ref(db, `users/${senderId}/innerId`);
 
-            var messagesRef = null;
-            var messages = [];
-          
-            
-            get(child(dbRef, `bubble/${innerId}/messages/`)).then((snapshot) => {
-            if (snapshot.exists()){
-                if (messagesRef==null){
-                    messagesRef = snapshot.val();
-                    for (let i = 0; i < messagesRef.length; i++){
-                        messages.push(messagesRef[i]);
-                    };
-                }
-            }
-            else{
-                console.log("No data available");
-            }
-          }).catch((error) => {
-          console.error(error);
-          });
-        });}
-      else{
-        console.log("User does not have innerId");
-      }});
-    
-    
-    
+    console.log("Obtaining inner id");
+    useEffect(() => {
+     onValue(innerIdRef, (snapshot) => {
+      setInnerId(snapshot.val());
+    });
+    messagesRef = ref(db, `bubble/${innerId}/messages/`)
+    onValue(messagesRef, (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
 
-      console.log(messagesRef);  */    
+        messages.push({message:childData.message,
+        user: childData.senderId});
+        
+      });});
+  });
+
+      
+  console.log(messages);      
   return(
 
   
