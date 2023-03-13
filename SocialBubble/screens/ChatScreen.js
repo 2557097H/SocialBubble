@@ -91,7 +91,7 @@ function ChatScreen(props) {
 
     useEffect(() => {
 
-      setMessages2(messages.reverse());
+      setMessages2(messages.slice().reverse());
 
     }, [messages]);
 
