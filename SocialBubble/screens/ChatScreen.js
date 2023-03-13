@@ -31,7 +31,9 @@ function ChatScreen(props) {
 
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([]);
+    const [messages2, setMessages2] = useState([]);
     const [innerId, setInnerId] = useState("");
+    const [count, setCount] = useState(0);
     const messagesRef = null;
     
     
@@ -47,7 +49,7 @@ function ChatScreen(props) {
   
     
     
-    const messageIds = [];
+    
     
     
     console.log("Obtaining inner id");
@@ -82,11 +84,20 @@ function ChatScreen(props) {
         });
         // Update the messages state with the new messages
         setMessages([...messages, ...newMessages]);
+        
+        
       });
-    }, [messagesRef]);
+    }, []);
 
-    
-  console.log(messages);      
+    useEffect(() => {
+
+      setMessages2(messages.reverse());
+
+    }, [messages]);
+
+  
+  
+  console.log(messages2);      
   return(
 
   
@@ -108,7 +119,7 @@ function ChatScreen(props) {
 
         <View style={styles.chat_container}>
         <FlatList
-  data={messages}
+  data={messages2}
   renderItem={({ item }) => <Message message={item.message} />}
   keyExtractor={(item) => item.key}
   inverted
@@ -175,4 +186,8 @@ const styles = StyleSheet.create({
 });
 
 export default ChatScreen;
+
+
+
+
 
