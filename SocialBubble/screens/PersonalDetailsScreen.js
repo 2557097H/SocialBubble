@@ -33,6 +33,32 @@ export default function PersonalDetailsScreen({ navigation }) {
     } else {
       handleSignUp();
     }
+  }
+
+  const clearForms = () => {
+    console.log("I ran");
+    if (email != null) {
+      this.emailInput.clear();
+    }
+    if (password != null) {
+      this.passwordInput.clear();
+    }
+    if (name != null) {
+      this.nameInput.clear();
+    }
+    if (dob != null) {
+      this.dobInput.clear();
+    }
+    if (occupation != null) {
+      this.occupationInput.clear();
+    }
+    if (confirmEmail != null) {
+      this.confirmEmailInput.clear();
+    }
+    if (confirmPassword != null) {
+      this.confirmPasswordInput.clear();
+    }
+
 
   }
 
@@ -48,16 +74,7 @@ export default function PersonalDetailsScreen({ navigation }) {
         updateProfile(auth.currentUser, {
           displayName: name
         }).then(() => {
-
-          /* Clear inputs so that if the page is revisited in the same session they are gone */
-          this.nameInput.clear();
-          this.dobInput.clear();
-          this.occupationInput.clear();
-          this.emailInput.clear();
-          this.confirmEmailInput.clear();
-          this.passwordInput.clear();
-          this.confirmPasswordInput.clear();
-
+          clearForms();
           navigation.navigate("Preferences");
         }).catch(error => alert(error.message))
       })
@@ -145,6 +162,7 @@ export default function PersonalDetailsScreen({ navigation }) {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
+            clearForms();
             navigation.navigate("Login");
           }}
 
