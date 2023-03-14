@@ -123,9 +123,9 @@ export default function App() {
             />
             <Tab.Screen name ="ConfirmPassword" component={ConfirmPasswordScreen}
             options={{
-              tabBarLabel: 'ChangePassword',
-              tabBarVisible: false,
               tabBarButton: () => null,
+              tabBarStyle:{display: 'none'},
+              tabBarVisible: false, 
             }}
             />
             <Tab.Screen name ="DeleteAccount" component={DeleteAccountScreen}
