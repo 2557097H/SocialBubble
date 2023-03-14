@@ -2,8 +2,8 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import LoginScreen from '../../screens/LoginScreen';
 import Chat from '../../assets/dummy_data/Chat';
+import { getAuth} from "firebase/auth";
 
-const myID = 'u2';
 /*
         <View style = {styles.time}>
             <Text style = {[styles.timeText,{
@@ -15,9 +15,15 @@ const myID = 'u2';
 
 const Message = ({ message, user }) => {
 
-    const isItMe = 'u2' == myID;
+    const auth = getAuth();
+    const sender = auth.currentUser;
+    const senderId = sender.uid;
 
-    //console.log(user);
+    const isItMe = user == senderId;
+
+    console.log(isItMe);
+
+    
 
     return(
         <View style = {[

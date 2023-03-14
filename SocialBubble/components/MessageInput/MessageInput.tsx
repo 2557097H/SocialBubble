@@ -41,25 +41,11 @@ const MessageInput = ({input, setInput}) => {
         
         get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
         if (snapshot.exists()){
-            console.log("User is in an inner bubble");
             const innerId = snapshot.val();
             const messageKey = push(ref(db, `bubble/${innerId}/messages/`), {
                 message: message,
                 senderId: senderId,
               }).key;
-        }
-        else {
-            console.log("User is not in an inner bubble");
-
-            //Needs to be reviewed when have code for sorting lobbys
-
-            
-            const chatKey = push(ref(db, 'bubble/')).key;
-
-             set(ref(db, `users/${senderId}/`), {
-                innerId: chatKey,
-            });
-           
         }
 
 

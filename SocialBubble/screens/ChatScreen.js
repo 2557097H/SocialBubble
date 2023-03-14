@@ -44,9 +44,11 @@ function ChatScreen(props) {
     const user = auth.currentUser;
     const senderId = user.uid;
     const dbRef = ref(getDatabase());
+
     
     
-  
+    
+    
     
     
     
@@ -59,12 +61,25 @@ function ChatScreen(props) {
         if (snapshot.exists()){
           console.log("User is in an inner bubble");
           setInnerId(snapshot.val());
-        }
+          
+        }else {
+          console.log("User is not in an inner bubble");
+    
+          //Needs to be reviewed when have code for sorting lobbys
+          const chatKey = "-NQLkWMa6HYf18TGfLRP";
+    
+           set(ref(db, `users/${senderId}/`), {
+              innerId: chatKey,
+          });
+          setInnerId(chatKey); 
+         
+      }
       });
     }, []);
 
     useEffect(() => {
       // Listen for new messages
+      //setMessages2(messages.slice().reverse());
       const messagesRef = ref(db, `bubble/${innerId}/messages/`);
       onValue(messagesRef, (snapshot) => {
         const newMessages = [];
@@ -79,7 +94,7 @@ function ChatScreen(props) {
             newMessages.push({
               key: childSnapshot.key,
               message: childData.message,
-              id: childData.senderId,
+              user: childData.senderId,
             });
           }
         });
@@ -121,7 +136,9 @@ function ChatScreen(props) {
         <View style={styles.chat_container}>
         <FlatList
   data={messages2}
-  renderItem={({ item }) => <Message id={item.id} message={item.message} />}
+  renderItem={({ item }) => <Message user={item.user} message={item.message}
+  
+   />}
   
   inverted
 />
