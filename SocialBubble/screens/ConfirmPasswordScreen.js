@@ -92,6 +92,19 @@ const ConfirmPasswordScreen = ({navigation}) => {
             </TouchableOpacity>
 
             </View>
+
+
+            <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                navigation.navigate("Settings");
+              }}
+
+            >
+              <Text style={styles.buttonText}>Back</Text>
+            </TouchableOpacity>
+            </View>
             
 
           </KeyboardAvoidingView>
