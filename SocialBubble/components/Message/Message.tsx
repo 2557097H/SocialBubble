@@ -4,20 +4,20 @@ import LoginScreen from '../../screens/LoginScreen';
 import Chat from '../../assets/dummy_data/Chat';
 
 const myID = 'u2';
-
-
 /*
-<View style = {styles.time}>
+        <View style = {styles.time}>
             <Text style = {[styles.timeText,{
                 color: isItMe ? "green" : "green",
 
             }]}> Time </Text>
         </View>
-*/
+        */
 
-const Message = ({ message }) => {
+const Message = ({ message, user }) => {
 
-    const isItMe = true;
+    const isItMe = 'u2' == myID;
+
+    //console.log(user);
 
     return(
         <View style = {[
@@ -32,7 +32,6 @@ const Message = ({ message }) => {
             }
             ]}>{message}</Text>
       
-        
         </View>
         
     )

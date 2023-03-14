@@ -50,7 +50,7 @@ function ChatScreen(props) {
     
     
     
-    
+    console.log(senderId);
     
     console.log("Obtaining inner id");
     useEffect(() => {
@@ -75,10 +75,11 @@ function ChatScreen(props) {
           
           if (!messages.some(message => message.key === childSnapshot.key)) {
             // If the message ID is not in the messages array, add the message to the newMessages array
+            
             newMessages.push({
               key: childSnapshot.key,
               message: childData.message,
-              user: childData.senderId
+              id: childData.senderId,
             });
           }
         });
@@ -87,7 +88,7 @@ function ChatScreen(props) {
         
         
       });
-    }, []);
+    }, [innerId]);
 
     useEffect(() => {
 
@@ -97,7 +98,7 @@ function ChatScreen(props) {
 
   
   
-  console.log(messages2);      
+  //console.log(messages2);      
   return(
 
   
@@ -120,8 +121,8 @@ function ChatScreen(props) {
         <View style={styles.chat_container}>
         <FlatList
   data={messages2}
-  renderItem={({ item }) => <Message message={item.message} />}
-  keyExtractor={(item) => item.key}
+  renderItem={({ item }) => <Message id={item.id} message={item.message} />}
+  
   inverted
 />
         </View>
