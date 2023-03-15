@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
 import { MultiSelect } from 'react-native-element-dropdown';
 import MultiSelectComponent from 'react-native-element-dropdown/lib/typescript/components/MultiSelect';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { getDatabase, ref, child, get, set, push, update } from "firebase/database";
+import { getDatabase, ref, child, get, set, push, update, remove} from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 var interestsRef = null;
@@ -37,6 +37,12 @@ const handleInterests=(selection) => {
   });
 };
 
+const deleteInterests=(selection) => {
+  const user = auth.currentUser;
+  console.log(selection);
+  remove(ref(db, 'users/' + user.uid+ '/interests/' + selection))
+};
+
 const [selected, setSelected] = useState([]);
 
     return (
@@ -64,7 +70,7 @@ const [selected, setSelected] = useState([]);
             <TouchableOpacity
               onPress={() => {
                 unSelect && unSelect(item);
-                handleInterests(item);
+                deleteInterests(item['value']);
               }}>
               <View style={styles.selectedStyle}>
                 <Text style={styles.textSelectedStyle}>{item.label}</Text>
