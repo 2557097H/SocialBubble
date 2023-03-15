@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { Geocode } from "react-geocode";
 import PreferencesScreen from './PreferencesScreen';
 
 export default function PersonalDetailsScreen({ navigation }) {
@@ -30,8 +31,9 @@ export default function PersonalDetailsScreen({ navigation }) {
     } else if (password != confirmPassword) {
       alert("Passwords do not match!");
     } else if (!validDOB.test(dob)) {
-      alert("Date of birth invalid. Please use format dd/mm/yyyy")
+      alert("Date of birth invalid. Please use format dd/mm/yyyy");
     } else {
+      getLangLong();
       handleSignUp();
     }
   }
@@ -63,7 +65,20 @@ export default function PersonalDetailsScreen({ navigation }) {
       this.cityInput.clear()
     }
 
+  }
 
+  const getLangLong = () => {
+    console.log(city);
+    Geocode.fromAddress(city).then(
+      response => {
+        const { lat, lng } = response[0].geometry.location
+        console.log(city);
+        console.log(lat, lng);
+      },
+      (error) => {
+        console.error(error);
+      }
+    )
   }
 
 

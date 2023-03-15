@@ -40,6 +40,17 @@ Geocode.setRegion("uk");
 Geocode.setLocationType("ROOFTOP");
 Geocode.enableDebug();
 
+// Geocode.fromAddress("Eiffel Tower").then(
+//   (response) => {
+//     const { lat, lng } = response.results[0].geometry.location;
+//     console.log(lat, lng);
+//   },
+//   (error) => {
+//     console.error(error);
+//   }
+// );
+
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 // Your web app's Firebase configuration
