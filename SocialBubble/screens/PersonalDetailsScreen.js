@@ -37,7 +37,6 @@ export default function PersonalDetailsScreen({ navigation }) {
   }
 
   const clearForms = () => {
-    console.log("I ran");
     if (username != null) {
       this.usernameInput.clear();
     }
@@ -101,57 +100,78 @@ export default function PersonalDetailsScreen({ navigation }) {
       </View>
       <View style={styles.inputContainer}>
         <TextInput
-          ref={input => { this.usernameInput = input }}
           placeholder="Username"
           style={styles.input}
           value={username}
           onChangeText={text => setUsername(text)}
+          ref={input => { this.usernameInput = input}}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.nameTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.nameInput = input }}
+          ref={input => { this.nameInput = input; this.nameTextInput = input }}
           placeholder="Name"
           style={styles.input}
           value={name}
           onChangeText={text => setName(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.dobTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.dobInput = input }}
+          ref={input => { this.dobInput = input; this.dobTextInput = input }}
           placeholder="Date of Birth (dd/mm/yyyy)"
           value={dob}
           style={styles.input}
           onChangeText={text => setDOB(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.jobTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.occupationInput = input }}
+          ref={input => { this.occupationInput = input; this.jobTextInput = input }}
           placeholder="Occupation"
           value={occupation}
           style={styles.input}
           onChangeText={text => setOccupation(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.emailTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.emailInput = input }}
+          ref={input => { this.emailInput = input; this.emailTextInput = input }}
           placeholder="Email"
           style={styles.input}
           value={email}
           onChangeText={text => setEmail(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.confirmEmailTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.confirmEmailInput = input }}
+          ref={input => { this.confirmEmailInput = input; this.confirmEmailTextInput = input }}
           placeholder="Confirm Email"
           style={styles.input}
           value={confirmEmail}
           onChangeText={text => setConfirmEmail(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.passwordTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.passwordInput = input }}
+          ref={input => { this.passwordInput = input ; this.passwordTextInput = input }}
           placeholder="Password"
           secureTextEntry
           style={styles.input}
           value={password}
           onChangeText={text => setPassword(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.confirmPasswordTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.confirmPasswordInput = input }}
+          ref={input => { this.confirmPasswordInput = input; this.confirmPasswordTextInput = input }}
           placeholder="Confirm Password"
           secureTextEntry
           style={styles.input}
