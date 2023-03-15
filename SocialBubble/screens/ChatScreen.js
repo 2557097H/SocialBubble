@@ -25,7 +25,7 @@ const windowWidth = Dimensions.get('window').width;
 
 
 
-function ChatScreen(props) {
+function ChatScreen({ route }) {
 
   
 
@@ -34,7 +34,11 @@ function ChatScreen(props) {
     const [messages2, setMessages2] = useState([]);
     const [innerId, setInnerId] = useState("");
     const [chatKey, setChatKey] = useState("");
+    const [initialRender, setInitialRender] = useState(0);
+    const [checkID,setCheckID] = useState(false);
+    const [userID, setUserID] = useState("");
     const messagesRef = null;
+    
     
     
     
@@ -45,40 +49,62 @@ function ChatScreen(props) {
     const senderId = user.uid;
     const dbRef = ref(getDatabase());
 
-    
-    
-    
-    
-    
-    
+
+    const [myVariable, setMyVariable] = useState(null);
+
+  useEffect(() => {
+    if (route.params && route.params.myVariable) {
+      setMyVariable(route.params.myVariable);
+    }
+  }, [route.params]);
+
+  
+
+   
+
     
 
     
     
-    useEffect(() => {
+    
+    
+   
+    console.log(myVariable);
+    
+
+    
+    
+    useEffect(() => {  console.log("Entered");{
       // Obtain inner ID
       get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
+
         if (snapshot.exists()){
           console.log("User is in an inner bubble");
           setInnerId(snapshot.val());
-          
-        }else {
+          setCheckID(true);
+        }
+      
+    })
+    setInitialRender(initialRender + 1);
+    setCheckID(false);
+  setUserID(senderId);}
+  }, [route.params]);
+
+ 
+        
+        useEffect(()=>{ if(checkID == false) {
           console.log("User is not in an inner bubble");
           
 
           //Needs to be reviewed when have code for sorting lobbys
-
-          
-          
           get(child(dbRef, `bubble/`)).then((snapshot) => {
 
-            
             
             if (snapshot.exists()){
             
               
               const lastJoined = snapshot.val().lastJoined;
-              console.log(snapshot);
+              
               
               get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
                 
@@ -90,7 +116,7 @@ function ChatScreen(props) {
                     }).key;
                     const updates = {};
                     updates[`/bubble/lastJoined` ] = id;
-                    update(ref(db), updates)
+                    update(ref(db), updates);
                   
                   set(ref(db, `users/${senderId}/`), {
                     innerId: id,
@@ -99,7 +125,7 @@ function ChatScreen(props) {
                   }
                   else{
 
-                    console.log("i am here");
+                    
                   
                   get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
                     
@@ -107,7 +133,7 @@ function ChatScreen(props) {
                     var count = snapshot.val().count + 1;
                     const updates = {};
                     updates[`/bubble/${lastJoined}/count` ] = count;
-                    update(ref(db), updates)
+                    update(ref(db), updates);
                 
                    }})
                       
@@ -128,7 +154,7 @@ function ChatScreen(props) {
             }).key;
             
           setChatKey(id.toString());
-          console.log("I'm in the wrong loop u dumbass");
+          
           set(ref(db, `bubble/`), {
             lastJoined: id,
         });
@@ -151,10 +177,12 @@ function ChatScreen(props) {
     
            
            
-         
+       setCheckID(true);  
       }
-      });
-    }, []);
+      }, [initialRender]);
+
+      
+    
 
     useEffect(() => {
       // Listen for new messages
@@ -209,7 +237,7 @@ function ChatScreen(props) {
         
         {/*title for chat*/}
         <View style={styles.titlesContainer}>
-          <Text style={styles.titles}>Bubble Chat</Text>
+          <Text style={styles.titles}>{myVariable}</Text>
         </View>
 
         <View style={styles.chat_container}>

@@ -35,6 +35,11 @@ const firebaseConfig = {
   measurementId: "G-1EQTFQNESR"
 };
 
+
+var myVariable = Math.random();
+
+
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
@@ -71,8 +76,10 @@ export default function App() {
             }}
             />
             <Tab.Screen name ="OuterBubble" component={ChatScreen}
+            initialParams={{ myVariable }}
             options={{
               tabBarLabel: 'ChatBubble',
+              
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="chat" color={color} size={size} />
               ),
