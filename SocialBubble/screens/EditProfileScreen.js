@@ -1,29 +1,41 @@
-import React, { useState}  from 'react';
+import React, { useState, useEffect}  from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
 import { getAuth, updateProfile } from "firebase/auth"
+import { getDatabase, ref, child, push, update, onValue} from "firebase/database"
 
 const EditProfileScreen = ({navigation}) => {
   const auth = getAuth();
   const user = auth.currentUser;
-  const email = user.email;
   const displayName = user.displayName;
-  const [name, setName] = useState("")  
-  
+  const userId = user.uid;
+
+  const [bio, setBio] = useState("")
+  const [interests, setInterests] = useState("")
+  const [username, setUsername] = useState("")
+
+  const db = getDatabase();
+
+  useEffect (() => {
+    const dbRef = ref(db, 'users/' + userId);
+    onValue(dbRef, (snapshot) => {
+      setUsername(snapshot.val().Username);
+      setBio(snapshot.val().Bio);
+      setInterests(snapshot.val().Interests);
+    });
+  }, [])
 
   const changeName=() => {
-    updateProfile(user, {
-      displayName: name
-    }).then(() => {
+      update(ref(db, 'users/' + userId), {
+        Username: username,
+        Interests: interests,
+        Bio: bio,
+      })
       navigation.navigate("Profile")
       user.reload()
-    })
-    .catch(error=>alert(error.message))
   };
-
-
 
   return (
     <ImageBackground
@@ -48,9 +60,8 @@ const EditProfileScreen = ({navigation}) => {
             borderRadius:8,
             paddingHorizontal: 5,
            }}
-            value={name}
-            onChangeText={text=>setName(text)}
-            placeholder= {displayName}
+            value = {username}
+            onChangeText = {text=>setUsername(text)}
             />
         </View>
 
@@ -69,7 +80,10 @@ const EditProfileScreen = ({navigation}) => {
         <View style={styles.interestsContainer}>
           <Text style={{
             color: "grey",
-          }}>
+          }}
+          value={interests}
+          onChangeText={text=>setInterests(text)}
+          >
                Interests (tap to remove):
           </Text>
           <TouchableOpacity style={styles.addInterestButton}>
@@ -94,7 +108,8 @@ const EditProfileScreen = ({navigation}) => {
             textAlignVertical: 'top',
             padding: 10,
            }}
-            placeholder = {"Current Profile"}
+            value={bio}
+            onChangeText={text=>setBio(text)}
             />
         </View>
           
