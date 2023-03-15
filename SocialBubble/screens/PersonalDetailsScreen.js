@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getDatabase, ref, set, } from "firebase/database";
 import PreferencesScreen from './PreferencesScreen';
 
 export default function PersonalDetailsScreen({ navigation }) {
@@ -70,6 +71,7 @@ export default function PersonalDetailsScreen({ navigation }) {
     console.log(email);
 
     const auth = getAuth()
+    const db = getDatabase()
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -77,7 +79,7 @@ export default function PersonalDetailsScreen({ navigation }) {
         set(ref(db, 'users/' + user.uid), {
           Name: name,
           Username: username,
-          DateOfBirth: dateOfBirth,
+          DateOfBirth: dob,
           Occupation: occupation
         });
         clearForms();
