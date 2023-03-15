@@ -52,6 +52,13 @@ const SettingsScreen = ({ navigation }) => {
         >
           <Text style={styles.buttonText}>Delete Account</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Validation")}
+        >
+          <Text style={styles.buttonText}>Validate Account</Text>
+        </TouchableOpacity>
         
       </View>
     </View>

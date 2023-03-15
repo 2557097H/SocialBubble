@@ -1,6 +1,7 @@
 import React, { useState, useEffect}  from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
 import { getAuth, updateProfile } from "firebase/auth"
@@ -67,13 +68,13 @@ const EditProfileScreen = ({navigation}) => {
 
         {/*profile picture of the profile*/}
         <View style={styles.profilePictureContainer}>
-        <Image source={{uri: 'https://konvajs.org/assets/yoda.jpg'}} style={{
+        <Image source={{uri: profilePicture}} style={{
           flex:1,
           borderRadius: 20,
         }} />
-         <TouchableOpacity style={styles.editButtonContainer}>
-         <FontAwesome name="edit" size={35} color="grey"/>
-         </TouchableOpacity>
+        <TouchableOpacity style={styles.editButtonContainer} onPress={handleUpdateProfilePicture}>
+        <FontAwesome name="edit" size={35} color="grey"/>
+        </TouchableOpacity>
          </View>
 
         {/*interests of the profile*/}

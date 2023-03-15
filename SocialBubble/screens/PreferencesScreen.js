@@ -1,8 +1,12 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground} from 'react-native';
+import DropDown from '../components/Dropdown';
 
 export default function PreferencesScreen({navigation}) {
+
+  //const [interests, setInterests] = useState("")
+  
         return (
           <ImageBackground
           style={styles.backgroundImage}
@@ -15,17 +19,15 @@ export default function PreferencesScreen({navigation}) {
               <Text style={styles.title}>Interests</Text>
             </View>
             <View style={styles.inputContainer}>
-              <TextInput
-              placeholder = "Enter Your Interests"
-              multiline = {true}
-              style={styles.input}
-              />
+              <DropDown/>
             </View>
 
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => {
+                  navigation.navigate("Home");
+                }}
             >
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
