@@ -1,35 +1,86 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, Image, ScrollView} from 'react-native';
+import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, Image, ScrollView, ImageBackground} from 'react-native';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 //details page where the user enters their personal details.
 //DOB field is just text input rather than date selector
 
 export default function LoginScreen({navigation}) {
+
+        const [email, setEmail] = useState(null)
+        const [password, setPassword] = useState(null)
+
+        const checkFields=()=>{
+          if ((email == null) || (password == null)){
+            alert("Please fill in all fields");
+          }else{
+            handleLogIn();
+          }
+        }
+
+
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+          if(user) {
+            const uid = user.uid;
+            console.log(uid,"Signedin")
+            navigation.navigate("Home")
+            this.emailInput.clear();
+            this.passwordInput.clear();
+            
+          }else{
+            console.log("No user")
+          }
+        })
+
+        const handleLogIn=() => {
+          signInWithEmailAndPassword(auth,email,password)
+            .then((userCredential) => {
+                const user = userCredential.user; 
+                console.log(user.email);
+                /* Clear inputs so that if the page is revisited in the same session the form is empty */
+                this.emailInput.clear();
+                this.passwordInput.clear();
+                navigation.navigate("Home");
+            })
+            .catch(error=>alert(error.message))   
+        };
+
         return (
+          <ImageBackground
+          style={styles.backgroundImage}
+          source={require('../assets/sb-logo.png')}
+          >
           <KeyboardAvoidingView
           style={styles.container}
           >
-        
-            <Image 
-              style={styles.logo}
-              source={require('../assets/sb.png')} />
+
             <View style={styles.inputContainer}>
+              <View style={styles.gap}/>
               <TextInput
+              ref={input => {this.emailInput = input}}
               placeholder = "Your Email"
               style={styles.input}
+              value={email}
+              onChangeText={text=>setEmail(text)}
               />
               <TextInput
+              ref={input => {this.passwordInput = input}}
               placeholder = "Your Password"
-              style={styles.input}sss
+              secureTextEntry
+              style={styles.input}
+              value={password}
+              onChangeText={text=>setPassword(text)}
               />
             </View>
 
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("Details")}
-                
+                onPress={() => {
+                  checkFields();
+                }}
             >
               <Text style={styles.buttonText}>Sign In</Text>
             </TouchableOpacity>
@@ -65,39 +116,27 @@ export default function LoginScreen({navigation}) {
               <Text style={styles.facebookButtonText}>Continue with Facebook</Text>
             </TouchableOpacity>
             </View>
-
             
           </KeyboardAvoidingView>
-
+          </ImageBackground>
         );
       }
 
 const styles = StyleSheet.create({
+  gap: {
+    height: '48%',
+  },
     container: {
-      flex: 1,
       marginTop: 20,
       alignItems: 'center',
-      justifyContent: 'center',
-    },
-
-    logo: {
-      marginTop: 50,
-    },
-
-    titleContainer: {
-      marginBottom: 25,
-    },
-
-    title: {
-      color: 'grey',
-      fontSize: 30,
     },
 
     inputContainer: {
       width: '80%',
-      marginTop: 30,
+      marginTop: 20,
+      marginBottom: 40,
+      justifyContent: 'flex-end',
     },
-
     input: {
       backgroundColor: "white",
       paddingHorizontal: 15,
@@ -107,22 +146,19 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer:{
-      marginTop: 15,
       width: "60%",
-      justifyContent: "center",
+      justifyContent: "flex-start",
       alignItems: "center",
     },
-
     button: {
       width: "80%",
       height: 40,
-      backgroundColor: "lightgrey",
+      backgroundColor: "#9BD9F4",
       padding: 5,
       borderRadius: 10,
       margin: 5,
       alignItems: "center",
     },
-
     buttonText: {
       padding: "1%",
       color: "black",
@@ -130,14 +166,12 @@ const styles = StyleSheet.create({
     },
 
     socialButtonContainer: {
-      flex: 1,
       width: "60%",
-      justifyContent: "flex-end",
       alignItems: "center",
       marginTop: 45,
-      marginBottom: 20,
+      marginBottom: 10,
+      justifyContent: "flex-start",
     },
-
     socialButton: {
       width: "120%",
       padding: 10,
@@ -150,7 +184,6 @@ const styles = StyleSheet.create({
     facebookButton: {
       backgroundColor: "#4267B2",
     },
-
     facebookButtonText: {
       paddingLeft: 50,
       color: "white",
@@ -159,7 +192,6 @@ const styles = StyleSheet.create({
     googleButton: {
       backgroundColor: "white",
     },
-
     googleButtonText: {
       paddingLeft: 50,
       color: "grey",

@@ -1,13 +1,16 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
-import DropDown from '../components/Dropdown';
+import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground} from 'react-native';
 
 export default function PreferencesScreen({navigation}) {
 
   //const [interests, setInterests] = useState("")
   
         return (
+          <ImageBackground
+          style={styles.backgroundImage}
+          source={require('../assets/sb-nologo.png')}
+          >
           <KeyboardAvoidingView
           style={styles.container}
           >
@@ -30,12 +33,17 @@ export default function PreferencesScreen({navigation}) {
 
             </View>
           </KeyboardAvoidingView>
+          </ImageBackground>
 
 
         );
       }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
     container: {
       flex: 1,
       marginTop: 20,
