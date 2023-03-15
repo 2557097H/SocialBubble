@@ -17,11 +17,28 @@ const ProfileScreen = ({navigation}) => {
 
   useEffect (() => {
     const dbRef = ref(db, 'users/' + userId);
+    const interestRef = ref(db, 'interests/');
+    var interestsName = []
+
     onValue(dbRef, (snapshot) => {
+      
       setName(snapshot.val().Name);
       setUsername(snapshot.val().Username);
       setBio(snapshot.val().Bio);
-      setInterests(snapshot.val().Interests);
+
+      onValue(interestRef, (interestSnapshot) => {
+        interestsName.push("My Interests are ")
+        for(let i=0; i<snapshot.val().Interests.length; i++){
+          if(i != snapshot.val().Interests.length-1){
+            interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
+          }
+          else{
+            interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]])
+          }
+        }
+      });
+
+      setInterests(interestsName);
     });
   }, [])
 
