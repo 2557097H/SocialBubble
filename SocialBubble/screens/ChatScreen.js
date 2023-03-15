@@ -82,10 +82,13 @@ function ChatScreen({ route }) {
           console.log("User is in an inner bubble");
           setInnerId(snapshot.val());
           setCheckID(true);
+        }else{
+          setInitialRender(initialRender + 1);
+
         }
       
     })
-    setInitialRender(initialRender + 1);
+    
     setCheckID(false);
   setUserID(senderId);}
   }, [route.params]);
@@ -237,7 +240,7 @@ function ChatScreen({ route }) {
         
         {/*title for chat*/}
         <View style={styles.titlesContainer}>
-          <Text style={styles.titles}>{myVariable}</Text>
+          <Text style={styles.titles}>InnerBubble Chat</Text>
         </View>
 
         <View style={styles.chat_container}>
