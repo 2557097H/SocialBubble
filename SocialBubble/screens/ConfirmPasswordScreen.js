@@ -22,6 +22,19 @@ const ConfirmPasswordScreen = ({navigation}) => {
           }
         }
 
+        /* Clear inputs so that if the page is revisited in the same session the form is empty */
+        const clearForms=()=> {
+          if(email != null){
+            this.emailInput.clear();
+          }
+          if(password != null){
+            this.currentPasswordInput.clear();
+          }
+          if(newPassword != null){
+            this.newPasswordInput.clear();
+          }
+        }
+
 
         const changesPassword=() => {
           const auth = getAuth();
@@ -31,10 +44,7 @@ const ConfirmPasswordScreen = ({navigation}) => {
             .then(() => {
               updatePassword(user, newPassword)
                 .then(() => {
-                  /* Clear inputs so that if the page is revisited in the same session the form is empty */
-                  this.emailInput.clear();
-                  this.currentPasswordInput.clear();
-                  this.newPasswordInput.clear();
+                  clearForms();
                   navigation.navigate("PasswordChanged")
                 })
             }) 
@@ -91,6 +101,20 @@ const ConfirmPasswordScreen = ({navigation}) => {
               <Text style={styles.buttonText}>Change Password</Text>
             </TouchableOpacity>
 
+            </View>
+
+
+            <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                clearForms();
+                navigation.navigate("Settings");
+              }}
+
+            >
+              <Text style={styles.buttonText}>Back</Text>
+            </TouchableOpacity>
             </View>
             
 
