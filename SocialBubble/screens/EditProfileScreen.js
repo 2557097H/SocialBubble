@@ -1,10 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect}  from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons'; 
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import { getAuth, updateProfile } from "firebase/auth"
+import { getDatabase, ref, child, push, update, onValue} from "firebase/database"
 
 const EditProfileScreen = ({navigation}) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const displayName = user.displayName;
+  const userId = user.uid;
+
+  const [bio, setBio] = useState("")
+  const [interests, setInterests] = useState("")
+  const [username, setUsername] = useState("")
+
+  const db = getDatabase();
+
+  useEffect (() => {
+    const dbRef = ref(db, 'users/' + userId);
+    onValue(dbRef, (snapshot) => {
+      setUsername(snapshot.val().Username);
+      setBio(snapshot.val().Bio);
+      setInterests(snapshot.val().Interests);
+    });
+  }, [])
+
+  const changeName=() => {
+      update(ref(db, 'users/' + userId), {
+        Username: username,
+        Interests: interests,
+        Bio: bio,
+      })
+      navigation.navigate("Profile")
+      user.reload()
+  };
+
   return (
     <ImageBackground
     style={styles.backgroundImage}
@@ -28,26 +61,30 @@ const EditProfileScreen = ({navigation}) => {
             borderRadius:8,
             paddingHorizontal: 5,
            }}
-            placeholder= {"Jedi Master Yoda"}
+            value = {username}
+            onChangeText = {text=>setUsername(text)}
             />
         </View>
 
         {/*profile picture of the profile*/}
         <View style={styles.profilePictureContainer}>
-        <Image source={{uri: 'https://konvajs.org/assets/yoda.jpg'}} style={{
+        <Image source={{uri: profilePicture}} style={{
           flex:1,
           borderRadius: 20,
         }} />
-         <TouchableOpacity style={styles.editButtonContainer}>
-         <FontAwesome name="edit" size={35} color="grey"/>
-         </TouchableOpacity>
+        <TouchableOpacity style={styles.editButtonContainer} onPress={handleUpdateProfilePicture}>
+        <FontAwesome name="edit" size={35} color="grey"/>
+        </TouchableOpacity>
          </View>
 
         {/*interests of the profile*/}
         <View style={styles.interestsContainer}>
           <Text style={{
             color: "grey",
-          }}>
+          }}
+          value={interests}
+          onChangeText={text=>setInterests(text)}
+          >
                Interests (tap to remove):
           </Text>
           <TouchableOpacity style={styles.addInterestButton}>
@@ -72,7 +109,8 @@ const EditProfileScreen = ({navigation}) => {
             textAlignVertical: 'top',
             padding: 10,
            }}
-            placeholder = {"Current Profile"}
+            value={bio}
+            onChangeText={text=>setBio(text)}
             />
         </View>
           
@@ -88,7 +126,9 @@ const EditProfileScreen = ({navigation}) => {
           </View>
           <TouchableOpacity 
           style={styles.button}
-          onPress={() => navigation.navigate("Profile")}>
+          onPress={() => {
+            changeName();
+          }}>
             <Text style={styles.buttonText}> Save </Text>
           </TouchableOpacity>
         </View>

@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
 import LoginScreen from './screens/LoginScreen';
@@ -19,6 +20,8 @@ import ProfileScreen from './screens/ProfileScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
 import OtherUsersProfileScreen from './screens/OtherUsersProfileScreen';
+import ValidationScreen from './screens/ValidationScreen';
+import ValidationPendingScreen from './screens/ValidationPendingScreen';
 
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
@@ -37,6 +40,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const database = getDatabase(app);
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -166,12 +170,21 @@ export default function App() {
               tabBarStyle: { display: 'none'},
               tabBarVisible: false, 
             }}
+            />
+            <Tab.Screen name ="Validation" component={ValidationScreen}
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: 'none'},
+              tabBarVisible: false, 
+            }}
             />  
-            
-
-
-
-
+            <Tab.Screen name ="ValidationPending" component={ValidationPendingScreen}
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: 'none'},
+              tabBarVisible: false, 
+            }}
+            /> 
         </Tab.Navigator>
     </NavigationContainer>  
 );
