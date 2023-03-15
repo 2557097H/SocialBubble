@@ -1,6 +1,6 @@
 import React, { useState, useEffect}  from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground} from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground, FileReader} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
@@ -12,12 +12,27 @@ const EditProfileScreen = ({navigation}) => {
   const user = auth.currentUser;
   const displayName = user.displayName;
   const userId = user.uid;
-
+  const db = getDatabase();
   const [bio, setBio] = useState("")
   const [interests, setInterests] = useState("")
   const [username, setUsername] = useState("")
 
-  const db = getDatabase();
+  const [profilePicture, setProfilePicture] = useState(null);
+
+  const handleUpdateProfilePicture = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4,4],
+      quality: 1,
+      base64: true,
+    });
+
+    if (!result.cancelled){
+      setProfilePicture(result)
+    }
+  };
+
 
   useEffect (() => {
     const dbRef = ref(db, 'users/' + userId);
@@ -33,7 +48,9 @@ const EditProfileScreen = ({navigation}) => {
         Username: username,
         Interests: interests,
         Bio: bio,
+        ProfilePicture: profilePicture,
       })
+
       navigation.navigate("Profile")
       user.reload()
   };
@@ -68,7 +85,7 @@ const EditProfileScreen = ({navigation}) => {
 
         {/*profile picture of the profile*/}
         <View style={styles.profilePictureContainer}>
-        <Image source={{uri: profilePicture}} style={{
+        <Image source={{profilePicture}} style={{
           flex:1,
           borderRadius: 20,
         }} />
