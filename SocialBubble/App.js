@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import Geocode from "react-geocode";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
 import LoginScreen from './screens/LoginScreen';
@@ -15,7 +16,6 @@ import PasswordChangedScreen from './screens/PasswordChangedScreen';
 import ConfirmPasswordScreen from './screens/ConfirmPasswordScreen';
 import DeleteAccountScreen from './screens/DeleteAccountScreen';
 import AccountDeletedScreen from './screens/AccountDeletedScreen';
-
 import ProfileScreen from './screens/ProfileScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
@@ -33,6 +33,12 @@ const firebaseConfig = {
   appId: "1:426846827737:web:58cdaded0ed89d490afac8",
   measurementId: "G-1EQTFQNESR"
 };
+
+Geocode.setApiKey("AIzaSyCdlkP7PV6Sk_3Sp_WL9EHMLJEL5pLDvhs");
+Geocode.setLanguage("en");
+Geocode.setRegion("uk");
+Geocode.setLocationType("ROOFTOP");
+Geocode.enableDebug();
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
