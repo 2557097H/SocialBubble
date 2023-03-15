@@ -19,10 +19,11 @@ export default function PersonalDetailsScreen({ navigation }) {
   const [occupation, setOccupation] = useState(null);
   const [confirmEmail, setConfirmEmail] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [city, setCity] = useState(null);
 
   const checkFields = () => {
     console.log(dob);
-    if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null)) {
+    if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null) || (city == null)) {
       alert("Please fill in all fields");
     } else if (email != confirmEmail) {
       alert("Emails do not match!");
@@ -57,6 +58,9 @@ export default function PersonalDetailsScreen({ navigation }) {
     }
     if (confirmPassword != null) {
       this.confirmPasswordInput.clear();
+    }
+    if (city != null) {
+      this.cityInput.clear()
     }
 
 
@@ -120,6 +124,13 @@ export default function PersonalDetailsScreen({ navigation }) {
           style={styles.input}
           value={email}
           onChangeText={text => setEmail(text)}
+        />
+        <TextInput
+        ref={input => { this.cityInput = input}}
+        placeholder="City/Town"
+        style={styles.input}
+        value={city}
+        onChangeText={text=>setCity(text)}
         />
         <TextInput
           ref={input => { this.confirmEmailInput = input }}
