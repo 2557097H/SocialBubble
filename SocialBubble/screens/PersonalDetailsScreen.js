@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { Geocode } from "react-geocode";
+import Geocode from "react-geocode";
 import PreferencesScreen from './PreferencesScreen';
 
 export default function PersonalDetailsScreen({ navigation }) {
+
+
+  Geocode.setApiKey("AIzaSyCdlkP7PV6Sk_3Sp_WL9EHMLJEL5pLDvhs");
+  Geocode.setLanguage("en");
+  Geocode.setRegion("uk");
+  Geocode.setLocationType("ROOFTOP");
+  Geocode.enableDebug();
 
   /* Regex below taken from  https://stackoverflow.com/questions/15491894/regex-to-validate-date-formats-dd-mm-yyyy-dd-mm-yyyy-dd-mm-yyyy-dd-mmm-yyyy */
   let validDOB = new RegExp(
@@ -21,6 +28,9 @@ export default function PersonalDetailsScreen({ navigation }) {
   const [confirmEmail, setConfirmEmail] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [city, setCity] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
 
   const checkFields = () => {
     console.log(dob);
@@ -70,15 +80,16 @@ export default function PersonalDetailsScreen({ navigation }) {
   const getLangLong = () => {
     console.log(city);
     Geocode.fromAddress(city).then(
-      response => {
-        const { lat, lng } = response[0].geometry.location
-        console.log(city);
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        setLatitude(lat);
+        setLongitude(lng);
         console.log(lat, lng);
       },
       (error) => {
         console.error(error);
       }
-    )
+    );
   }
 
 

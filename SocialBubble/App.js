@@ -3,7 +3,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import Geocode from "react-geocode";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
 import LoginScreen from './screens/LoginScreen';
@@ -34,21 +33,6 @@ const firebaseConfig = {
   measurementId: "G-1EQTFQNESR"
 };
 
-Geocode.setApiKey("AIzaSyCdlkP7PV6Sk_3Sp_WL9EHMLJEL5pLDvhs");
-Geocode.setLanguage("en");
-Geocode.setRegion("uk");
-Geocode.setLocationType("ROOFTOP");
-Geocode.enableDebug();
-
-// Geocode.fromAddress("Eiffel Tower").then(
-//   (response) => {
-//     const { lat, lng } = response.results[0].geometry.location;
-//     console.log(lat, lng);
-//   },
-//   (error) => {
-//     console.error(error);
-//   }
-// );
 
 
 const app = initializeApp(firebaseConfig);
