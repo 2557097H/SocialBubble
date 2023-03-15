@@ -16,7 +16,6 @@ import PasswordChangedScreen from './screens/PasswordChangedScreen';
 import ConfirmPasswordScreen from './screens/ConfirmPasswordScreen';
 import DeleteAccountScreen from './screens/DeleteAccountScreen';
 import AccountDeletedScreen from './screens/AccountDeletedScreen';
-
 import ProfileScreen from './screens/ProfileScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
@@ -36,6 +35,8 @@ const firebaseConfig = {
   appId: "1:426846827737:web:58cdaded0ed89d490afac8",
   measurementId: "G-1EQTFQNESR"
 };
+
+
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
