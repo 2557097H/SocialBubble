@@ -33,7 +33,7 @@ function ChatScreen(props) {
     const [messages, setMessages] = useState([]);
     const [messages2, setMessages2] = useState([]);
     const [innerId, setInnerId] = useState("");
-    const [count, setCount] = useState(0);
+    const [chatKey, setChatKey] = useState("");
     const messagesRef = null;
     
     
@@ -52,9 +52,9 @@ function ChatScreen(props) {
     
     
     
-    console.log(senderId);
+
     
-    console.log("Obtaining inner id");
+    
     useEffect(() => {
       // Obtain inner ID
       get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
@@ -64,14 +64,93 @@ function ChatScreen(props) {
           
         }else {
           console.log("User is not in an inner bubble");
-    
+          
+
           //Needs to be reviewed when have code for sorting lobbys
-          const chatKey = "-NQLkWMa6HYf18TGfLRP";
+
+          
+          
+          get(child(dbRef, `bubble/`)).then((snapshot) => {
+
+            
+            
+            if (snapshot.exists()){
+            
+              
+              const lastJoined = snapshot.val().lastJoined;
+              console.log(snapshot);
+              
+              get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
+                
+                if (snapshot.exists()){
+                  const count = snapshot.val().count;
+                  if(count > 5){
+                    const id = push(ref(db, `bubble/`), {
+                      count: 0,
+                    }).key;
+                    const updates = {};
+                    updates[`/bubble/lastJoined` ] = id;
+                    update(ref(db), updates)
+                  
+                  set(ref(db, `users/${senderId}/`), {
+                    innerId: id,
+                });
+                setInnerId(id);
+                  }
+                  else{
+
+                    console.log("i am here");
+                  
+                  get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
+                    
+                    if (snapshot.exists()){
+                    var count = snapshot.val().count + 1;
+                    const updates = {};
+                    updates[`/bubble/${lastJoined}/count` ] = count;
+                    update(ref(db), updates)
+                
+                   }})
+                      
+                      set(ref(db, `users/${senderId}/`), {
+                        innerId: lastJoined,
+                    });
+                    setInnerId(lastJoined);
+
+
+                    
+
+                  }
+                }});
+            }
+          else{
+          const id = push(ref(db, `bubble/`), {
+              count: 0,
+            }).key;
+            
+          setChatKey(id.toString());
+          console.log("I'm in the wrong loop u dumbass");
+          set(ref(db, `bubble/`), {
+            lastJoined: id,
+        });
+
+        set(ref(db, `bubble/${id}/`), {
+          count: 0,
+        }).key;
+
+        
+          set(ref(db, `users/${senderId}/`), {
+            innerId: id,
+        });
+
+        setInnerId(id);
+      
+
+      }});
+      
+      
     
-           set(ref(db, `users/${senderId}/`), {
-              innerId: chatKey,
-          });
-          setInnerId(chatKey); 
+           
+           
          
       }
       });

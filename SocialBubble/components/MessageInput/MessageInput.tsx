@@ -19,14 +19,13 @@ const MessageInput = ({input, setInput}) => {
     const auth = getAuth();
     const user = auth.currentUser;
     const senderId = user;
-    const receiverId = "Hz6ha0zlMANIMIwfwsg2X3f7bDS2";
     const [output, setOutput] = useState("");
    
   
     const sendPressed = () =>{
     if(input){ 
         const message = input;
-        SendMessage(message, user.uid, receiverId);
+        SendMessage(message, user.uid);
         setInput("");}
     else{
         console.warn("No text in message");
@@ -34,7 +33,7 @@ const MessageInput = ({input, setInput}) => {
     }
 
     
-    const SendMessage = (message, senderId, receiverId) => {
+    const SendMessage = (message, senderId) => {
 
         const dbRef = ref(getDatabase());
         //Check if user is in an inner bubble
@@ -59,18 +58,12 @@ const MessageInput = ({input, setInput}) => {
 
         
 
-        /*
-        set(ref(db, `bubble/messages/message/`), {
-          senderId: senderId})
-       
         
-        */
         }
 
         
 
 
-      //}
 
 
   

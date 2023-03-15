@@ -21,8 +21,7 @@ const Message = ({ message, user }) => {
 
     const isItMe = user == senderId;
 
-    console.log(isItMe);
-
+    
     
 
     return(
