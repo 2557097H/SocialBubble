@@ -45,7 +45,6 @@ export default function PersonalDetailsScreen({ navigation }) {
       alert("Date of birth invalid. Please use format dd/mm/yyyy");
     } else {
       getLangLong();
-      handleSignUp();
     }
   }
 
@@ -94,11 +93,16 @@ export default function PersonalDetailsScreen({ navigation }) {
         console.error(error);
       }
     );
+    handleSignUp();
   }
 
 
   const handleSignUp = () => {
     console.log(email);
+    console.log("----------");
+    console.log(latitude);
+    console.log(longitude);
+    console.log("----------");
 
     const auth = getAuth()
     const db = getDatabase()
@@ -111,6 +115,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           Username: username,
           DateOfBirth: dob,
           Occupation: occupation,
+          City: city,
           Longitude: longitude,
           Latitude: latitude
         });
