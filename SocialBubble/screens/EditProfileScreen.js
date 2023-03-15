@@ -1,10 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons'; 
 
 const EditProfileScreen = ({navigation}) => {
+
+  const [profilePicture, setProfilePicture] = useState('https://konvajs.org/assets/yoda.jpg');
+
+  const handleUpdateProfilePicture = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setProfilePicture(result.uri);
+    }
+  };
+
   return (
     <ImageBackground
     style={styles.backgroundImage}
@@ -34,13 +51,13 @@ const EditProfileScreen = ({navigation}) => {
 
         {/*profile picture of the profile*/}
         <View style={styles.profilePictureContainer}>
-        <Image source={{uri: 'https://konvajs.org/assets/yoda.jpg'}} style={{
+        <Image source={{uri: profilePicture}} style={{
           flex:1,
           borderRadius: 20,
         }} />
-         <TouchableOpacity style={styles.editButtonContainer}>
-         <FontAwesome name="edit" size={35} color="grey"/>
-         </TouchableOpacity>
+        <TouchableOpacity style={styles.editButtonContainer} onPress={handleUpdateProfilePicture}>
+        <FontAwesome name="edit" size={35} color="grey"/>
+        </TouchableOpacity>
          </View>
 
         {/*interests of the profile*/}
