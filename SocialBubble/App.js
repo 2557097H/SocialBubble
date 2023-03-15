@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
 import LoginScreen from './screens/LoginScreen';
