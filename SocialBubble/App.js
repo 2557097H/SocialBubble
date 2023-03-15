@@ -20,6 +20,8 @@ import ProfileScreen from './screens/ProfileScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
 import OtherUsersProfileScreen from './screens/OtherUsersProfileScreen';
+import ValidationScreen from './screens/ValidationScreen';
+import ValidationPendingScreen from './screens/ValidationPendingScreen';
 
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
@@ -165,12 +167,21 @@ export default function App() {
               tabBarStyle: { display: 'none'},
               tabBarVisible: false, 
             }}
+            />
+            <Tab.Screen name ="Validation" component={ValidationScreen}
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: 'none'},
+              tabBarVisible: false, 
+            }}
             />  
-            
-
-
-
-
+            <Tab.Screen name ="ValidationPending" component={ValidationPendingScreen}
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: 'none'},
+              tabBarVisible: false, 
+            }}
+            /> 
         </Tab.Navigator>
     </NavigationContainer>  
 );

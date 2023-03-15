@@ -20,6 +20,14 @@ export default function PersonalDetailsScreen({navigation}) {
         const [confirmEmail, setConfirmEmail] = useState(null);
         const [confirmPassword, setConfirmPassword] = useState(null);
 
+        /*making fields for the authentication*/
+        
+        const [authenticated, setauthenticated] = useState(false);
+        const [auth_uploaded, setauth_uploaded] = useState(false);
+        const [passport_image, setpassport_image] = useState(null);
+        const [selfie, setselfie] = useState(null);
+
+
         const checkFields=()=>{
           console.log(dob);
           if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null)){
