@@ -34,7 +34,6 @@ export default function PersonalDetailsScreen({ navigation }) {
 
 
   const checkFields = () => {
-    console.log(dob);
     if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null) || (city == null)) {
       alert("Please fill in all fields");
     } else if (email != confirmEmail) {
@@ -49,7 +48,6 @@ export default function PersonalDetailsScreen({ navigation }) {
   }
 
   const clearForms = () => {
-    console.log("I ran");
     if (username != null) {
       this.usernameInput.clear();
     }
@@ -81,7 +79,6 @@ export default function PersonalDetailsScreen({ navigation }) {
   }
 
   const getLangLong = () => {
-    console.log(city);
     Geocode.fromAddress(city).then(
       (response) => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -98,12 +95,6 @@ export default function PersonalDetailsScreen({ navigation }) {
 
 
   const handleSignUp = () => {
-    console.log(email);
-    console.log("----------");
-    console.log(latitude);
-    console.log(longitude);
-    console.log("----------");
-
     const auth = getAuth()
     const db = getDatabase()
     createUserWithEmailAndPassword(auth, email, password)
