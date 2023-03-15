@@ -2,10 +2,18 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import Geocode from "react-geocode";
 import { getDatabase, ref, set, } from "firebase/database";
 import PreferencesScreen from './PreferencesScreen';
 
 export default function PersonalDetailsScreen({ navigation }) {
+
+
+  Geocode.setApiKey("AIzaSyCdlkP7PV6Sk_3Sp_WL9EHMLJEL5pLDvhs");
+  Geocode.setLanguage("en");
+  Geocode.setRegion("uk");
+  Geocode.setLocationType("ROOFTOP");
+  Geocode.enableDebug();
 
   /* Regex below taken from  https://stackoverflow.com/questions/15491894/regex-to-validate-date-formats-dd-mm-yyyy-dd-mm-yyyy-dd-mm-yyyy-dd-mmm-yyyy */
   let validDOB = new RegExp(
@@ -20,19 +28,22 @@ export default function PersonalDetailsScreen({ navigation }) {
   const [occupation, setOccupation] = useState(null);
   const [confirmEmail, setConfirmEmail] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [city, setCity] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
 
   const checkFields = () => {
-    console.log(dob);
-    if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null)) {
+    if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null) || (city == null)) {
       alert("Please fill in all fields");
     } else if (email != confirmEmail) {
       alert("Emails do not match!");
     } else if (password != confirmPassword) {
       alert("Passwords do not match!");
     } else if (!validDOB.test(dob)) {
-      alert("Date of birth invalid. Please use format dd/mm/yyyy")
+      alert("Date of birth invalid. Please use format dd/mm/yyyy");
     } else {
-      handleSignUp();
+      getLangLong();
     }
   }
 
@@ -61,14 +72,29 @@ export default function PersonalDetailsScreen({ navigation }) {
     if (confirmPassword != null) {
       this.confirmPasswordInput.clear();
     }
+    if (city != null) {
+      this.cityInput.clear()
+    }
 
+  }
 
+  const getLangLong = () => {
+    Geocode.fromAddress(city).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        setLatitude(lat);
+        setLongitude(lng);
+        console.log(lat, lng);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+    handleSignUp();
   }
 
 
   const handleSignUp = () => {
-    console.log(email);
-
     const auth = getAuth()
     const db = getDatabase()
     createUserWithEmailAndPassword(auth, email, password)
@@ -79,7 +105,10 @@ export default function PersonalDetailsScreen({ navigation }) {
           Name: name,
           Username: username,
           DateOfBirth: dob,
-          Occupation: occupation
+          Occupation: occupation,
+          City: city,
+          Longitude: longitude,
+          Latitude: latitude
         });
         clearForms();
         navigation.navigate("Preferences");
@@ -148,6 +177,13 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.confirmEmailTextInput.focus(); }}
           blurOnSubmit={false}
+        />
+        <TextInput
+        ref={input => { this.cityInput = input}}
+        placeholder="City/Town"
+        style={styles.input}
+        value={city}
+        onChangeText={text=>setCity(text)}
         />
         <TextInput
           ref={input => { this.confirmEmailInput = input; this.confirmEmailTextInput = input }}
