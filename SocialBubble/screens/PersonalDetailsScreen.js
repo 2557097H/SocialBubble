@@ -32,7 +32,6 @@ export default function PersonalDetailsScreen({ navigation }) {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
-
   const checkFields = () => {
     if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null) || (city == null)) {
       alert("Please fill in all fields");
@@ -133,7 +132,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           style={styles.input}
           value={username}
           onChangeText={text => setUsername(text)}
-          ref={input => { this.usernameInput = input}}
+          ref={input => { this.usernameInput = input }}
           returnKeyType="next"
           onSubmitEditing={() => { this.nameTextInput.focus(); }}
           blurOnSubmit={false}
@@ -169,6 +168,13 @@ export default function PersonalDetailsScreen({ navigation }) {
           blurOnSubmit={false}
         />
         <TextInput
+          ref={input => { this.cityInput = input }}
+          placeholder="City/Town"
+          style={styles.input}
+          value={city}
+          onChangeText={text => setCity(text)}
+        />
+        <TextInput
           ref={input => { this.emailInput = input; this.emailTextInput = input }}
           placeholder="Email"
           style={styles.input}
@@ -177,13 +183,6 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.confirmEmailTextInput.focus(); }}
           blurOnSubmit={false}
-        />
-        <TextInput
-        ref={input => { this.cityInput = input}}
-        placeholder="City/Town"
-        style={styles.input}
-        value={city}
-        onChangeText={text=>setCity(text)}
         />
         <TextInput
           ref={input => { this.confirmEmailInput = input; this.confirmEmailTextInput = input }}
@@ -196,7 +195,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.passwordInput = input ; this.passwordTextInput = input }}
+          ref={input => { this.passwordInput = input; this.passwordTextInput = input }}
           placeholder="Password"
           secureTextEntry
           style={styles.input}
