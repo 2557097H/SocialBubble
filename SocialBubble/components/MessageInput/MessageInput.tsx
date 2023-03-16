@@ -11,6 +11,8 @@ import { child, getDatabase, set, update, ref, push, get } from "firebase/databa
 
 const MessageInput = ({ input, setInput }) => {
 
+    const [name, setName] = useState("");
+
     const db = getDatabase();
     const auth = getAuth();
     const user = auth.currentUser;
@@ -34,16 +36,29 @@ const MessageInput = ({ input, setInput }) => {
 
         const dbRef = ref(getDatabase());
         //Check if user is in an inner bubble
-
         get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
             if (snapshot.exists()) {
                 const innerId = snapshot.val();
                 var today = new Date();
-                var time = today.getHours() + ":" + today.getMinutes();
+                if(today.getMinutes().toString().length == 1){
+                    var time = today.getHours() + ":0" + today.getMinutes();
+                }
+                else{
+                    var time = today.getHours() + ":" + today.getMinutes();
+                }
+                
+                get(child(dbRef, `users/${senderId}/Name`)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        setName(snapshot.val());
+                    }else{
+                        setName("Undefined");
+                    }});
                 const messageKey = push(ref(db, `bubble/${innerId}/messages/`), {
                     message: message,
                     senderId: senderId,
                     time: time,
+                    name: name,
+                    
                 }).key;
             }
 

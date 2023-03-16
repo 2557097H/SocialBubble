@@ -99,6 +99,7 @@ function ChatScreen({ route }) {
 
                 set(ref(db, `users/${senderId}/`), {
                   innerId: id,
+                  Name: "Bob",
                 });
                 setInnerId(id);
               }
@@ -117,6 +118,7 @@ function ChatScreen({ route }) {
 
                 set(ref(db, `users/${senderId}/`), {
                   innerId: lastJoined,
+                  Name: "bob",
                 });
 
                 setInnerId(lastJoined);
@@ -141,6 +143,7 @@ function ChatScreen({ route }) {
 
           set(ref(db, `users/${senderId}/`), {
             innerId: id,
+            Name: "Bob",
           });
 
           setInnerId(id);
@@ -171,6 +174,8 @@ function ChatScreen({ route }) {
             message: childData.message,
             user: childData.senderId,
             time: childData.time,
+            name: childData.name,
+            
           });
         }
       });
@@ -192,14 +197,14 @@ function ChatScreen({ route }) {
    
   return (
 
-
+  <KeyboardAvoidingView behavior={Platform.OS === "android" ? "padding" : "height"} style={styles.keyboardContainer}>
     <ImageBackground
       style={styles.backgroundImage}
       source={require('../assets/sb-nologo.png')}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-        <KeyboardAvoidingView
+        <View
           style={styles.container}
         >
           <View style={styles.titlesContainer}>
@@ -212,7 +217,7 @@ function ChatScreen({ route }) {
             <View style={styles.chat_container}>
               <FlatList
                 data={allMessages}
-                renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time}
+                renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time} name = {item.name}
 
                 />}
 
@@ -227,15 +232,20 @@ function ChatScreen({ route }) {
             </View>
           </View>
 
-        </KeyboardAvoidingView>
+        </View>
 
 
       </TouchableWithoutFeedback>
     </ImageBackground>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  keyboardContainer: {
+    flex: 1,
+  },
+
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
@@ -267,7 +277,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 6,
-    flex: 15,
+    flex: 13,
   },
   scroll: {
     backgroundColor: "white",
@@ -275,7 +285,7 @@ const styles = StyleSheet.create({
   input_container: {
     width: 350,
     alignContent: 'center',
-    flex: 1.8,
+    flex: 2.2,
   },
 });
 

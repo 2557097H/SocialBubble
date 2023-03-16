@@ -6,7 +6,7 @@ import { getAuth} from "firebase/auth";
 
 
 
-const Message = ({ message, user, time }) => {
+const Message = ({ message, user, time, name }) => {
 
     const auth = getAuth();
     const sender = auth.currentUser;
@@ -19,6 +19,7 @@ const Message = ({ message, user, time }) => {
 
     return(
         <View>
+            
         <View style = {[
             styles.container, {
             backgroundColor: isItMe ? "#9BD9F4": "lightgrey",
@@ -40,6 +41,16 @@ const Message = ({ message, user, time }) => {
                
 
             }]}> {time} </Text>
+        </View>
+        <View style = {[styles.name, {
+            marginLeft: isItMe? 'auto': 10,
+            marginRight: isItMe? 10 : 'auto',
+        }
+        ]}>
+            <Text style = {[styles.nameText,{
+               
+
+            }]}> {name} </Text>
         </View>
 
 
@@ -75,7 +86,20 @@ const styles = StyleSheet.create({
     timeText: {
         color: "grey",
         fontSize: 8,
-    }
+    },
+    name: {
+
+        flexDirection: "row",
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+        bottom: 70,
+         
+     }
+     ,
+     nameText: {
+         color: "grey",
+         fontSize: 8,
+     },
 
 
 });
