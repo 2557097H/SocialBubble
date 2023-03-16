@@ -6,6 +6,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { getAuth, updateProfile } from "firebase/auth"
 import { getDatabase, ref, child, push, update, onValue} from "firebase/database"
+import storage from '@react-native-firebase/storage';
+import * as Progress from 'react-native-progress';
 
 const EditProfileScreen = ({navigation}) => {
   const auth = getAuth();
@@ -17,22 +19,40 @@ const EditProfileScreen = ({navigation}) => {
   const [interests, setInterests] = useState("")
   const [username, setUsername] = useState("")
 
-  const [profilePicture, setProfilePicture] = useState(null);
+  const [profilePicture, setProfilePicture] = useState("");
 
-  const handleUpdateProfilePicture = async () => {
+  const uploadImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4,4],
       quality: 1,
-      base64: true,
     });
+    setProfilePicture(result);
 
-    if (!result.cancelled){
-      setProfilePicture(result)
+    const { uri } = profilePicture;
+    const filename = uri.substring(uri.lastIndexOf('/') + 1);
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+    setTransferred(0);
+    const task = storage()
+      .ref(filename)
+      .putFile(uploadUri);
+    // set progress state
+    task.on('state_changed', snapshot => {
+      setTransferred(
+        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+      );
+    });
+    try {
+      await task;
+    } catch (e) {
+      console.error(e);
     }
+    Alert.alert(
+      'Photo uploaded!',
+      'Your photo has been uploaded to Firebase Cloud Storage!'
+    );
   };
-
 
   useEffect (() => {
     const dbRef = ref(db, 'users/' + userId);
@@ -89,7 +109,7 @@ const EditProfileScreen = ({navigation}) => {
           flex:1,
           borderRadius: 20,
         }} />
-        <TouchableOpacity style={styles.editButtonContainer} onPress={handleUpdateProfilePicture}>
+        <TouchableOpacity style={styles.editButtonContainer} onPress={uploadImage}>
         <FontAwesome name="edit" size={35} color="grey"/>
         </TouchableOpacity>
          </View>
