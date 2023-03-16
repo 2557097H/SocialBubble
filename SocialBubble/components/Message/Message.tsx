@@ -31,7 +31,11 @@ const Message = ({ message, user, time }) => {
             ]}>{message}</Text>
 
         </View>
-        <View style = {styles.time}>
+        <View style = {[styles.time, {
+            marginLeft: isItMe ? 'auto': 10,
+            marginRight: isItMe? 10 : 'auto',
+        }
+        ]}>
             <Text style = {[styles.timeText,{
                
 
