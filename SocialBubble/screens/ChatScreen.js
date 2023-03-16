@@ -1,15 +1,15 @@
-import {React,useId,useState, useEffect, Component} from 'react';
+import { React, useId, useState, useEffect, Component } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, Image, TouchableOpacity, StyleSheet, Text, View, FlatList, Dimensions, ImageBackground,  Keyboard, KeyboardAvoidingView,TouchableWithoutFeedback, TextInput, AsyncStorage } from 'react-native';
+import { ScrollView, Image, TouchableOpacity, StyleSheet, Text, View, FlatList, Dimensions, ImageBackground, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, TextInput, AsyncStorage } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Message from '../components/Message';
 import MessageInput from '../components/MessageInput';
 import Chat from '../assets/dummy_data/Chat';
 import { FontAwesome } from '@expo/vector-icons';
-import { ReactNativeAsyncStorage } from 'firebase/auth'; 
+import { ReactNativeAsyncStorage } from 'firebase/auth';
 import LoginScreen from './LoginScreen';
-import {SimpleLineIcons} from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'; 
+import { SimpleLineIcons } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { child, getDatabase, set, update, ref, push, get, onValue, onChildAdded, onChildChanged } from "firebase/database";
@@ -19,7 +19,7 @@ import { child, getDatabase, set, update, ref, push, get, onValue, onChildAdded,
 
 
 
-const windowWidth = Dimensions.get('window').width; 
+const windowWidth = Dimensions.get('window').width;
 
 
 
@@ -27,30 +27,25 @@ const windowWidth = Dimensions.get('window').width;
 
 function ChatScreen({ route }) {
 
-  
-
-    const [input, setInput] = useState("");
-    const [messages, setMessages] = useState([]);
-    const [messages2, setMessages2] = useState([]);
-    const [innerId, setInnerId] = useState("");
-    const [chatKey, setChatKey] = useState("");
-    const [initialRender, setInitialRender] = useState(0);
-    const [checkID,setCheckID] = useState(false);
-    const [userID, setUserID] = useState("");
-    const messagesRef = null;
-    
-    
-    
-    
-
-    const db = getDatabase();
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const senderId = user.uid;
-    const dbRef = ref(getDatabase());
 
 
-    const [myVariable, setMyVariable] = useState(null);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [allMessages, setAllMessages] = useState([]);
+  const [innerId, setInnerId] = useState("");
+  const [initialRender, setInitialRender] = useState(0);
+  const [checkID, setCheckID] = useState(false);
+
+
+
+  const db = getDatabase();
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const senderId = user.uid;
+  const dbRef = ref(getDatabase());
+
+
+  const [myVariable, setMyVariable] = useState(null);
 
   useEffect(() => {
     if (route.params && route.params.myVariable) {
@@ -58,221 +53,191 @@ function ChatScreen({ route }) {
     }
   }, [route.params]);
 
-  
-
-   
-
-    
-
-    
-    
-    
-    
-   
-    console.log(myVariable);
-    
-
-    
-    
-    useEffect(() => {  console.log("Entered");{
+  useEffect(() => {
+   {
       // Obtain inner ID
       get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
-
-        if (snapshot.exists()){
+        //If exits user is in inner bubble already, if doesn't exists user will be assigned inner bubble in next useEffect
+        if (snapshot.exists()) {
           console.log("User is in an inner bubble");
           setInnerId(snapshot.val());
           setCheckID(true);
-        }else{
+        } else {
           setInitialRender(initialRender + 1);
 
         }
-      
-    })
-    
-    setCheckID(false);
-  setUserID(senderId);}
+
+      })
+
+      setCheckID(false);
+    }
   }, [route.params]);
 
- 
-        
-        useEffect(()=>{ if(checkID == false) {
-          console.log("User is not in an inner bubble");
-          
 
-          //Needs to be reviewed when have code for sorting lobbys
-          get(child(dbRef, `bubble/`)).then((snapshot) => {
 
-            
-            if (snapshot.exists()){
-            
-              
-              const lastJoined = snapshot.val().lastJoined;
-              
-              
-              get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
-                
-                if (snapshot.exists()){
-                  const count = snapshot.val().count;
-                  if(count > 5){
-                    const id = push(ref(db, `bubble/`), {
-                      count: 0,
-                    }).key;
-                    const updates = {};
-                    updates[`/bubble/lastJoined` ] = id;
-                    update(ref(db), updates);
-                  
-                  set(ref(db, `users/${senderId}/`), {
-                    innerId: id,
+  useEffect(() => {
+    //If user not already in an inner bubble
+    if (checkID == false) {
+      console.log("User is not in an inner bubble");
+
+      get(child(dbRef, `bubble/`)).then((snapshot) => {
+        if (snapshot.exists()) {
+
+          const lastJoined = snapshot.val().lastJoined;
+          get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
+            if (snapshot.exists()) {
+
+              const count = snapshot.val().count;
+              //if inner bubble has 6 people already (Count starts at 0 thats why count > 4)
+              if (count > 4) {
+                const id = push(ref(db, `bubble/`), {
+                  count: 0,
+                }).key;
+                const updates = {};
+                updates[`/bubble/lastJoined`] = id;
+                update(ref(db), updates);
+
+                set(ref(db, `users/${senderId}/`), {
+                  innerId: id,
                 });
                 setInnerId(id);
-                  }
-                  else{
+              }
 
-                    
-                  
-                  get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
-                    
-                    if (snapshot.exists()){
+              else {
+                //If inner bubble exists with less than 6 people 
+                get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
+                  if (snapshot.exists()) {
+
                     var count = snapshot.val().count + 1;
                     const updates = {};
-                    updates[`/bubble/${lastJoined}/count` ] = count;
+                    updates[`/bubble/${lastJoined}/count`] = count;
                     update(ref(db), updates);
-                
-                   }})
-                      
-                      set(ref(db, `users/${senderId}/`), {
-                        innerId: lastJoined,
-                    });
-                    setInnerId(lastJoined);
-
-
-                    
-
                   }
-                }});
+                })
+
+                set(ref(db, `users/${senderId}/`), {
+                  innerId: lastJoined,
+                });
+
+                setInnerId(lastJoined);
+              }
             }
-          else{
+          });
+        }
+        else {
+          //If no inner bubble exists (i.e: First user to create account)
           const id = push(ref(db, `bubble/`), {
-              count: 0,
-            }).key;
-            
-          setChatKey(id.toString());
-          
+            count: 0,
+          }).key;
+
           set(ref(db, `bubble/`), {
             lastJoined: id,
-        });
+          });
 
-        set(ref(db, `bubble/${id}/`), {
-          count: 0,
-        }).key;
+          set(ref(db, `bubble/${id}/`), {
+            count: 0,
+          }).key;
 
-        
+
           set(ref(db, `users/${senderId}/`), {
             innerId: id,
-        });
+          });
 
-        setInnerId(id);
-      
-
-      }});
-      
-      
-    
-           
-           
-       setCheckID(true);  
-      }
-      }, [initialRender]);
-
-      
-    
-
-    useEffect(() => {
-      // Listen for new messages
-      //setMessages2(messages.slice().reverse());
-      const messagesRef = ref(db, `bubble/${innerId}/messages/`);
-      onValue(messagesRef, (snapshot) => {
-        const newMessages = [];
-        snapshot.forEach((childSnapshot) => {
-          const childData = childSnapshot.val();
-          
-          
-          
-          if (!messages.some(message => message.key === childSnapshot.key)) {
-            // If the message ID is not in the messages array, add the message to the newMessages array
-            
-            newMessages.push({
-              key: childSnapshot.key,
-              message: childData.message,
-              user: childData.senderId,
-            });
-          }
-        });
-        // Update the messages state with the new messages
-        setMessages([...messages, ...newMessages]);
-        
-        
+          setInnerId(id);
+        }
       });
-    }, [innerId]);
+      setCheckID(true);
+    }
+  }, [initialRender]);
 
-    useEffect(() => {
 
-      setMessages2(messages.slice().reverse());
 
-    }, [messages]);
 
-  
-  
-  //console.log(messages2);      
-  return(
+  useEffect(() => {
+    // Listen for new messages
+    const messagesRef = ref(db, `bubble/${innerId}/messages/`);
+    onValue(messagesRef, (snapshot) => {
+      const newMessages = [];
+      snapshot.forEach((childSnapshot) => {
+        const childData = childSnapshot.val();
 
-  
-<ImageBackground
-              style={styles.backgroundImage}
-              source={require('../assets/sb-nologo.png')}
+
+
+        if (!messages.some(message => message.key === childSnapshot.key)) {
+          // If the message ID is not in the messages array, add the message to the newMessages array
+
+          newMessages.push({
+            key: childSnapshot.key,
+            message: childData.message,
+            user: childData.senderId,
+          });
+        }
+      });
+      // Update the messages state with the new messages
+      setMessages([...messages, ...newMessages]);
+
+
+    });
+  }, [innerId]);
+
+  useEffect(() => {
+
+    setAllMessages(messages.slice().reverse());
+
+  }, [messages]);
+
+
+
+   
+  return (
+
+
+    <ImageBackground
+      style={styles.backgroundImage}
+      source={require('../assets/sb-nologo.png')}
     >
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-  <KeyboardAvoidingView
-    style={styles.container}
-    >
-      <View style={styles.titlesContainer}>
-        
-        {/*title for chat*/}
-        <View style={styles.titlesContainer}>
-          <Text style={styles.titles}>InnerBubble Chat</Text>
-        </View>
+        <KeyboardAvoidingView
+          style={styles.container}
+        >
+          <View style={styles.titlesContainer}>
 
-        <View style={styles.chat_container}>
-        <FlatList
-  data={messages2}
-  renderItem={({ item }) => <Message user={item.user} message={item.message}
-  
-   />}
-  
-  inverted
-/>
-        </View>
-          
-        {/*back and edit buttons of the profile*/}
-        <View style={styles.input_container}>
-        <MessageInput input = {input} setInput = {setInput}>
-        </MessageInput>
-        </View>
-      </View>
+            {/*title for chat*/}
+            <View style={styles.titlesContainer}>
+              <Text style={styles.titles}>InnerBubble Chat</Text>
+            </View>
 
-    </KeyboardAvoidingView>
+            <View style={styles.chat_container}>
+              <FlatList
+                data={allMessages}
+                renderItem={({ item }) => <Message user={item.user} message={item.message}
+
+                />}
+
+                inverted
+              />
+            </View>
+
+            {/*back and edit buttons of the profile*/}
+            <View style={styles.input_container}>
+              <MessageInput input={input} setInput={setInput}>
+              </MessageInput>
+            </View>
+          </View>
+
+        </KeyboardAvoidingView>
 
 
-</TouchableWithoutFeedback>
-</ImageBackground>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
-  }
+}
 
 const styles = StyleSheet.create({
-  backgroundImage:{
-    flex:1,
-    resizeMode:'cover',
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
   },
 
   container: {
@@ -282,34 +247,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  titlesContainer:{
+  titlesContainer: {
     paddingHorizontal: 20,
     marginTop: 15,
     alignContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
     flex: 1,
-    paddingBottom:10,
+    paddingBottom: 10,
   },
-  titles:{
+  titles: {
     color: 'grey',
     fontSize: 30,
     alignContent: 'center',
   },
-  chat_container:{
+  chat_container: {
     color: 'white',
-    width:330,
+    width: 330,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding:6,
+    padding: 6,
     flex: 15,
   },
-  scroll:{
+  scroll: {
     backgroundColor: "white",
   },
-  input_container:{
-      width: 350,
-      alignContent: 'center',
-      flex: 1.8,
+  input_container: {
+    width: 350,
+    alignContent: 'center',
+    flex: 1.8,
   },
 });
 
