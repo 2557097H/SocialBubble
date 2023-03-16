@@ -36,8 +36,32 @@ const LobbyScreen = ({navigation}) => {
 
   }
 
+  function ageDifference(dob1, dob2){
 
-  distBetweenCoords(59.3293371, 13.4877472, 59.3225525, 13.4619422)
+    /* First calculate the age of both users */
+
+    dob1 = dob1.split("/");
+    dob2 = dob2.split("/");
+
+    var dob1TimeStamp = new Date(dob1[2], dob[1]-1, dob[0]);
+    var dob2TimeStamp = new Date(dob[2], dob[1]-1, dob[0]);
+
+    var currentDate = new Date(); 
+
+    dob1diff = currentDate - dob1TimeStamp;
+    dob2diff = currentDate - dob2TimeStamp;
+
+    var dob1Age = Math.floor(diff(1000*60*60*24*365.25));
+    var dob2Age = Math.floor(diff(1000*60*60*24*365.25));
+
+    diffInAge = Math.abs(dob1Age-dob2Age);
+    console.log(diffInAge);
+
+  }
+
+  ageDifference("27/08/2001", "23/02/1970");
+
+  distBetweenCoords(59.3293371, 13.4877472, 59.3225525, 13.4619422);
 
 
 
