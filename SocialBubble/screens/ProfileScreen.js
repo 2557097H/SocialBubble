@@ -18,10 +18,15 @@ const ProfileScreen = ({navigation}) => {
   useEffect (() => {
     const dbRef = ref(db, 'users/' + userId);
     onValue(dbRef, (snapshot) => {
-      setName(snapshot.val().Name);
-      setUsername(snapshot.val().Username);
-      setBio(snapshot.val().Bio);
-      setInterests(snapshot.val().Interests);
+      if (snapshot.val().Name != null){
+        setName(snapshot.val().Name);
+        setUsername(snapshot.val().Username);
+        setBio(snapshot.val().Bio);
+        setInterests(snapshot.val().Interests);
+
+
+      }
+
     });
   }, [])
 

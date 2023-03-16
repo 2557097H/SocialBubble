@@ -43,7 +43,8 @@ export default function PersonalDetailsScreen({ navigation }) {
     } else if (!validDOB.test(dob)) {
       alert("Date of birth invalid. Please use format dd/mm/yyyy");
     } else {
-      getLangLong();
+      handleSignUp();
+      //getLangLong();
     }
   }
 
