@@ -170,6 +170,7 @@ function ChatScreen({ route }) {
             key: childSnapshot.key,
             message: childData.message,
             user: childData.senderId,
+            time: childData.time,
           });
         }
       });
@@ -211,7 +212,7 @@ function ChatScreen({ route }) {
             <View style={styles.chat_container}>
               <FlatList
                 data={allMessages}
-                renderItem={({ item }) => <Message user={item.user} message={item.message}
+                renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time}
 
                 />}
 

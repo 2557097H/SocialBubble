@@ -4,16 +4,9 @@ import LoginScreen from '../../screens/LoginScreen';
 import Chat from '../../assets/dummy_data/Chat';
 import { getAuth} from "firebase/auth";
 
-/*
-        <View style = {styles.time}>
-            <Text style = {[styles.timeText,{
-                color: isItMe ? "green" : "green",
 
-            }]}> Time </Text>
-        </View>
-        */
 
-const Message = ({ message, user }) => {
+const Message = ({ message, user, time }) => {
 
     const auth = getAuth();
     const sender = auth.currentUser;
@@ -25,6 +18,7 @@ const Message = ({ message, user }) => {
     
 
     return(
+        <View>
         <View style = {[
             styles.container, {
             backgroundColor: isItMe ? "#9BD9F4": "lightgrey",
@@ -33,11 +27,20 @@ const Message = ({ message, user }) => {
         }
         ]}>
             <Text style = {[styles.chatBubble,{
-                color: isItMe ? "black" : "black",
             }
             ]}>{message}</Text>
-      
+
         </View>
+        <View style = {styles.time}>
+            <Text style = {[styles.timeText,{
+               
+
+            }]}> {time} </Text>
+        </View>
+
+
+        </View>
+        
         
     )
 }
@@ -52,21 +55,22 @@ const styles = StyleSheet.create({
 
     },
     chatBubble:{
-        color: "white",
+        color: "black",
      
       },
 
     time: {
 
-        flexDirection: "row",
-        alignItems: "flex-end",
-        justifyContent: "flex-end"
+       flexDirection: "row",
+       alignItems: "flex-end",
+       justifyContent: "flex-end",
+       bottom: 10,
         
     }
     ,
     timeText: {
         color: "grey",
-        fontSize: 12,
+        fontSize: 8,
     }
 
 

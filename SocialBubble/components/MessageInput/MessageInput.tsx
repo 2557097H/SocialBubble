@@ -38,9 +38,12 @@ const MessageInput = ({ input, setInput }) => {
         get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
             if (snapshot.exists()) {
                 const innerId = snapshot.val();
+                var today = new Date();
+                var time = today.getHours() + ":" + today.getMinutes();
                 const messageKey = push(ref(db, `bubble/${innerId}/messages/`), {
                     message: message,
                     senderId: senderId,
+                    time: time,
                 }).key;
             }
 
