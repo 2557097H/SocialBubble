@@ -27,6 +27,7 @@ const ProfileScreen = ({navigation}) => {
       setBio(snapshot.val().Bio);
 
       onValue(interestRef, (interestSnapshot) => {
+        interestsName = []
         interestsName.push("My Interests are ")
         for(let i=0; i<snapshot.val().Interests.length; i++){
           if(i != snapshot.val().Interests.length-1){
@@ -36,9 +37,9 @@ const ProfileScreen = ({navigation}) => {
             interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]])
           }
         }
+        setInterests(interestsName);
       });
-
-      setInterests(interestsName);
+      
     });
   }, [])
 
