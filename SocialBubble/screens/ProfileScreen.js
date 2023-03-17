@@ -21,31 +21,31 @@ const ProfileScreen = ({navigation}) => {
     var interestsName = []
 
     onValue(dbRef, (snapshot) => {
-      
-      setName(snapshot.val().Name);
-      setUsername(snapshot.val().Username);
-      setBio(snapshot.val().Bio);
+      if (snapshot.val().Name!= null){
+        setName(snapshot.val().Name);
+        setUsername(snapshot.val().Username);
+        setBio(snapshot.val().Bio);
 
-      onValue(interestRef, (interestSnapshot) => {
-        interestsName = []
-        interestsName.push("My Interests are ")
-        if (snapshot.val().Interests == null){
-          interestsName.push("nothing.")
-          setInterests(interestsName);
-        }
-        else{
-          for(let i=0; i<snapshot.val().Interests.length; i++){
-            if(i != snapshot.val().Interests.length-1){
-              interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
-            }
-            else{
-              interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i] + "."])
-            }
+        onValue(interestRef, (interestSnapshot) => {
+          interestsName = []
+          interestsName.push("My Interests are ")
+          if (snapshot.val().Interests == null){
+            interestsName.push("nothing.")
+            setInterests(interestsName);
           }
-          setInterests(interestsName);
-        }
-      });
-      
+          else{
+            for(let i=0; i<snapshot.val().Interests.length; i++){
+              if(i != snapshot.val().Interests.length-1){
+                interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
+              }
+              else{
+                interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i] + "."])
+              }
+            }
+            setInterests(interestsName);
+          }
+        });
+      }
     });
   }, [])
 
