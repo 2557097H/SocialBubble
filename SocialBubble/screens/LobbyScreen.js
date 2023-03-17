@@ -1,8 +1,17 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, ImageBackground  } from 'react-native';
+import { getAuth } from "firebase/auth"
+import { getDatabase, ref, onValue } from "firebase/database"
+
+
 
 const LobbyScreen = ({navigation}) => {
+
+
+
+
+
   return (
     <ImageBackground
           style={styles.backgroundImage}
