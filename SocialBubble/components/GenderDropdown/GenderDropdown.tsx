@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const DropdownComponent = ({...props}) => {
 
 
 const gender = [
   {label: 'Male', value: '1'},
-  {label: 'Female', value: '2'}
+  {label: 'Female', value: '2'},
+  {label: 'Other', value: '3'},
 ]
 
 const [value, setValue] = useState(null);
