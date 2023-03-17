@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { getAuth, updateProfile } from "firebase/auth"
 import { getDatabase, ref, child, push, update, onValue} from "firebase/database"
+import ProfileDropDown from '../components/ProfileDropdown';
 
 const EditProfileScreen = ({navigation}) => {
   const auth = getAuth();
@@ -65,7 +66,7 @@ const EditProfileScreen = ({navigation}) => {
             onChangeText = {text=>setUsername(text)}
             />
         </View>
-
+        
         {/*profile picture of the profile*/}
         <View style={styles.profilePictureContainer}>
         <Image source={{uri: profilePicture}} style={{
@@ -85,11 +86,11 @@ const EditProfileScreen = ({navigation}) => {
           value={interests}
           onChangeText={text=>setInterests(text)}
           >
-               Interests (tap to remove):
+               Interests:
           </Text>
-          <TouchableOpacity style={styles.addInterestButton}>
-          <Ionicons name="add" size={35} color="grey" />
-          </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <ProfileDropDown/>
+          </View>
         </View>
 
         {/*bio of the profile*/}
@@ -157,6 +158,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom:10,
   },
+
+  inputContainer: {
+    width: '80%',
+  },
+
   titles:{
     borderColor: "grey",
     color: 'grey',
@@ -182,13 +188,14 @@ const styles = StyleSheet.create({
 },
   interestsContainer:{
     color: 'white',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     height: 100,
     width: 330,
     borderRadius: 20,
     marginBottom: 7,
     flex: 1.5,
     padding: 10,
+    alignItems: 'center',
 },
   bioContainer:{
     color: 'white',
@@ -228,16 +235,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#9BD9F4",
     borderRadius: 8,
   },
-  addInterestButton:{
-    alignItems: "center",
-    justifyContent: 'center',
-    position: 'absolute',
-    right: 20,
-    top: 20,
-    height: 42,
-    width: 45,
-    backgroundColor: "#9BD9F4",
-    borderRadius: 8,
-  }
 });
 export default EditProfileScreen;
