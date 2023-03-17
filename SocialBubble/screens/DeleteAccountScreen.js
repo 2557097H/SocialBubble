@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, TouchableOpacity, ImageBackground} from 'react-native';
 import { EmailAuthProvider, getAuth, reauthenticateWithCredential, deleteUser} from "firebase/auth";
+import { getDatabase, ref, onValue, remove } from "firebase/database"
+
 
 
 const DeleteAccountScreen = ({navigation}) => {
@@ -11,13 +13,17 @@ const DeleteAccountScreen = ({navigation}) => {
   const deletesAccount=() => {
     const auth = getAuth();
     const user = auth.currentUser;
+    const userId = user.uid;
+    const db = getDatabase();
+
     const cred = EmailAuthProvider.credential(email,password)
     reauthenticateWithCredential(user, cred)
       .then(() => {
         deleteUser(user).then(() => {
+          remove(ref(db, 'users/' + userId));
           navigation.navigate("AccountDeleted")
         }).catch((error) => {
-          //insert error message
+          console.log(error);
         });
       }) 
   }
