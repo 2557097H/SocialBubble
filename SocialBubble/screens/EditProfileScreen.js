@@ -32,7 +32,6 @@ const EditProfileScreen = ({navigation}) => {
   const changeName=() => {
       update(ref(db, 'users/' + userId), {
         Username: username,
-        Interests: interests,
         Bio: bio,
       })
       navigation.navigate("Profile")
@@ -67,16 +66,7 @@ const EditProfileScreen = ({navigation}) => {
             />
         </View>
         
-        {/*profile picture of the profile*/}
-        <View style={styles.profilePictureContainer}>
-        <Image source={{uri: profilePicture}} style={{
-          flex:1,
-          borderRadius: 20,
-        }} />
-        <TouchableOpacity style={styles.editButtonContainer} onPress={handleUpdateProfilePicture}>
-        <FontAwesome name="edit" size={35} color="grey"/>
-        </TouchableOpacity>
-         </View>
+        
 
         {/*interests of the profile*/}
         <View style={styles.interestsContainer}>

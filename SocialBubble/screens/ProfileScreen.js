@@ -39,7 +39,7 @@ const ProfileScreen = ({navigation}) => {
                 interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
               }
               else{
-                interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i] + "."])
+                interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ".")
               }
             }
             setInterests(interestsName);
