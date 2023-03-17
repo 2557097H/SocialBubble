@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground  } from 'react-native';
+import {Keyboard, TouchableWithoutFeedback,StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground  } from 'react-native';
 import { getAuth } from "firebase/auth"
 import { getDatabase, ref, onValue } from "firebase/database"
 
@@ -62,7 +62,9 @@ const ProfileScreen = ({navigation}) => {
     >
     <KeyboardAvoidingView
     style={styles.container}
+
     >
+       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.titlesContainer}>
         
         {/*nickname name of the profile*/}
@@ -106,7 +108,7 @@ const ProfileScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
-
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
     </ImageBackground>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect}  from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground, FileReader} from 'react-native';
+import {Keyboard, TouchableWithoutFeedback, StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground, FileReader} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
@@ -89,6 +89,8 @@ const EditProfileScreen = ({navigation}) => {
       }else{
         alert("Your username can't be empty");
       }
+
+      alert("All Changes Saved");
       
   };
 
@@ -190,7 +192,6 @@ const EditProfileScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
-
     </KeyboardAvoidingView>
     </ImageBackground>
   );
