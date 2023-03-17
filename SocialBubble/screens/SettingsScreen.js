@@ -86,6 +86,7 @@ const SettingsScreen = ({ navigation }) => {
         </TouchableOpacity>
         
       </View>
+    </View>
     </ImageBackground>
   );
 }
