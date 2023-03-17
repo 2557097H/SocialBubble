@@ -20,5 +20,5 @@ before_script:
 eas-build:
     stage: test
     script:
-        - echo "Will fix tests after everything is done"
+        - npm run test
 
