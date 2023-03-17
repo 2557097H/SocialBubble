@@ -59,6 +59,13 @@ const SettingsScreen = ({ navigation }) => {
         >
           <Text style={styles.buttonText}>Validate Account</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("LGBT")}
+        >
+          <Text style={styles.buttonText}>Change LGBT Preferences</Text>
+        </TouchableOpacity>
         
       </View>
     </View>
@@ -100,6 +107,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "black",
     fontSize: 20,
+    textAlign: "center",
   },
 });
 
