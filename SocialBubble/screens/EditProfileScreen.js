@@ -6,7 +6,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { getAuth, updateProfile } from "firebase/auth"
 import { getDatabase, ref, child, push, update, onValue} from "firebase/database"
+<<<<<<< HEAD
 import * as MediaLibrary from "expo-media-library";
+=======
+>>>>>>> main
 import ProfileDropDown from '../components/ProfileDropdown';
 
 const EditProfileScreen = ({navigation}) => {

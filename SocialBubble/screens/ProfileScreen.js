@@ -22,7 +22,10 @@ const ProfileScreen = ({navigation}) => {
     var interestsName = []
 
     onValue(dbRef, (snapshot) => {
+<<<<<<< HEAD
       setProfilePicture(snapshot.val().ProfilePic);
+=======
+>>>>>>> main
       
       setName(snapshot.val().Name);
       setUsername(snapshot.val().Username);

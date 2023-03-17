@@ -2,10 +2,18 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import Geocode from "react-geocode";
 import { getDatabase, ref, set, } from "firebase/database";
 import PreferencesScreen from './PreferencesScreen';
 
 export default function PersonalDetailsScreen({ navigation }) {
+
+
+  Geocode.setApiKey("AIzaSyCdlkP7PV6Sk_3Sp_WL9EHMLJEL5pLDvhs");
+  Geocode.setLanguage("en");
+  Geocode.setRegion("uk");
+  Geocode.setLocationType("ROOFTOP");
+  Geocode.enableDebug();
 
   /* Regex below taken from  https://stackoverflow.com/questions/15491894/regex-to-validate-date-formats-dd-mm-yyyy-dd-mm-yyyy-dd-mm-yyyy-dd-mmm-yyyy */
   let validDOB = new RegExp(
@@ -20,24 +28,25 @@ export default function PersonalDetailsScreen({ navigation }) {
   const [occupation, setOccupation] = useState(null);
   const [confirmEmail, setConfirmEmail] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [city, setCity] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
   const checkFields = () => {
-    console.log(dob);
-    if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null)) {
+    if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null) || (city == null)) {
       alert("Please fill in all fields");
     } else if (email != confirmEmail) {
       alert("Emails do not match!");
     } else if (password != confirmPassword) {
       alert("Passwords do not match!");
     } else if (!validDOB.test(dob)) {
-      alert("Date of birth invalid. Please use format dd/mm/yyyy")
+      alert("Date of birth invalid. Please use format dd/mm/yyyy");
     } else {
-      handleSignUp();
+      getLangLong();
     }
   }
 
   const clearForms = () => {
-    console.log("I ran");
     if (username != null) {
       this.usernameInput.clear();
     }
@@ -62,14 +71,29 @@ export default function PersonalDetailsScreen({ navigation }) {
     if (confirmPassword != null) {
       this.confirmPasswordInput.clear();
     }
+    if (city != null) {
+      this.cityInput.clear()
+    }
 
+  }
 
+  const getLangLong = () => {
+    Geocode.fromAddress(city).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        setLatitude(lat);
+        setLongitude(lng);
+        console.log(lat, lng);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+    handleSignUp();
   }
 
 
   const handleSignUp = () => {
-    console.log(email);
-
     const auth = getAuth()
     const db = getDatabase()
     createUserWithEmailAndPassword(auth, email, password)
@@ -80,7 +104,12 @@ export default function PersonalDetailsScreen({ navigation }) {
           Name: name,
           Username: username,
           DateOfBirth: dob,
-          Occupation: occupation
+          Occupation: occupation,
+          City: city,
+          Longitude: longitude,
+          Latitude: latitude,
+          innerBubbleID: null,
+          dateAddedToBubble: null
         });
         clearForms();
         navigation.navigate("Preferences");
@@ -101,62 +130,98 @@ export default function PersonalDetailsScreen({ navigation }) {
       </View>
       <View style={styles.inputContainer}>
         <TextInput
-          ref={input => { this.usernameInput = input }}
           placeholder="Username"
           style={styles.input}
           value={username}
           onChangeText={text => setUsername(text)}
+          ref={input => { this.usernameInput = input }}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.nameTextInput.focus(); }}
+          blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
-          ref={input => { this.nameInput = input }}
+          ref={input => { this.nameInput = input; this.nameTextInput = input }}
           placeholder="Name"
           style={styles.input}
           value={name}
           onChangeText={text => setName(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.dobTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.dobInput = input }}
+          ref={input => { this.dobInput = input; this.dobTextInput = input }}
           placeholder="Date of Birth (dd/mm/yyyy)"
           value={dob}
           style={styles.input}
           onChangeText={text => setDOB(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.jobTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.occupationInput = input }}
+          ref={input => { this.occupationInput = input; this.jobTextInput = input }}
           placeholder="Occupation"
           value={occupation}
           style={styles.input}
           onChangeText={text => setOccupation(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.cityTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
-          ref={input => { this.emailInput = input }}
+        ref={input => { this.cityInput = input; this.cityTextInput = input }}
+        placeholder="City/Town"
+        style={styles.input}
+        value={city}
+        onChangeText={text=>setCity(text)}
+        returnKeyType="next"
+        onSubmitEditing={() => { this.emailTextInput.focus(); }}
+        blurOnSubmit={false}
+        />
+        <TextInput
+          ref={input => { this.emailInput = input; this.emailTextInput = input }}
           placeholder="Email"
           style={styles.input}
           value={email}
           onChangeText={text => setEmail(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.confirmEmailTextInput.focus(); }}
+          blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
-          ref={input => { this.confirmEmailInput = input }}
+          ref={input => { this.confirmEmailInput = input; this.confirmEmailTextInput = input }}
           placeholder="Confirm Email"
           style={styles.input}
           value={confirmEmail}
           onChangeText={text => setConfirmEmail(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.passwordTextInput.focus(); }}
+          blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
-          ref={input => { this.passwordInput = input }}
+          ref={input => { this.passwordInput = input; this.passwordTextInput = input }}
           placeholder="Password"
           secureTextEntry
           style={styles.input}
           value={password}
           onChangeText={text => setPassword(text)}
+          returnKeyType="next"
+          onSubmitEditing={() => { this.confirmPasswordTextInput.focus(); }}
+          blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
-          ref={input => { this.confirmPasswordInput = input }}
+          ref={input => { this.confirmPasswordInput = input; this.confirmPasswordTextInput = input }}
           placeholder="Confirm Password"
           secureTextEntry
           style={styles.input}
           value={confirmPassword}
           onChangeText={text => setConfirmPassword(text)}
+          autoCapitalize="none"
         />
       </View>
 
