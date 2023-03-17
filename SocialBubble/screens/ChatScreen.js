@@ -60,7 +60,6 @@ function ChatScreen({ route }) {
 
 
   useEffect(() => {
-    console.log("Hi");
    
       // Obtain inner ID
       get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
@@ -89,7 +88,7 @@ function ChatScreen({ route }) {
       if (!isFirstEffectDone) {
         return}
     //If user not already in an inner bubble
-    console.log("Entered 2");
+   
     console.log(checkID);
     if (checkID == false) {
       console.log("User is not in an inner bubble");

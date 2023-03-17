@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import LoginScreen from '../../screens/LoginScreen';
 import Chat from '../../assets/dummy_data/Chat';
@@ -13,12 +13,30 @@ const Message = ({ message, user, time, name }) => {
     const senderId = sender.uid;
 
     const isItMe = user == senderId;
+    const [containerWidth, setContainerWidth] = useState(0);
+
+    const onContainerLayout = (event) => {
+        const { width } = event.nativeEvent.layout;
+        setContainerWidth(width);
+    }
+
 
     
     
 
     return(
         <View>
+            <View style = {[styles.name, {
+            marginLeft: isItMe? 'auto': 10,
+            marginRight: isItMe?  containerWidth : 'auto',
+            
+        }
+        ]}>
+            <Text style = {[styles.nameText,{
+               
+
+            }]}> {name} </Text>
+        </View>
             
         <View style = {[
             styles.container, {
@@ -26,14 +44,14 @@ const Message = ({ message, user, time, name }) => {
             marginLeft: isItMe ? 'auto': 10,
             marginRight: isItMe? 10 : 'auto',
         }
-        ]}>
+        ]} onLayout={onContainerLayout}>
             <Text style = {[styles.chatBubble,{
             }
             ]}>{message}</Text>
 
         </View>
         <View style = {[styles.time, {
-            marginLeft: isItMe ? 'auto': 10,
+            marginLeft: isItMe ? 'auto': containerWidth,
             marginRight: isItMe? 10 : 'auto',
         }
         ]}>
@@ -42,16 +60,7 @@ const Message = ({ message, user, time, name }) => {
 
             }]}> {time} </Text>
         </View>
-        <View style = {[styles.name, {
-            marginLeft: isItMe? 'auto': 10,
-            marginRight: isItMe? 10 : 'auto',
-        }
-        ]}>
-            <Text style = {[styles.nameText,{
-               
-
-            }]}> {name} </Text>
-        </View>
+        
 
 
         </View>
@@ -80,6 +89,7 @@ const styles = StyleSheet.create({
        alignItems: "flex-end",
        justifyContent: "flex-end",
        bottom: 10,
+       
         
     }
     ,
@@ -92,7 +102,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "flex-end",
         justifyContent: "flex-end",
-        bottom: 70,
+        top: 10,
+        
+       
          
      }
      ,
