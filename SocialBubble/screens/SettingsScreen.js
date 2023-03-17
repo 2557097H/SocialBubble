@@ -1,57 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button, ImageBackground, TouchableOpacity } from 'react-native';
-import { getAuth, signOut} from "firebase/auth";
-
+import { getAuth, signOut } from "firebase/auth";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 const SettingsScreen = ({ navigation }) => {
+  const auth = getAuth();
+  const db = getDatabase();
+  const user = auth.currentUser;
+  const userId = user.uid
+  const [validationUploaded, setValidationUploaded] = useState(null);
 
-  const auth = getAuth()
-  const handleSignOut=() => {
+  const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         navigation.navigate("Login");
       })
-      .catch(error=>alert(error.message))   
+      .catch(error=>alert(error.message));
+  };
+
+  const nav_to_val = () => {
+    if (validationUploaded === "yes") {
+      navigation.navigate("ValidationPending");
+    } else {
+      navigation.navigate("Validation");
+    }
   };
 
 
+  useEffect(() => {
+    const dbRef = ref(db, 'users/' + userId);
+    onValue(dbRef, (snapshot) => {
+      setValidationUploaded(snapshot.val().validationUploaded);
+    });
+  }, []);
+
+
+  
+
   return (
     <ImageBackground
-          style={styles.backgroundImage}
-          source={require('../assets/sb-nologo.png')}
-          >
-
-
-    <View
-      style={styles.container}
+      style={styles.backgroundImage}
+      source={require('../assets/sb-nologo.png')}
     >
-      <View style={styles.titlesContainer}>
-        <Text style={styles.titles}>Settings</Text>
-      </View>
+      <View style={styles.container}>
+        <View style={styles.titlesContainer}>
+          <Text style={styles.titles}>Settings</Text>
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            handleSignOut();
-          }}
-        >
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              handleSignOut();
+            }}
+          >
+            <Text style={styles.buttonText}>Logout</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("ConfirmPassword")}
-        >
-          <Text style={styles.buttonText}>Change Password</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("ConfirmPassword")}
+          >
+            <Text style={styles.buttonText}>Change Password</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("DeleteAccount")}
-        >
-          <Text style={styles.buttonText}>Delete Account</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("DeleteAccount")}
+          >
+            <Text style={styles.buttonText}>Delete Account</Text>
+          </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
@@ -72,6 +90,7 @@ const SettingsScreen = ({ navigation }) => {
     </ImageBackground>
   );
 }
+
 
 const styles = StyleSheet.create({
   backgroundImage:{

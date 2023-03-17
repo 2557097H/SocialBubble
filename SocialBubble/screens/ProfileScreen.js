@@ -54,6 +54,7 @@ const ProfileScreen = ({navigation}) => {
       });
   }, [])
 
+
   return (
     <ImageBackground
       style={styles.backgroundImage}
