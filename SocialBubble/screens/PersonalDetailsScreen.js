@@ -137,6 +137,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.nameTextInput.focus(); }}
           blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
           ref={input => { this.nameInput = input; this.nameTextInput = input }}
@@ -165,8 +166,18 @@ export default function PersonalDetailsScreen({ navigation }) {
           style={styles.input}
           onChangeText={text => setOccupation(text)}
           returnKeyType="next"
-          onSubmitEditing={() => { this.emailTextInput.focus(); }}
+          onSubmitEditing={() => { this.cityTextInput.focus(); }}
           blurOnSubmit={false}
+        />
+        <TextInput
+        ref={input => { this.cityInput = input; this.cityTextInput = input }}
+        placeholder="City/Town"
+        style={styles.input}
+        value={city}
+        onChangeText={text=>setCity(text)}
+        returnKeyType="next"
+        onSubmitEditing={() => { this.emailTextInput.focus(); }}
+        blurOnSubmit={false}
         />
         <TextInput
           ref={input => { this.emailInput = input; this.emailTextInput = input }}
@@ -177,13 +188,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.confirmEmailTextInput.focus(); }}
           blurOnSubmit={false}
-        />
-        <TextInput
-        ref={input => { this.cityInput = input}}
-        placeholder="City/Town"
-        style={styles.input}
-        value={city}
-        onChangeText={text=>setCity(text)}
+          autoCapitalize="none"
         />
         <TextInput
           ref={input => { this.confirmEmailInput = input; this.confirmEmailTextInput = input }}
@@ -194,6 +199,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.passwordTextInput.focus(); }}
           blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
           ref={input => { this.passwordInput = input ; this.passwordTextInput = input }}
@@ -205,6 +211,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.confirmPasswordTextInput.focus(); }}
           blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
           ref={input => { this.confirmPasswordInput = input; this.confirmPasswordTextInput = input }}
@@ -213,6 +220,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           style={styles.input}
           value={confirmPassword}
           onChangeText={text => setConfirmPassword(text)}
+          autoCapitalize="none"
         />
       </View>
 
