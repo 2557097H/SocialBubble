@@ -74,10 +74,11 @@ const EditProfileScreen = ({navigation}) => {
         Username: username,
         Interests: interests,
         Bio: bio,
-        ProfilePicture: profilePicture,
+        ProfilePic: profilePicture,
       })
       alert("Profile Updates Complete")
       user.reload()
+      navigation.navigate("Profile");
   }
 
   return (

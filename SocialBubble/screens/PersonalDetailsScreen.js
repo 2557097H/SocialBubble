@@ -80,7 +80,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           Name: name,
           Username: username,
           DateOfBirth: dob,
-          Occupation: occupation
+          Occupation: occupation,
         });
         clearForms();
         navigation.navigate("Preferences");
