@@ -8,16 +8,21 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { child, getDatabase, set, update, ref, push, get } from "firebase/database";
+import { useRoute } from '@react-navigation/native';
 
 const MessageInput = ({ input, setInput }) => {
 
     const [name, setName] = useState("");
+  
 
     const db = getDatabase();
     const auth = getAuth();
     const user = auth.currentUser;
     const senderId = user.uid;
     const [output, setOutput] = useState("");
+
+    const route = useRoute();
+    
 
 
 
@@ -50,66 +55,84 @@ const MessageInput = ({ input, setInput }) => {
 
         const dbRef = ref(getDatabase());
         //Check if user is in an inner bubble
+        var today = new Date();
+        if (today.getMinutes().toString().length == 1) {
+            var time = today.getHours() + ":0" + today.getMinutes();
+        } else if (today.getHours().toString().length == 1) {
+            var time = "0" + today.getHours() + ":" + today.getMinutes();
+
+        }
+        else {
+            var time = today.getHours() + ":" + today.getMinutes();
+        }
+        if (route.name == "InnerBubbleScreen") {
         get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
             if (snapshot.exists()) {
-                const innerId = snapshot.val();
-                var today = new Date();
-                if (today.getMinutes().toString().length == 1) {
-                    var time = today.getHours() + ":0" + today.getMinutes();
-                } else if (today.getHours().toString().length == 1) {
-                    var time = "0" + today.getHours() + ":" + today.getMinutes();
-
-                }
-                else {
-                    var time = today.getHours() + ":" + today.getMinutes();
-                }
-                console.log("Entered");
-
-                const messageKey = push(ref(db, `bubble/${innerId}/messages/`), {
+             
+                const messageKey = push(ref(db, `bubble/inner/${snapshot.val()}/messages/`), {
                     message: message,
                     senderId: senderId,
                     time: time,
                     name: name,
-
+    
                 }).key;
             }
+        });}
+        if (route.name == "OuterBubbleScreen") {
+        get(child(dbRef, `users/${senderId}/outerId`)).then((snapshot) => {
+            if (snapshot.exists()) {
+             
+                const messageKey = push(ref(db, `bubble/outer/${snapshot.val()}/messages/`), {
+                    message: message,
+                    senderId: senderId,
+                    time: time,
+                    name: name,
+    
+                }).key;
+            }
+        });}
 
 
-        });
-
-
+        
+    
     }
 
 
-    return (
-        <View style={styles.container} >
-            <View style={styles.containerInput}>
-                <SimpleLineIcons name="emotsmile" size={24} color="grey" style={styles.inputEmotes} />
-                <TextInput
-                    value={input}
-                    onChangeText={(text) => setInput(text)}
-                    placeholder="type your message..."
-                    style={styles.input}>
-
-                </TextInput>
-                <Feather name="mic" size={24} color="grey" style={styles.inputEmotes} />
-                <AntDesign name="camerao" size={24} color="grey" style={styles.inputEmotes} />
 
 
-            </View>
 
-            <View style={styles.containerButton}>
-                <TouchableOpacity
-                    onPress={sendPressed}
-                    activeOpacity={0.5}
-                >
-                    <IonIcon name="send" size={26} color="blue" ></IonIcon>
-                </TouchableOpacity>
 
-            </View>
+
+
+return (
+    <View style={styles.container} >
+        <View style={styles.containerInput}>
+            <SimpleLineIcons name="emotsmile" size={24} color="grey" style={styles.inputEmotes} />
+            <TextInput
+                value={input}
+                onChangeText={(text) => setInput(text)}
+                placeholder="type your message..."
+                style={styles.input}>
+
+            </TextInput>
+            <Feather name="mic" size={24} color="grey" style={styles.inputEmotes} />
+            <AntDesign name="camerao" size={24} color="grey" style={styles.inputEmotes} />
+
 
         </View>
-    )
+
+        <View style={styles.containerButton}>
+            <TouchableOpacity
+                onPress={sendPressed}
+                activeOpacity={0.5}
+            >
+                <IonIcon name="send" size={26} color="blue" ></IonIcon>
+            </TouchableOpacity>
+
+        </View>
+
+    </View>
+)
 }
 
 const styles = StyleSheet.create({
