@@ -14,10 +14,12 @@ const ProfileScreen = ({navigation}) => {
   const [username, setUsername] = useState("");
   const [interests, setInterests] = useState("");
   const [bio, setBio] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
 
   useEffect (() => {
     const dbRef = ref(db, 'users/' + userId);
     onValue(dbRef, (snapshot) => {
+      setProfilePicture(snapshot.val().ProfilePic);
       setName(snapshot.val().Name);
       setUsername(snapshot.val().Username);
       setBio(snapshot.val().Bio);
@@ -46,9 +48,7 @@ const ProfileScreen = ({navigation}) => {
 
         {/*profile picture of the profile*/}
         <Image
-            source={{
-            uri: 'https://konvajs.org/assets/yoda.jpg',
-        }}
+            source={{uri : profilePicture}}
         style={styles.profilePictureContainer}
          />
 

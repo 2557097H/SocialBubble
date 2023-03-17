@@ -6,7 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { getAuth, updateProfile } from "firebase/auth"
 import { getDatabase, ref, child, push, update, onValue} from "firebase/database"
-import storage from '@react-native-firebase/storage';
+import * as MediaLibrary from "expo-media-library";
 
 const EditProfileScreen = ({navigation}) => {
   const auth = getAuth();
@@ -16,33 +16,48 @@ const EditProfileScreen = ({navigation}) => {
   const db = getDatabase();
   const [bio, setBio] = useState("")
   const [interests, setInterests] = useState("")
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState(null)
+  const [imageToSave, setImageToSave] = useState(null);
 
-  const [profilePicture, setProfilePicture] = useState("");
-
-  const uploadImage = async () => {
+  const [profilePicture, setProfilePicture] = useState('../assets/sb-nologo.png');
+  const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4,4],
+      aspect: [4,3],
       quality: 1,
     });
 
-    setProfilePicture(result);
-
-    const { uri } = profilePicture;
-    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-    const task = storage()
-      .ref(userId)
-      .putFile(uploadUri);
-    try {
-      await task;
-    } catch (e) {
-      console.error(e);
+    if (!result.canceled){
+      setProfilePicture(result.assets[0].uri);
+      setImageToSave(result.uri);
     }
-    Alert.alert(
-      'Your photo has been uploaded to Firebase Cloud Storage!'
-    );
+
+  }
+  const saveImage = async(uri) => {
+    try {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status === "granted") {
+      if(
+        MediaLibrary.getAlbumAsync("profilePics")){
+        MediaLibrary.addAssetsToAlbumAsync(uri, "profilePics", false)
+        update(ref(db, 'users/' + userId), {
+          ProfilePic: profilePicture,
+        })
+        } else {
+        const asset = await MediaLibrary.createAssetAsync(picture.uri);
+        await MediaLibrary.createAlbumAsync("profilePics", asset, false);
+        update(ref(db, 'users/' + userId), {
+          ProfilePic: profilePicture,
+        })
+        }
+        console.log("Image successfully saved");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    setProfilePicture(null);
   };
 
   useEffect (() => {
@@ -61,10 +76,9 @@ const EditProfileScreen = ({navigation}) => {
         Bio: bio,
         ProfilePicture: profilePicture,
       })
-
-      navigation.navigate("Profile")
+      alert("Profile Updates Complete")
       user.reload()
-  };
+  }
 
   return (
     <ImageBackground
@@ -96,11 +110,11 @@ const EditProfileScreen = ({navigation}) => {
 
         {/*profile picture of the profile*/}
         <View style={styles.profilePictureContainer}>
-        <Image source={{profilePicture}} style={{
+        <Image source={{uri : profilePicture}} style={{
           flex:1,
           borderRadius: 20,
         }} />
-        <TouchableOpacity style={styles.editButtonContainer} onPress={uploadImage}>
+        <TouchableOpacity style={styles.editButtonContainer} onPress={pickImage}>
         <FontAwesome name="edit" size={35} color="grey"/>
         </TouchableOpacity>
          </View>
@@ -155,6 +169,7 @@ const EditProfileScreen = ({navigation}) => {
           <TouchableOpacity 
           style={styles.button}
           onPress={() => {
+            saveImage(imageToSave);
             changeName();
           }}>
             <Text style={styles.buttonText}> Save </Text>
