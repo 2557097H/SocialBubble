@@ -31,7 +31,6 @@ const auth = getAuth();
 
 const handleInterests=(selection) => {
   const user = auth.currentUser;
-  console.log(selection);
   update(ref(db, 'users/' + user.uid), {
     Interests: selection
   });

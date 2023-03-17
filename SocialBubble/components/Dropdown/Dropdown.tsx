@@ -31,7 +31,6 @@ const auth = getAuth();
 
 const handleInterests=(selection) => {
   const user = auth.currentUser;
-  console.log(selection);
   update(ref(db, 'users/' + user.uid), {
     Interests: selection
   });
@@ -39,7 +38,6 @@ const handleInterests=(selection) => {
 
 const deleteInterests=(selection) => {
   const user = auth.currentUser;
-  console.log(selection);
   remove(ref(db, 'users/' + user.uid+ '/interests/' + selection))
 };
 

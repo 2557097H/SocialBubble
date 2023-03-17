@@ -103,7 +103,6 @@ export default function PersonalDetailsScreen({ navigation }) {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user.email);
-        console.log(gender);
         set(ref(db, 'users/' + user.uid), {
           Name: name,
           Username: username,
