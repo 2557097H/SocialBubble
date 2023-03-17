@@ -114,7 +114,9 @@ export default function PersonalDetailsScreen({ navigation }) {
           Longitude: longitude,
           Latitude: latitude,
           innerBubbleID: null,
-          dateAddedToBubble: null
+          dateAddedToBubble: null,
+          validationUploaded: null,
+          validated: null
         });
         clearForms();
         navigation.navigate("Preferences");
