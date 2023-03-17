@@ -1,6 +1,6 @@
 import React, { useState, useEffect}  from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground, FileReader} from 'react-native';
+import {Keyboard, TouchableWithoutFeedback, StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground, FileReader} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
@@ -100,6 +100,7 @@ const EditProfileScreen = ({navigation}) => {
     <KeyboardAvoidingView
     style={styles.container}
     >
+      <TouchableWithoutFeedback onPress = {Keyboard.dismiss()}>
       <View style={styles.titlesContainer}>
         
         {/*nickname name of the profile*/}
@@ -190,7 +191,7 @@ const EditProfileScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
-
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
     </ImageBackground>
   );

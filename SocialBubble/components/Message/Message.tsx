@@ -28,7 +28,7 @@ const Message = ({ message, user, time, name }) => {
         <View>
             <View style={[styles.name, {
                 marginLeft: isItMe ? 'auto' : 10,
-                marginRight: isItMe ? containerWidth : 'auto',
+                marginRight: isItMe ? containerWidth - 15 : 'auto',
 
             }
             ]}>
@@ -51,7 +51,7 @@ const Message = ({ message, user, time, name }) => {
 
             </View>
             <View style={[styles.time, {
-                marginLeft: isItMe ? 'auto' : containerWidth,
+                marginLeft: isItMe ? 'auto' : containerWidth - 15,
                 marginRight: isItMe ? 10 : 'auto',
             }
             ]}>

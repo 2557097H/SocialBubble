@@ -35,9 +35,9 @@ function OuterBubbleScreen({ route }) {
   const [outerId, setOuterId] = useState("");
   const [checkID, setCheckID] = useState(false);
   const [initialRender, setInitialRender] = useState(0);
-  const [isFirstEffectDone,setIsFirstEffectDone] = useState(false);
+  const [isFirstEffectDone, setIsFirstEffectDone] = useState(false);
 
-  
+
 
 
 
@@ -60,45 +60,47 @@ function OuterBubbleScreen({ route }) {
 
 
   useEffect(() => {
-   
-      // Obtain outer ID
-      get(child(dbRef, `users/${senderId}/outerId`)).then((snapshot) => {
-        //If exits user is in outer bubble already, if doesn't exists user will be assigned outer bubble in next useEffect
-        if (snapshot.exists()) {
-          if(snapshot.val() != ""){
+
+    // Obtain outer ID
+    get(child(dbRef, `users/${senderId}/outerId`)).then((snapshot) => {
+      //If exits user is in outer bubble already, if doesn't exists user will be assigned outer bubble in next useEffect
+      if (snapshot.exists()) {
+        if (snapshot.val() != "") {
           setCheckID(true);
           setOuterId(snapshot.val());
-          setIsFirstEffectDone(true);}
-          else {
-            setInitialRender(initialRender + 1);
-            setCheckID(false);
-            setIsFirstEffectDone(true);
-  
-          }
+          setIsFirstEffectDone(true);
         }
         else {
           setInitialRender(initialRender + 1);
           setCheckID(false);
           setIsFirstEffectDone(true);
 
-        } 
+        }
+      }
+      else {
+        setInitialRender(initialRender + 1);
+        setCheckID(false);
+        setIsFirstEffectDone(true);
 
-      })
+      }
 
-      
+    })
+
+
   }, [route.params]);
 
 
-    useEffect(() => {
-     
-      if (!isFirstEffectDone) {
-        return}
+  useEffect(() => {
+
+    if (!isFirstEffectDone) {
+      return
+    }
     //If user not already in an outer bubble
-   
+
     if (checkID == false) {
 
       get(child(dbRef, `bubble/outer/`)).then((snapshot) => {
-       
+
         if (snapshot.exists()) {
 
           const lastJoined = snapshot.val().lastJoined;
@@ -134,7 +136,7 @@ function OuterBubbleScreen({ route }) {
                 const updates = {};
                 updates[`users/${senderId}/outerId`] = lastJoined;
                 update(ref(db), updates);
-                
+
 
                 setOuterId(lastJoined);
               }
@@ -143,7 +145,7 @@ function OuterBubbleScreen({ route }) {
         }
         else {
           //If no outer bubble exists (i.e: First user to create account)
-       
+
           const id = push(ref(db, `bubble/outer/`), {
             lastJoined: "",
           }).key;
@@ -165,7 +167,7 @@ function OuterBubbleScreen({ route }) {
       setCheckID(true);
       setIsFirstEffectDone(false);
     }
-}, [isFirstEffectDone]);
+  }, [isFirstEffectDone]);
 
 
 
@@ -189,7 +191,7 @@ function OuterBubbleScreen({ route }) {
             user: childData.senderId,
             time: childData.time,
             name: childData.name,
-            
+
           });
         }
       });
@@ -208,49 +210,50 @@ function OuterBubbleScreen({ route }) {
 
 
 
-   
+
   return (
 
-  <KeyboardAvoidingView behavior={Platform.OS === "android" ? "padding" : "height"} style={styles.keyboardContainer}>
-    <ImageBackground
-      style={styles.backgroundImage}
-      source={require('../assets/sb-nologo.png')}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <KeyboardAvoidingView behavior={Platform.OS === "android" ? "padding" : "height"} style={styles.keyboardContainer}>
+      <ImageBackground
+        style={styles.backgroundImage}
+        source={require('../assets/sb-nologo.png')}
+      >
 
-        <View
-          style={styles.container}
-        >
-          <View style={styles.titlesContainer}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            {/*title for chat*/}
+          <View
+            style={styles.container}
+          >
             <View style={styles.titlesContainer}>
-              <Text style={styles.titles}>outerBubble Chat</Text>
+
+              {/*title for chat*/}
+              <View style={styles.titlesContainer}>
+                <Text style={styles.titles}>Outer Bubble Chat</Text>
+              </View>
+
+              <View style={styles.chat_container}>
+                <FlatList
+                  data={allMessages}
+                  renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time} name={item.name} type={"outer"}
+
+                  />}
+
+                  inverted
+                />
+              </View>
+
+              {/*back and edit buttons of the profile*/}
+              <View style={styles.input_container}>
+                <MessageInput input={input} setInput={setInput}>
+                </MessageInput>
+              </View>
             </View>
 
-            <View style={styles.chat_container}>
-              <FlatList
-                data={allMessages}
-                renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time} name = {item.name} type = {"outer"}
-
-                />}
-
-                inverted
-              />
-            </View>
-
-            {/*back and edit buttons of the profile*/}
-            <View style={styles.input_container}>
-              <MessageInput input={input} setInput={setInput}>
-              </MessageInput>
-            </View>
           </View>
 
-        </View>
 
-
-      </TouchableWithoutFeedback>
-    </ImageBackground>
+        </TouchableWithoutFeedback>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 }

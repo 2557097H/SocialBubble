@@ -227,7 +227,7 @@ function InnerBubbleScreen({ route }) {
 
             {/*title for chat*/}
             <View style={styles.titlesContainer}>
-              <Text style={styles.titles}>InnerBubble Chat</Text>
+              <Text style={styles.titles}>Inner Bubble Chat</Text>
             </View>
 
             <View style={styles.chat_container}>

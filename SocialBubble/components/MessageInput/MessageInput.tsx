@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Keyboard } from 'react-native';
-import LoginScreen from '../../screens/LoginScreen';
-import Chat from '../../assets/dummy_data/Chat';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons';
@@ -107,7 +105,7 @@ const MessageInput = ({ input, setInput }) => {
 return (
     <View style={styles.container} >
         <View style={styles.containerInput}>
-            <SimpleLineIcons name="emotsmile" size={24} color="grey" style={styles.inputEmotes} />
+
             <TextInput
                 value={input}
                 onChangeText={(text) => setInput(text)}
@@ -115,8 +113,7 @@ return (
                 style={styles.input}>
 
             </TextInput>
-            <Feather name="mic" size={24} color="grey" style={styles.inputEmotes} />
-            <AntDesign name="camerao" size={24} color="grey" style={styles.inputEmotes} />
+            
 
 
         </View>
