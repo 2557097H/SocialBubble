@@ -67,7 +67,7 @@ export default function HomeScreen(props) {
   return (
     <ImageBackground
       style={styles.backgroundImage}
-      source={require('../assets/sb-nologo.png')}
+      source={require('../assets/sb-logo.png')}
     >
       <View style={styles.container}>
 
