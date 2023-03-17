@@ -30,12 +30,25 @@ const EditProfileScreen = ({navigation}) => {
   }, [])
 
   const changeName=() => {
-      update(ref(db, 'users/' + userId), {
-        Username: username,
-        Bio: bio,
-      })
-      navigation.navigate("Profile")
-      user.reload()
+      if (username != ""){
+        update(ref(db, 'users/' + userId), {
+          Username: username,
+        })
+        if (bio != null){
+          update(ref(db, 'users/' + userId), {
+            Bio: bio,
+          })
+        }else{
+          update(ref(db, 'users/' + userId), {
+            Bio: "",
+          })
+        }
+        navigation.navigate("Profile")
+        user.reload()
+      }else{
+        alert("Your username can't be empty");
+      }
+      
   };
 
   return (
@@ -50,7 +63,7 @@ const EditProfileScreen = ({navigation}) => {
         
         {/*nickname name of the profile*/}
         <View style={styles.titlesContainer}>
-          <Text style={styles.subTitles}>Edit nickname: </Text>
+          <Text style={styles.subTitles}>Edit username: </Text>
           <TextInput multiline={true}
             style={{
             placeholderTextColor: 'grey',
@@ -62,7 +75,9 @@ const EditProfileScreen = ({navigation}) => {
             paddingHorizontal: 5,
            }}
             value = {username}
-            onChangeText = {text=>setUsername(text)}
+            onChangeText = {
+              text=>setUsername(text)
+            }
             />
         </View>
         
