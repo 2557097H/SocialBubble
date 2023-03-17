@@ -16,6 +16,12 @@ const SettingsScreen = ({ navigation }) => {
 
 
   return (
+    <ImageBackground
+          style={styles.backgroundImage}
+          source={require('../assets/sb-nologo.png')}
+          >
+
+
     <View
       style={styles.container}
     >
@@ -46,13 +52,25 @@ const SettingsScreen = ({ navigation }) => {
         >
           <Text style={styles.buttonText}>Delete Account</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Validation")}
+        >
+          <Text style={styles.buttonText}>Validate Account</Text>
+        </TouchableOpacity>
         
       </View>
     </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
   container: {
     flex: 1,
     marginTop: 20,

@@ -1,9 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground  } from 'react-native';
+import { getAuth } from "firebase/auth"
+import { getDatabase, ref, onValue } from "firebase/database"
 
 const ProfileScreen = ({navigation}) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const userId = user.uid
+  const displayName = user.displayName;
+  const db = getDatabase();
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [interests, setInterests] = useState("");
+  const [bio, setBio] = useState("");
+
+  useEffect (() => {
+    const dbRef = ref(db, 'users/' + userId);
+    const interestRef = ref(db, 'interests/');
+    var interestsName = []
+
+    onValue(dbRef, (snapshot) => {
+      
+      setName(snapshot.val().Name);
+      setUsername(snapshot.val().Username);
+      setBio(snapshot.val().Bio);
+
+      onValue(interestRef, (interestSnapshot) => {
+        interestsName = []
+        interestsName.push("My Interests are ")
+        for(let i=0; i<snapshot.val().Interests.length; i++){
+          if(i != snapshot.val().Interests.length-1){
+            interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
+          }
+          else{
+            interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]])
+          }
+        }
+        setInterests(interestsName);
+      });
+      
+    });
+  }, [])
+
   return (
+    <ImageBackground
+      style={styles.backgroundImage}
+      source={require('../assets/sb-nologo.png')}
+    >
     <KeyboardAvoidingView
     style={styles.container}
     >
@@ -11,8 +55,11 @@ const ProfileScreen = ({navigation}) => {
         
         {/*nickname name of the profile*/}
         <View style={styles.titlesContainer}>
-          <Text style={styles.titles}>Jedi Master Yoda</Text>
-          <Text style={styles.subTitles}>@littlegreenfriend</Text>
+          <Text
+          style={styles.titles}>
+            {name}
+          </Text>
+          <Text style={styles.subTitles}>@{username}</Text>
         </View>
 
         {/*profile picture of the profile*/}
@@ -26,14 +73,14 @@ const ProfileScreen = ({navigation}) => {
         {/*interests of the profile*/}
         <View style={styles.interestsContainer}>
           <Text style={styles.bioTextS}>
-               interests shown here
+               {interests}
           </Text>
         </View>
 
         {/*bio of the profile*/}
         <View style={styles.bioContainer}>
         <Text style={styles.bioText}>
-               bio to be shown here
+               {bio}
           </Text>
         </View>
           
@@ -56,10 +103,16 @@ const ProfileScreen = ({navigation}) => {
       </View>
 
     </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+    backgroundImage:{
+    flex:1,
+    resizeMode:'cover',
+  },
+  
   container: {
     flex: 1,
     marginTop: 20,
@@ -84,9 +137,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     alignContent: 'center',
   },
-
-
-
   profilePictureContainer:{
     color: 'white',
     backgroundColor: 'white',
