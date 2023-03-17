@@ -113,7 +113,8 @@ export default function PersonalDetailsScreen({ navigation }) {
           City: city,
           Longitude: longitude,
           Latitude: latitude,
-          innerBubbleID: null,
+          innerId: "",
+          outerId: "",
           dateAddedToBubble: null,
           validationUploaded: null,
           validated: null
@@ -323,3 +324,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
   }
 });
+
