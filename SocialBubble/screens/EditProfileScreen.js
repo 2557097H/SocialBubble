@@ -1,11 +1,12 @@
 import React, { useState, useEffect}  from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground} from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button,BackgroundImage, TouchableOpacity, KeyboardAvoidingView, Image, ImageBackground, FileReader} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
 import { getAuth, updateProfile } from "firebase/auth"
 import { getDatabase, ref, child, push, update, onValue} from "firebase/database"
+import * as MediaLibrary from "expo-media-library";
 import ProfileDropDown from '../components/ProfileDropdown';
 
 const EditProfileScreen = ({navigation}) => {
@@ -13,12 +14,52 @@ const EditProfileScreen = ({navigation}) => {
   const user = auth.currentUser;
   const displayName = user.displayName;
   const userId = user.uid;
-
+  const db = getDatabase();
   const [bio, setBio] = useState("")
   const [interests, setInterests] = useState("")
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState(null)
+  const [imageToSave, setImageToSave] = useState(null);
 
-  const db = getDatabase();
+  const [profilePicture, setProfilePicture] = useState('../assets/sb-nologo.png');
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4,3],
+      quality: 1,
+    });
+
+    if (!result.canceled){
+      setProfilePicture(result.assets[0].uri);
+      setImageToSave(result.uri);
+    }
+
+  }
+  const saveImage = async(uri) => {
+    try {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status === "granted") {
+      if(
+        MediaLibrary.getAlbumAsync("profilePics")){
+        MediaLibrary.addAssetsToAlbumAsync(uri, "profilePics", false)
+        update(ref(db, 'users/' + userId), {
+          ProfilePic: profilePicture,
+        })
+        } else {
+        const asset = await MediaLibrary.createAssetAsync(picture.uri);
+        await MediaLibrary.createAlbumAsync("profilePics", asset, false);
+        update(ref(db, 'users/' + userId), {
+          ProfilePic: profilePicture,
+        })
+        }
+        console.log("Image successfully saved");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    setProfilePicture(snapshot.val().ProfilePic);
+  };
 
   useEffect (() => {
     const dbRef = ref(db, 'users/' + userId);
@@ -32,12 +73,13 @@ const EditProfileScreen = ({navigation}) => {
   const changeName=() => {
       update(ref(db, 'users/' + userId), {
         Username: username,
-        Interests: interests,
         Bio: bio,
+        ProfilePic: profilePicture,
       })
-      navigation.navigate("Profile")
+      alert("Profile Updates Complete")
       user.reload()
-  };
+      navigation.navigate("Profile");
+  }
 
   return (
     <ImageBackground
@@ -69,11 +111,11 @@ const EditProfileScreen = ({navigation}) => {
         
         {/*profile picture of the profile*/}
         <View style={styles.profilePictureContainer}>
-        <Image source={{uri: profilePicture}} style={{
+        <Image source={{uri : profilePicture}} style={{
           flex:1,
           borderRadius: 20,
         }} />
-        <TouchableOpacity style={styles.editButtonContainer} onPress={handleUpdateProfilePicture}>
+        <TouchableOpacity style={styles.editButtonContainer} onPress={pickImage}>
         <FontAwesome name="edit" size={35} color="grey"/>
         </TouchableOpacity>
          </View>
@@ -128,6 +170,7 @@ const EditProfileScreen = ({navigation}) => {
           <TouchableOpacity 
           style={styles.button}
           onPress={() => {
+            saveImage(imageToSave);
             changeName();
           }}>
             <Text style={styles.buttonText}> Save </Text>
