@@ -131,7 +131,7 @@ function ChatScreen({ route }) {
 
                 set(ref(db, `users/${senderId}/`), {
                   innerId: lastJoined,
-                  Name: "bob",
+                  Name: "Bob",
                 });
 
                 setInnerId(lastJoined);

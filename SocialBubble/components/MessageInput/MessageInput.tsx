@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import LoginScreen from '../../screens/LoginScreen';
 import Chat from '../../assets/dummy_data/Chat';
@@ -19,19 +19,19 @@ const MessageInput = ({ input, setInput }) => {
     const senderId = user.uid;
     const [output, setOutput] = useState("");
 
-    
-   
-    
-useEffect(() => {
-  const dbRef = ref(getDatabase());
-  get(child(dbRef, `users/${senderId}/Name`)).then((snapshot) => {
-    if (snapshot.exists()) {
-      setName(snapshot.val());
-    } else {
-      setName("Undefined");
-    }
-  });
-}, [senderId]);
+
+
+
+    useEffect(() => {
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `users/${senderId}/Name`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                setName(snapshot.val());
+            } else {
+                setName("Undefined");
+            }
+        });
+    }, [senderId]);
 
 
     const sendPressed = () => {
@@ -54,21 +54,23 @@ useEffect(() => {
             if (snapshot.exists()) {
                 const innerId = snapshot.val();
                 var today = new Date();
-                if(today.getMinutes().toString().length == 1){
+                if (today.getMinutes().toString().length == 1) {
                     var time = today.getHours() + ":0" + today.getMinutes();
+                } else if (today.getHours().toString().length == 1) {
+                    var time = "0" + today.getHours() + ":" + today.getMinutes();
+
                 }
-                else{
+                else {
                     var time = today.getHours() + ":" + today.getMinutes();
                 }
                 console.log("Entered");
-                
-                
+
                 const messageKey = push(ref(db, `bubble/${innerId}/messages/`), {
                     message: message,
                     senderId: senderId,
                     time: time,
                     name: name,
-                    
+
                 }).key;
             }
 
