@@ -108,7 +108,9 @@ export default function PersonalDetailsScreen({ navigation }) {
           Occupation: occupation,
           City: city,
           Longitude: longitude,
-          Latitude: latitude
+          Latitude: latitude,
+          innerBubbleID: null,
+          dateAddedToBubble: null
         });
         clearForms();
         navigation.navigate("Preferences");
