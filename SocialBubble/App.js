@@ -15,6 +15,7 @@ import PreferencesScreen from './screens/PreferencesScreen';
 import PasswordChangedScreen from './screens/PasswordChangedScreen';
 import ConfirmPasswordScreen from './screens/ConfirmPasswordScreen';
 import DeleteAccountScreen from './screens/DeleteAccountScreen';
+import LgbtScreen from './screens/LgbtScreen';
 import AccountDeletedScreen from './screens/AccountDeletedScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LobbyScreen from './screens/LobbyScreen';
@@ -179,6 +180,13 @@ export default function App() {
             }}
             />  
             <Tab.Screen name ="ValidationPending" component={ValidationPendingScreen}
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: 'none'},
+              tabBarVisible: false, 
+            }}
+            /> 
+            <Tab.Screen name ="Lgbt" component={LgbtScreen}
             options={{
               tabBarButton: () => null,
               tabBarStyle: { display: 'none'},

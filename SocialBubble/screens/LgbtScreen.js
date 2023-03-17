@@ -1,12 +1,29 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground} from 'react-native';
-import DropDown from '../components/Dropdown';
+import { getDatabase, ref, update } from "firebase/database"
+import { getAuth} from "firebase/auth";
 
-export default function PreferencesScreen({navigation}) {
+export default function LgbtScreen({navigation}) {
 
-  //const [interests, setInterests] = useState("")
-  
+    const auth = getAuth()
+    const user = auth.currentUser
+    const db = getDatabase()
+    const dbRef = ref(db, 'users/' + user.uid);
+    const lgbtYes = () => {
+        update(dbRef, {
+            LGBT: true,
+        });
+        navigation.navigate("Home");    
+    }
+
+    const lgbtNo = () => {
+        update(dbRef, {
+            LGBT: false,
+        });
+        navigation.navigate("Home");    
+    }
+
         return (
           <ImageBackground
           style={styles.backgroundImage}
@@ -16,21 +33,28 @@ export default function PreferencesScreen({navigation}) {
           style={styles.container}
           >
             <View style={styles.titleContainer}> 
-              <Text style={styles.title}>Interests</Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <DropDown/>
+              <Text style={styles.title}>Would you like to be placed in LGBT only bubbles?</Text>
             </View>
 
             <View style={styles.buttonContainer}>
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  navigation.navigate("LGBT");
+                    lgbtYes();
                 }}
             >
-              <Text style={styles.buttonText}>Next</Text>
+              <Text style={styles.buttonText}>Yes</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+                style={[styles.button, styles.noButton]}
+                onPress={() => {
+                  lgbtNo();
+                }}
+            >
+              <Text style={styles.buttonText}>No</Text>
+            </TouchableOpacity>
+
 
             </View>
           </KeyboardAvoidingView>
@@ -53,44 +77,42 @@ const styles = StyleSheet.create({
     },
 
     titleContainer: {
-      marginBottom: 25,
+      marginBottom: 25,      
+      alignContent: "center",
+      justifyContent: 'center',
     },
 
     title: {
       color: 'grey',
-      fontSize: 30,
-    },
-
-    inputContainer: {
-      width: '80%',
-    },
-
-    input: {
-      backgroundColor: "white",
-      paddingHorizontal: 15,
-      paddingVertical: 10,
-      borderRadius: 10,
-      marginTop: 10,
+      fontSize: 25,
+      alignContent: "center",
+      justifyContent: 'center',
+      textAlign: 'center'
     },
 
     buttonContainer:{
       marginTop: 15,
       width: "60%",
-      justifyContent: "center",
       alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row",
     },
 
     button: {
-      width: "80%",
+      width: "40%",
       backgroundColor: "#9BD9F4",
       padding: 5,
       borderRadius: 10,
       alignItems: "center",
+      margin: 10,
     },
+
+    noButton: {
+        backgroundColor: "lightgray",
+      },
 
     buttonText: {
       color: "black",
       fontSize: 20,
-
     }
   });
