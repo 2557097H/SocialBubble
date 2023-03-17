@@ -194,6 +194,13 @@ export default function App() {
               tabBarStyle: { display: 'none'},
               tabBarVisible: false, 
             }}
+            />
+            <Tab.Screen name ="Validation" component={ValidationScreen}
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: 'none'},
+              tabBarVisible: false, 
+            }}
             /> 
             <Tab.Screen name ="LGBT" component={LgbtScreen}
             options={{
