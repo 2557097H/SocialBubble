@@ -29,15 +29,21 @@ const ProfileScreen = ({navigation}) => {
       onValue(interestRef, (interestSnapshot) => {
         interestsName = []
         interestsName.push("My Interests are ")
-        for(let i=0; i<snapshot.val().Interests.length; i++){
-          if(i != snapshot.val().Interests.length-1){
-            interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
-          }
-          else{
-            interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]])
-          }
+        if (snapshot.val().Interests == null){
+          interestsName.push("nothing.")
+          setInterests(interestsName);
         }
-        setInterests(interestsName);
+        else{
+          for(let i=0; i<snapshot.val().Interests.length; i++){
+            if(i != snapshot.val().Interests.length-1){
+              interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
+            }
+            else{
+              interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i] + "."])
+            }
+          }
+          setInterests(interestsName);
+        }
       });
       
     });
