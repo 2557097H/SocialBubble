@@ -61,21 +61,27 @@ function OuterBubbleScreen({ route }) {
 
   useEffect(() => {
    
-      // Obtain inner ID
+      // Obtain outer ID
       get(child(dbRef, `users/${senderId}/outerId`)).then((snapshot) => {
-        //If exits user is in inner bubble already, if doesn't exists user will be assigned inner bubble in next useEffect
+        //If exits user is in outer bubble already, if doesn't exists user will be assigned outer bubble in next useEffect
         if (snapshot.exists()) {
-          console.log("User is in an inner bubble");
+          if(snapshot.val() != ""){
           setCheckID(true);
           setOuterId(snapshot.val());
-          console.log("Entered 1");
-          setIsFirstEffectDone(true);
-        } else {
+          setIsFirstEffectDone(true);}
+          else {
+            setInitialRender(initialRender + 1);
+            setCheckID(false);
+            setIsFirstEffectDone(true);
+  
+          }
+        }
+        else {
           setInitialRender(initialRender + 1);
           setCheckID(false);
           setIsFirstEffectDone(true);
 
-        }
+        } 
 
       })
 
@@ -87,13 +93,12 @@ function OuterBubbleScreen({ route }) {
      
       if (!isFirstEffectDone) {
         return}
-    //If user not already in an inner bubble
+    //If user not already in an outer bubble
    
-    console.log(checkID);
     if (checkID == false) {
-      console.log("User is not in an inner bubble");
 
-      get(child(dbRef, `bubble/outer`)).then((snapshot) => {
+      get(child(dbRef, `bubble/outer/`)).then((snapshot) => {
+       
         if (snapshot.exists()) {
 
           const lastJoined = snapshot.val().lastJoined;
@@ -101,8 +106,8 @@ function OuterBubbleScreen({ route }) {
             if (snapshot.exists()) {
 
               const count = snapshot.val().count;
-              //if inner bubble has 6 people already (Count starts at 0 thats why count > 4)
-              if (count > 4) {
+              //if outer bubble has 30 people already (Count starts at 0 thats why count > 28)
+              if (count > 28) {
                 const id = push(ref(db, `bubble/outer/`), {
                   count: 0,
                 }).key;
@@ -110,29 +115,26 @@ function OuterBubbleScreen({ route }) {
                 updates[`/bubble/outer/lastJoined`] = id;
                 update(ref(db), updates);
 
-                set(ref(db, `users/${senderId}/`), {
-                  outerId: id,
-                  Name: "Bob",
-                });
+                updates[`users/${senderId}/`] = id;
+                update(ref(db), updates);
                 setOuterId(id);
               }
 
               else {
-                //If inner bubble exists with less than 6 people 
-                get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
+                //If outer bubble exists with less than 6 people 
+                get(child(dbRef, `bubble/outer/${lastJoined}/`)).then((snapshot) => {
                   if (snapshot.exists()) {
 
                     var count = snapshot.val().count + 1;
                     const updates = {};
-                    updates[`/bubble/${lastJoined}/count`] = count;
+                    updates[`/bubble/outer/${lastJoined}/count`] = count;
                     update(ref(db), updates);
                   }
                 })
-
-                set(ref(db, `users/${senderId}/`), {
-                  outerId: lastJoined,
-                  Name: "Bob",
-                });
+                const updates = {};
+                updates[`users/${senderId}/outerId`] = lastJoined;
+                update(ref(db), updates);
+                
 
                 setOuterId(lastJoined);
               }
@@ -140,24 +142,22 @@ function OuterBubbleScreen({ route }) {
           });
         }
         else {
-          //If no inner bubble exists (i.e: First user to create account)
+          //If no outer bubble exists (i.e: First user to create account)
+       
           const id = push(ref(db, `bubble/outer/`), {
-            count: 0,
+            lastJoined: "",
           }).key;
 
-          set(ref(db, `bubble/outer`), {
-            lastJoined: id,
-          });
+          const updates = {};
+          updates[`users/${senderId}/outerId`] = id;
+          update(ref(db), updates);
+
+          updates[`bubble/outer/lastJoined`] = id;
+          update(ref(db), updates);
 
           set(ref(db, `bubble/outer/${id}/`), {
             count: 0,
           }).key;
-
-
-          set(ref(db, `users/${senderId}/`), {
-            outerId: id,
-            Name: "Bob",
-          });
 
           setOuterId(id);
         }
@@ -225,13 +225,13 @@ function OuterBubbleScreen({ route }) {
 
             {/*title for chat*/}
             <View style={styles.titlesContainer}>
-              <Text style={styles.titles}>InnerBubble Chat</Text>
+              <Text style={styles.titles}>outerBubble Chat</Text>
             </View>
 
             <View style={styles.chat_container}>
               <FlatList
                 data={allMessages}
-                renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time} name = {item.name}
+                renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time} name = {item.name} type = {"outer"}
 
                 />}
 

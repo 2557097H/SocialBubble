@@ -1,9 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground, Image} from 'react-native';
+import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { getAuth, signOut } from "firebase/auth";
+import { getDatabase, ref, update } from 'firebase/database';
 
-const ValidationScreen = ({navigation}) => {
+const ValidationScreen = ({ navigation }) => {
+  const auth = getAuth();
+  const db = getDatabase();
+  const user = auth.currentUser;
+  const userId = user.uid;
+  const userRef = ref(db, `users/${userId}`);
 
   const [passportImage, setPassportImage] = useState(null);
   const [headshotImage, setHeadshotImage] = useState(null);
@@ -16,13 +23,20 @@ const ValidationScreen = ({navigation}) => {
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.cancelled) {
       setPassportImage(result.uri);
       if (headshotImage) {
         setImagesUploaded(true);
       }
     }
+  };
+
+  const authenticate = () => {
+    update(userRef, {
+      validationUploaded: "yes",
+    });
+    navigation.navigate('ValidationPending');
   };
   
   const pickHeadshotImage = async () => {
@@ -85,7 +99,7 @@ const ValidationScreen = ({navigation}) => {
           style={[styles.button, !imagesUploaded && styles.disabledButton]}
           onPress={() => {
           if (imagesUploaded) {
-          navigation.navigate("ValidationPending");
+          authenticate();
           } else {
           Alert.alert("Please upload both images to continue.");
       }

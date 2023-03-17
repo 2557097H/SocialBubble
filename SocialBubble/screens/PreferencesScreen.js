@@ -26,7 +26,7 @@ export default function PreferencesScreen({navigation}) {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  navigation.navigate("Home");
+                  navigation.navigate("LGBT");
                 }}
             >
               <Text style={styles.buttonText}>Next</Text>
