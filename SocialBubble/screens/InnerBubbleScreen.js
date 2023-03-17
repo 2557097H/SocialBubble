@@ -25,7 +25,7 @@ const windowWidth = Dimensions.get('window').width;
 
 
 
-function ChatScreen({ route }) {
+function InnerBubbleScreen({ route }) {
 
 
 
@@ -65,17 +65,24 @@ function ChatScreen({ route }) {
       get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
         //If exits user is in inner bubble already, if doesn't exists user will be assigned inner bubble in next useEffect
         if (snapshot.exists()) {
-          console.log("User is in an inner bubble");
+   
+          if(snapshot.val() != ""){
           setCheckID(true);
           setInnerId(snapshot.val());
-          console.log("Entered 1");
-          setIsFirstEffectDone(true);
-        } else {
+          setIsFirstEffectDone(true);}
+          else {
+            setInitialRender(initialRender + 1);
+            setCheckID(false);
+            setIsFirstEffectDone(true);
+  
+          }
+        }
+        else {
           setInitialRender(initialRender + 1);
           setCheckID(false);
           setIsFirstEffectDone(true);
 
-        }
+        } 
 
       })
 
@@ -89,11 +96,11 @@ function ChatScreen({ route }) {
         return}
     //If user not already in an inner bubble
    
-    console.log(checkID);
     if (checkID == false) {
-      console.log("User is not in an inner bubble");
+   
 
       get(child(dbRef, `bubble/inner/`)).then((snapshot) => {
+      
         if (snapshot.exists()) {
 
           const lastJoined = snapshot.val().lastJoined;
@@ -110,10 +117,8 @@ function ChatScreen({ route }) {
                 updates[`/bubble/inner/lastJoined`] = id;
                 update(ref(db), updates);
 
-                set(ref(db, `users/${senderId}/`), {
-                  innerId: id,
-                  Name: "Bob",
-                });
+                updates[`users/${senderId}/`] = id;
+                update(ref(db), updates);
                 setInnerId(id);
               }
 
@@ -128,11 +133,10 @@ function ChatScreen({ route }) {
                     update(ref(db), updates);
                   }
                 })
-
-                set(ref(db, `users/${senderId}/`), {
-                  innerId: lastJoined,
-                  Name: "Bob",
-                });
+                const updates = {};
+                updates[`users/${senderId}/innerId`] = lastJoined;
+                update(ref(db), updates);
+                
 
                 setInnerId(lastJoined);
               }
@@ -141,23 +145,21 @@ function ChatScreen({ route }) {
         }
         else {
           //If no inner bubble exists (i.e: First user to create account)
+
           const id = push(ref(db, `bubble/inner/`), {
-            count: 0,
+            lastJoined: "",
           }).key;
 
-          set(ref(db, `bubble/inner/`), {
-            lastJoined: id,
-          });
+          const updates = {};
+          updates[`users/${senderId}/innerId`] = id;
+          update(ref(db), updates);
+
+          updates[`bubble/inner/lastJoined`] = id;
+          update(ref(db), updates);
 
           set(ref(db, `bubble/inner/${id}/`), {
             count: 0,
           }).key;
-
-
-          set(ref(db, `users/${senderId}/`), {
-            innerId: id,
-            Name: "Bob",
-          });
 
           setInnerId(id);
         }
@@ -231,7 +233,7 @@ function ChatScreen({ route }) {
             <View style={styles.chat_container}>
               <FlatList
                 data={allMessages}
-                renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time} name = {item.name}
+                renderItem={({ item }) => <Message user={item.user} message={item.message} time={item.time} name = {item.name} type = {"Inner"}
 
                 />}
 
@@ -303,7 +305,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
+export default InnerBubbleScreen;
 
 
 

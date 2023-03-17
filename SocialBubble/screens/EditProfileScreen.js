@@ -73,7 +73,6 @@ const EditProfileScreen = ({navigation}) => {
   const changeName=() => {
       update(ref(db, 'users/' + userId), {
         Username: username,
-        Interests: interests,
         Bio: bio,
         ProfilePic: profilePicture,
       })

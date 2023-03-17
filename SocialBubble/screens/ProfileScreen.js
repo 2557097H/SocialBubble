@@ -31,24 +31,29 @@ const ProfileScreen = ({navigation}) => {
       setName(snapshot.val().Name);
       setUsername(snapshot.val().Username);
       setBio(snapshot.val().Bio);
-      if (snapshot.val().Interests != null){
-      onValue(interestRef, (interestSnapshot) => {
-        interestsName = []
-        interestsName.push("My Interests are ")
-        for(let i=0; i<snapshot.val().Interests.length; i++){
-          if(i != snapshot.val().Interests.length-1){
-            interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
+
+        onValue(interestRef, (interestSnapshot) => {
+          interestsName = []
+          interestsName.push("My Interests are ")
+          if (snapshot.val().Interests == null){
+            interestsName.push("nothing.")
+            setInterests(interestsName);
           }
           else{
-            interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]])
+            for(let i=0; i<snapshot.val().Interests.length; i++){
+              if(i != snapshot.val().Interests.length-1){
+                interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ", ")
+              }
+              else{
+                interestsName.push(interestSnapshot.val()[snapshot.val().Interests[i]] + ".")
+              }
+            }
+            setInterests(interestsName);
           }
-        }
-        setInterests(interestsName);
+        });
       });
-    }
-      
-    });
   }, [])
+
 
   return (
     <ImageBackground
