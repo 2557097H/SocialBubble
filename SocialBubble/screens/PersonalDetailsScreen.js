@@ -5,6 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase
 import Geocode from "react-geocode";
 import { getDatabase, ref, set, } from "firebase/database";
 import PreferencesScreen from './PreferencesScreen';
+import GenderDropdown from '../components/GenderDropdown';
 
 export default function PersonalDetailsScreen({ navigation }) {
 
@@ -22,6 +23,7 @@ export default function PersonalDetailsScreen({ navigation }) {
   );
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
+  const [gender, setGender] = useState();
   const [password, setPassword] = useState(null);
   const [name, setName] = useState(null);
   const [dob, setDOB] = useState(null);
@@ -31,7 +33,6 @@ export default function PersonalDetailsScreen({ navigation }) {
   const [city, setCity] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-
 
   const checkFields = () => {
     if ((email == null) || (password == null) || (name == null) || (dob == null) || (occupation == null) || (confirmEmail == null) || (confirmPassword == null) || (city == null)) {
@@ -102,14 +103,18 @@ export default function PersonalDetailsScreen({ navigation }) {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user.email);
+        console.log(gender);
         set(ref(db, 'users/' + user.uid), {
           Name: name,
           Username: username,
+          Gender: gender,
           DateOfBirth: dob,
           Occupation: occupation,
           City: city,
           Longitude: longitude,
-          Latitude: latitude
+          Latitude: latitude,
+          innerBubbleID: null,
+          dateAddedToBubble: null
         });
         clearForms();
         navigation.navigate("Preferences");
@@ -134,10 +139,11 @@ export default function PersonalDetailsScreen({ navigation }) {
           style={styles.input}
           value={username}
           onChangeText={text => setUsername(text)}
-          ref={input => { this.usernameInput = input}}
+          ref={input => { this.usernameInput = input }}
           returnKeyType="next"
           onSubmitEditing={() => { this.nameTextInput.focus(); }}
           blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
           ref={input => { this.nameInput = input; this.nameTextInput = input }}
@@ -148,6 +154,11 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.dobTextInput.focus(); }}
           blurOnSubmit={false}
+        />
+        <GenderDropdown 
+          onChange= {
+            setGender
+          }
         />
         <TextInput
           ref={input => { this.dobInput = input; this.dobTextInput = input }}
@@ -166,8 +177,18 @@ export default function PersonalDetailsScreen({ navigation }) {
           style={styles.input}
           onChangeText={text => setOccupation(text)}
           returnKeyType="next"
-          onSubmitEditing={() => { this.emailTextInput.focus(); }}
+          onSubmitEditing={() => { this.cityTextInput.focus(); }}
           blurOnSubmit={false}
+        />
+        <TextInput
+        ref={input => { this.cityInput = input; this.cityTextInput = input }}
+        placeholder="City/Town"
+        style={styles.input}
+        value={city}
+        onChangeText={text=>setCity(text)}
+        returnKeyType="next"
+        onSubmitEditing={() => { this.emailTextInput.focus(); }}
+        blurOnSubmit={false}
         />
         <TextInput
           ref={input => { this.emailInput = input; this.emailTextInput = input }}
@@ -178,13 +199,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.confirmEmailTextInput.focus(); }}
           blurOnSubmit={false}
-        />
-        <TextInput
-        ref={input => { this.cityInput = input}}
-        placeholder="City/Town"
-        style={styles.input}
-        value={city}
-        onChangeText={text=>setCity(text)}
+          autoCapitalize="none"
         />
         <TextInput
           ref={input => { this.confirmEmailInput = input; this.confirmEmailTextInput = input }}
@@ -195,9 +210,10 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.passwordTextInput.focus(); }}
           blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
-          ref={input => { this.passwordInput = input ; this.passwordTextInput = input }}
+          ref={input => { this.passwordInput = input; this.passwordTextInput = input }}
           placeholder="Password"
           secureTextEntry
           style={styles.input}
@@ -206,6 +222,7 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.confirmPasswordTextInput.focus(); }}
           blurOnSubmit={false}
+          autoCapitalize="none"
         />
         <TextInput
           ref={input => { this.confirmPasswordInput = input; this.confirmPasswordTextInput = input }}
@@ -214,18 +231,8 @@ export default function PersonalDetailsScreen({ navigation }) {
           style={styles.input}
           value={confirmPassword}
           onChangeText={text => setConfirmPassword(text)}
+          autoCapitalize="none"
         />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            checkFields();
-          }}
-        >
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
 
       </View>
 
@@ -240,6 +247,16 @@ export default function PersonalDetailsScreen({ navigation }) {
         >
           <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            checkFields();
+          }}
+        >
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+        
+
       </View>
 
     </KeyboardAvoidingView>
@@ -287,14 +304,16 @@ const styles = StyleSheet.create({
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
   },
 
   button: {
-    width: "80%",
+    width: "50%",
     padding: 5,
     borderRadius: 10,
     alignItems: "center",
     backgroundColor: "#9BD9F4",
+    margin: 10,
   },
 
   buttonText: {
