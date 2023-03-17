@@ -73,7 +73,7 @@ const SettingsScreen = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Validation")}
+          onPress={() => (nav_to_val())}
         >
           <Text style={styles.buttonText}>Validate Account</Text>
         </TouchableOpacity>
