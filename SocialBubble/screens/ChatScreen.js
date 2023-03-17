@@ -33,8 +33,11 @@ function ChatScreen({ route }) {
   const [messages, setMessages] = useState([]);
   const [allMessages, setAllMessages] = useState([]);
   const [innerId, setInnerId] = useState("");
-  const [initialRender, setInitialRender] = useState(0);
   const [checkID, setCheckID] = useState(false);
+  const [initialRender, setInitialRender] = useState(0);
+  const [isFirstEffectDone,setIsFirstEffectDone] = useState(false);
+
+  
 
 
 
@@ -53,30 +56,41 @@ function ChatScreen({ route }) {
     }
   }, [route.params]);
 
+
+
+
   useEffect(() => {
-   {
+    console.log("Hi");
+   
       // Obtain inner ID
       get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
         //If exits user is in inner bubble already, if doesn't exists user will be assigned inner bubble in next useEffect
         if (snapshot.exists()) {
           console.log("User is in an inner bubble");
-          setInnerId(snapshot.val());
           setCheckID(true);
+          setInnerId(snapshot.val());
+          console.log("Entered 1");
+          setIsFirstEffectDone(true);
         } else {
           setInitialRender(initialRender + 1);
+          setCheckID(false);
+          setIsFirstEffectDone(true);
 
         }
 
       })
 
-      setCheckID(false);
-    }
+      
   }, [route.params]);
 
 
-
-  useEffect(() => {
+    useEffect(() => {
+     
+      if (!isFirstEffectDone) {
+        return}
     //If user not already in an inner bubble
+    console.log("Entered 2");
+    console.log(checkID);
     if (checkID == false) {
       console.log("User is not in an inner bubble");
 
@@ -150,8 +164,9 @@ function ChatScreen({ route }) {
         }
       });
       setCheckID(true);
+      setIsFirstEffectDone(false);
     }
-  }, [initialRender]);
+}, [isFirstEffectDone]);
 
 
 

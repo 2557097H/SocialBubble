@@ -46,9 +46,10 @@ const MessageInput = ({ input, setInput }) => {
                 else{
                     var time = today.getHours() + ":" + today.getMinutes();
                 }
-                
+                console.log("Entered");
                 get(child(dbRef, `users/${senderId}/Name`)).then((snapshot) => {
                     if (snapshot.exists()) {
+                        console.log("Entered "+ snapshot.val());
                         setName(snapshot.val());
                     }else{
                         setName("Undefined");
