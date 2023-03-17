@@ -2,12 +2,27 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import LoginScreen from '../../screens/LoginScreen';
 import Chat from '../../assets/dummy_data/Chat';
+import { getAuth} from "firebase/auth";
 
-const myID = 'u2';
+/*
+        <View style = {styles.time}>
+            <Text style = {[styles.timeText,{
+                color: isItMe ? "green" : "green",
 
-const Message = ({ message }) => {
+            }]}> Time </Text>
+        </View>
+        */
 
-    const isItMe = message.user.id == myID;
+const Message = ({ message, user }) => {
+
+    const auth = getAuth();
+    const sender = auth.currentUser;
+    const senderId = sender.uid;
+
+    const isItMe = user == senderId;
+
+    
+    
 
     return(
         <View style = {[
@@ -20,14 +35,8 @@ const Message = ({ message }) => {
             <Text style = {[styles.chatBubble,{
                 color: isItMe ? "black" : "black",
             }
-            ]}>{message.content}</Text>
+            ]}>{message}</Text>
       
-        <View style = {styles.time}>
-            <Text style = {[styles.timeText,{
-                color: isItMe ? "green" : "green",
-
-            }]}> Time </Text>
-        </View>
         </View>
         
     )

@@ -3,9 +3,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getDatabase } from 'firebase/database';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
+import { getDatabase } from "firebase/database";
 import LoginScreen from './screens/LoginScreen';
 import ChatScreen from './screens/ChatScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -35,6 +35,9 @@ const firebaseConfig = {
   appId: "1:426846827737:web:58cdaded0ed89d490afac8",
   measurementId: "G-1EQTFQNESR"
 };
+
+
+var myVariable = Math.random();
 
 
 
@@ -79,8 +82,10 @@ export default function App() {
             }}
             />
             <Tab.Screen name ="OuterBubble" component={ChatScreen}
+            initialParams={{ myVariable }}
             options={{
               tabBarLabel: 'ChatBubble',
+              
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="chat" color={color} size={size} />
               ),
