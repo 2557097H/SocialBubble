@@ -1,9 +1,23 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity, KeyboardAvoidingView, ImageBackground  } from 'react-native';
+import { getAuth } from "firebase/auth"
+import { getDatabase, ref, onValue } from "firebase/database"
+
+
 
 const LobbyScreen = ({navigation}) => {
+
+
+
+
+
   return (
+    <ImageBackground
+          style={styles.backgroundImage}
+          source={require('../assets/sb-logo.png')}
+    >
+
     <KeyboardAvoidingView
     style={styles.container}
     >
@@ -12,6 +26,7 @@ const LobbyScreen = ({navigation}) => {
       </View>
 
     </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 

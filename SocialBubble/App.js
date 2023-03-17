@@ -16,11 +16,12 @@ import PasswordChangedScreen from './screens/PasswordChangedScreen';
 import ConfirmPasswordScreen from './screens/ConfirmPasswordScreen';
 import DeleteAccountScreen from './screens/DeleteAccountScreen';
 import AccountDeletedScreen from './screens/AccountDeletedScreen';
-
 import ProfileScreen from './screens/ProfileScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
 import OtherUsersProfileScreen from './screens/OtherUsersProfileScreen';
+import ValidationScreen from './screens/ValidationScreen';
+import ValidationPendingScreen from './screens/ValidationPendingScreen';
 
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
@@ -55,7 +56,12 @@ export default function App() {
     <NavigationContainer>
     <Tab.Navigator 
     screenOptions={{
-    headerShown: false
+    headerShown: false,
+    tabBarStyle: {
+      height: 60,
+      paddingHorizontal: 5,
+      backgroundColor: '#cfedf7',
+  },
     }}>
             <Tab.Screen name ="Login" component={LoginScreen}
             options={{
@@ -127,9 +133,9 @@ export default function App() {
             />
             <Tab.Screen name ="ConfirmPassword" component={ConfirmPasswordScreen}
             options={{
-              tabBarLabel: 'ChangePassword',
-              tabBarVisible: false,
               tabBarButton: () => null,
+              tabBarStyle:{display: 'none'},
+              tabBarVisible: false, 
             }}
             />
             <Tab.Screen name ="DeleteAccount" component={DeleteAccountScreen}
@@ -169,12 +175,21 @@ export default function App() {
               tabBarStyle: { display: 'none'},
               tabBarVisible: false, 
             }}
+            />
+            <Tab.Screen name ="Validation" component={ValidationScreen}
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: 'none'},
+              tabBarVisible: false, 
+            }}
             />  
-            
-
-
-
-
+            <Tab.Screen name ="ValidationPending" component={ValidationPendingScreen}
+            options={{
+              tabBarButton: () => null,
+              tabBarStyle: { display: 'none'},
+              tabBarVisible: false, 
+            }}
+            /> 
         </Tab.Navigator>
     </NavigationContainer>  
 );
