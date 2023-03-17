@@ -5,6 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase
 import Geocode from "react-geocode";
 import { getDatabase, ref, set, } from "firebase/database";
 import PreferencesScreen from './PreferencesScreen';
+import GenderDropdown from '../components/GenderDropdown';
 
 export default function PersonalDetailsScreen({ navigation }) {
 
@@ -22,6 +23,7 @@ export default function PersonalDetailsScreen({ navigation }) {
   );
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
+  const [gender, setGender] = useState();
   const [password, setPassword] = useState(null);
   const [name, setName] = useState(null);
   const [dob, setDOB] = useState(null);
@@ -42,7 +44,8 @@ export default function PersonalDetailsScreen({ navigation }) {
     } else if (!validDOB.test(dob)) {
       alert("Date of birth invalid. Please use format dd/mm/yyyy");
     } else {
-      getLangLong();
+      handleSignUp();
+      //getLangLong();
     }
   }
 
@@ -100,9 +103,11 @@ export default function PersonalDetailsScreen({ navigation }) {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user.email);
+        console.log(gender);
         set(ref(db, 'users/' + user.uid), {
           Name: name,
           Username: username,
+          Gender: gender,
           DateOfBirth: dob,
           Occupation: occupation,
           City: city,
@@ -151,6 +156,11 @@ export default function PersonalDetailsScreen({ navigation }) {
           returnKeyType="next"
           onSubmitEditing={() => { this.dobTextInput.focus(); }}
           blurOnSubmit={false}
+        />
+        <GenderDropdown 
+          onChange= {
+            setGender
+          }
         />
         <TextInput
           ref={input => { this.dobInput = input; this.dobTextInput = input }}
@@ -225,17 +235,6 @@ export default function PersonalDetailsScreen({ navigation }) {
           onChangeText={text => setConfirmPassword(text)}
           autoCapitalize="none"
         />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            checkFields();
-          }}
-        >
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
 
       </View>
 
@@ -250,6 +249,16 @@ export default function PersonalDetailsScreen({ navigation }) {
         >
           <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            checkFields();
+          }}
+        >
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+        
+
       </View>
 
     </KeyboardAvoidingView>
@@ -297,14 +306,16 @@ const styles = StyleSheet.create({
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
   },
 
   button: {
-    width: "80%",
+    width: "50%",
     padding: 5,
     borderRadius: 10,
     alignItems: "center",
     backgroundColor: "#9BD9F4",
+    margin: 10,
   },
 
   buttonText: {
