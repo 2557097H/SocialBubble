@@ -48,6 +48,7 @@ export default function HomeScreen(props) {
 
     diffInAge = Math.abs(dob1Age - dob2Age);
     console.log(diffInAge);
+    return diffInAge;
 
   }
 
