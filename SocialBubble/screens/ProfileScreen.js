@@ -14,6 +14,7 @@ const ProfileScreen = ({navigation}) => {
   const [username, setUsername] = useState("");
   const [interests, setInterests] = useState("");
   const [bio, setBio] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
 
   useEffect (() => {
     const dbRef = ref(db, 'users/' + userId);
@@ -21,6 +22,11 @@ const ProfileScreen = ({navigation}) => {
     var interestsName = []
 
     onValue(dbRef, (snapshot) => {
+      if(!snapshot.val().ProfilePic){
+        setProfilePicture(require('../assets/Default.jpg'))
+      } else {
+        setProfilePicture({uri : snapshot.val().ProfilePic});
+      }
       
       setName(snapshot.val().Name);
       setUsername(snapshot.val().Username);
@@ -64,10 +70,8 @@ const ProfileScreen = ({navigation}) => {
 
         {/*profile picture of the profile*/}
         <Image
-            source={{
-            uri: 'https://konvajs.org/assets/yoda.jpg',
-        }}
-        style={styles.profilePictureContainer}
+            source={profilePicture}
+            style={styles.profilePictureContainer}
          />
 
         {/*interests of the profile*/}
@@ -87,11 +91,6 @@ const ProfileScreen = ({navigation}) => {
         {/*back and edit buttons of the profile*/}
         <View style={styles.buttonsContainer}>
           {/*buttons themselves*/}
-          <TouchableOpacity 
-          style={styles.button}
-          onPress={() => navigation.navigate("Home")}>
-            <Text style={styles.buttonText}> Back </Text>
-          </TouchableOpacity>
           <View  style={{flex:.7}}>
           </View>
           <TouchableOpacity 
@@ -166,14 +165,15 @@ const styles = StyleSheet.create({
     color:"black",
   },
   buttonsContainer:{
-    flexDirection: 'row',
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 20,
   },
   button:{
-    marginTop: 10,
-    width: "40%",
+    width: "60%",
     backgroundColor: "#9BD9F4",
+    justifyContent: 'center',
     padding: 8,
     alignItems: "center",
     borderRadius: 20,

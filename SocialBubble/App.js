@@ -22,6 +22,8 @@ import EditProfileScreen from './screens/EditProfileScreen';
 import OtherUsersProfileScreen from './screens/OtherUsersProfileScreen';
 import ValidationScreen from './screens/ValidationScreen';
 import ValidationPendingScreen from './screens/ValidationPendingScreen';
+import { getStorage } from 'firebase/storage';
+import { getApp } from "firebase/app";
 
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
@@ -44,6 +46,7 @@ var myVariable = Math.random();
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
+const storage = getStorage(app);
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
