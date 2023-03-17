@@ -93,21 +93,21 @@ function ChatScreen({ route }) {
     if (checkID == false) {
       console.log("User is not in an inner bubble");
 
-      get(child(dbRef, `bubble/`)).then((snapshot) => {
+      get(child(dbRef, `bubble/inner/`)).then((snapshot) => {
         if (snapshot.exists()) {
 
           const lastJoined = snapshot.val().lastJoined;
-          get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
+          get(child(dbRef, `bubble/inner/${lastJoined}/`)).then((snapshot) => {
             if (snapshot.exists()) {
 
               const count = snapshot.val().count;
               //if inner bubble has 6 people already (Count starts at 0 thats why count > 4)
               if (count > 4) {
-                const id = push(ref(db, `bubble/`), {
+                const id = push(ref(db, `bubble/inner/`), {
                   count: 0,
                 }).key;
                 const updates = {};
-                updates[`/bubble/lastJoined`] = id;
+                updates[`/bubble/inner/lastJoined`] = id;
                 update(ref(db), updates);
 
                 set(ref(db, `users/${senderId}/`), {
@@ -119,12 +119,12 @@ function ChatScreen({ route }) {
 
               else {
                 //If inner bubble exists with less than 6 people 
-                get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
+                get(child(dbRef, `bubble/inner/${lastJoined}/`)).then((snapshot) => {
                   if (snapshot.exists()) {
 
                     var count = snapshot.val().count + 1;
                     const updates = {};
-                    updates[`/bubble/${lastJoined}/count`] = count;
+                    updates[`/bubble/inner/${lastJoined}/count`] = count;
                     update(ref(db), updates);
                   }
                 })
@@ -141,15 +141,15 @@ function ChatScreen({ route }) {
         }
         else {
           //If no inner bubble exists (i.e: First user to create account)
-          const id = push(ref(db, `bubble/`), {
+          const id = push(ref(db, `bubble/inner/`), {
             count: 0,
           }).key;
 
-          set(ref(db, `bubble/`), {
+          set(ref(db, `bubble/inner/`), {
             lastJoined: id,
           });
 
-          set(ref(db, `bubble/${id}/`), {
+          set(ref(db, `bubble/inner/${id}/`), {
             count: 0,
           }).key;
 
@@ -172,7 +172,7 @@ function ChatScreen({ route }) {
 
   useEffect(() => {
     // Listen for new messages
-    const messagesRef = ref(db, `bubble/${innerId}/messages/`);
+    const messagesRef = ref(db, `bubble/inner/${innerId}/messages/`);
     onValue(messagesRef, (snapshot) => {
       const newMessages = [];
       snapshot.forEach((childSnapshot) => {

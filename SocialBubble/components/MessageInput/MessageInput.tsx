@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import LoginScreen from '../../screens/LoginScreen';
 import Chat from '../../assets/dummy_data/Chat';
@@ -11,11 +11,27 @@ import { child, getDatabase, set, update, ref, push, get } from "firebase/databa
 
 const MessageInput = ({ input, setInput }) => {
 
+    const [name, setName] = useState("");
+
     const db = getDatabase();
     const auth = getAuth();
     const user = auth.currentUser;
-    const senderId = user;
+    const senderId = user.uid;
     const [output, setOutput] = useState("");
+
+
+
+
+    useEffect(() => {
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `users/${senderId}/Name`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                setName(snapshot.val());
+            } else {
+                setName("Undefined");
+            }
+        });
+    }, [senderId]);
 
 
     const sendPressed = () => {
@@ -34,13 +50,27 @@ const MessageInput = ({ input, setInput }) => {
 
         const dbRef = ref(getDatabase());
         //Check if user is in an inner bubble
-
         get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
             if (snapshot.exists()) {
                 const innerId = snapshot.val();
+                var today = new Date();
+                if (today.getMinutes().toString().length == 1) {
+                    var time = today.getHours() + ":0" + today.getMinutes();
+                } else if (today.getHours().toString().length == 1) {
+                    var time = "0" + today.getHours() + ":" + today.getMinutes();
+
+                }
+                else {
+                    var time = today.getHours() + ":" + today.getMinutes();
+                }
+                console.log("Entered");
+
                 const messageKey = push(ref(db, `bubble/${innerId}/messages/`), {
                     message: message,
                     senderId: senderId,
+                    time: time,
+                    name: name,
+
                 }).key;
             }
 

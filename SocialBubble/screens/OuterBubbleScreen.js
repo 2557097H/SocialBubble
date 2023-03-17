@@ -25,14 +25,14 @@ const windowWidth = Dimensions.get('window').width;
 
 
 
-function ChatScreen({ route }) {
+function OuterBubbleScreen({ route }) {
 
 
 
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [allMessages, setAllMessages] = useState([]);
-  const [innerId, setInnerId] = useState("");
+  const [outerId, setOuterId] = useState("");
   const [checkID, setCheckID] = useState(false);
   const [initialRender, setInitialRender] = useState(0);
   const [isFirstEffectDone,setIsFirstEffectDone] = useState(false);
@@ -62,12 +62,12 @@ function ChatScreen({ route }) {
   useEffect(() => {
    
       // Obtain inner ID
-      get(child(dbRef, `users/${senderId}/innerId`)).then((snapshot) => {
+      get(child(dbRef, `users/${senderId}/outerId`)).then((snapshot) => {
         //If exits user is in inner bubble already, if doesn't exists user will be assigned inner bubble in next useEffect
         if (snapshot.exists()) {
           console.log("User is in an inner bubble");
           setCheckID(true);
-          setInnerId(snapshot.val());
+          setOuterId(snapshot.val());
           console.log("Entered 1");
           setIsFirstEffectDone(true);
         } else {
@@ -93,28 +93,28 @@ function ChatScreen({ route }) {
     if (checkID == false) {
       console.log("User is not in an inner bubble");
 
-      get(child(dbRef, `bubble/`)).then((snapshot) => {
+      get(child(dbRef, `bubble/outer`)).then((snapshot) => {
         if (snapshot.exists()) {
 
           const lastJoined = snapshot.val().lastJoined;
-          get(child(dbRef, `bubble/${lastJoined}/`)).then((snapshot) => {
+          get(child(dbRef, `bubble/outer/${lastJoined}/`)).then((snapshot) => {
             if (snapshot.exists()) {
 
               const count = snapshot.val().count;
               //if inner bubble has 6 people already (Count starts at 0 thats why count > 4)
               if (count > 4) {
-                const id = push(ref(db, `bubble/`), {
+                const id = push(ref(db, `bubble/outer/`), {
                   count: 0,
                 }).key;
                 const updates = {};
-                updates[`/bubble/lastJoined`] = id;
+                updates[`/bubble/outer/lastJoined`] = id;
                 update(ref(db), updates);
 
                 set(ref(db, `users/${senderId}/`), {
-                  innerId: id,
+                  outerId: id,
                   Name: "Bob",
                 });
-                setInnerId(id);
+                setOuterId(id);
               }
 
               else {
@@ -130,36 +130,36 @@ function ChatScreen({ route }) {
                 })
 
                 set(ref(db, `users/${senderId}/`), {
-                  innerId: lastJoined,
+                  outerId: lastJoined,
                   Name: "Bob",
                 });
 
-                setInnerId(lastJoined);
+                setOuterId(lastJoined);
               }
             }
           });
         }
         else {
           //If no inner bubble exists (i.e: First user to create account)
-          const id = push(ref(db, `bubble/`), {
+          const id = push(ref(db, `bubble/outer/`), {
             count: 0,
           }).key;
 
-          set(ref(db, `bubble/`), {
+          set(ref(db, `bubble/outer`), {
             lastJoined: id,
           });
 
-          set(ref(db, `bubble/${id}/`), {
+          set(ref(db, `bubble/outer/${id}/`), {
             count: 0,
           }).key;
 
 
           set(ref(db, `users/${senderId}/`), {
-            innerId: id,
+            outerId: id,
             Name: "Bob",
           });
 
-          setInnerId(id);
+          setOuterId(id);
         }
       });
       setCheckID(true);
@@ -172,7 +172,7 @@ function ChatScreen({ route }) {
 
   useEffect(() => {
     // Listen for new messages
-    const messagesRef = ref(db, `bubble/${innerId}/messages/`);
+    const messagesRef = ref(db, `bubble/outer/${outerId}/messages/`);
     onValue(messagesRef, (snapshot) => {
       const newMessages = [];
       snapshot.forEach((childSnapshot) => {
@@ -198,7 +198,7 @@ function ChatScreen({ route }) {
 
 
     });
-  }, [innerId]);
+  }, [outerId]);
 
   useEffect(() => {
 
@@ -303,8 +303,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
-
+export default OuterBubbleScreen;
 
 
 
