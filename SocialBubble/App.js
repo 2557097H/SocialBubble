@@ -186,7 +186,7 @@ export default function App() {
               tabBarVisible: false, 
             }}
             /> 
-            <Tab.Screen name ="Lgbt" component={LgbtScreen}
+            <Tab.Screen name ="LGBT" component={LgbtScreen}
             options={{
               tabBarButton: () => null,
               tabBarStyle: { display: 'none'},

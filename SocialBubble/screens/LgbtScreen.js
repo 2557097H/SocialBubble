@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, Text, View, Button, KeyboardAvoidingView, TextInput, TouchableOpacity, ImageBackground} from 'react-native';
-import { getDatabase, ref, update } from "firebase/database"
+import { getDatabase, ref, update, get } from "firebase/database"
 import { getAuth} from "firebase/auth";
 
 export default function LgbtScreen({navigation}) {
@@ -10,18 +10,40 @@ export default function LgbtScreen({navigation}) {
     const user = auth.currentUser
     const db = getDatabase()
     const dbRef = ref(db, 'users/' + user.uid);
+    const lgbtRef = ref(db, 'users/' + user.uid.LGBT);
+
     const lgbtYes = () => {
-        update(dbRef, {
+      get(lgbtRef).then((snapshot) => {
+        if(!snapshot.exists()){
+          update(dbRef, {
             LGBT: true,
-        });
-        navigation.navigate("Home");    
+          });
+          navigation.navigate("Home");
+        }else{
+          update(dbRef, {
+            LGBT: true,
+          });
+          navigation.navigate("Settings");
+        }
+      })
+      
+      
     }
 
     const lgbtNo = () => {
-        update(dbRef, {
+      get(lgbtRef).then((snapshot) => {
+        if(!snapshot.exists()){
+          update(dbRef, {
             LGBT: false,
-        });
-        navigation.navigate("Home");    
+          });
+          navigation.navigate("Home");
+        }else{
+          update(dbRef, {
+            LGBT: false,
+          });
+          navigation.navigate("Settings");
+        }
+      })
     }
 
         return (
