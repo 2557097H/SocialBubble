@@ -10,7 +10,7 @@ import GenderDropdown from '../components/GenderDropdown';
 export default function PersonalDetailsScreen({ navigation }) {
 
 
-  Geocode.setApiKey("AIzaSyCdlkP7PV6Sk_3Sp_WL9EHMLJEL5pLDvhs");
+
   Geocode.setLanguage("en");
   Geocode.setRegion("uk");
   Geocode.setLocationType("ROOFTOP");
